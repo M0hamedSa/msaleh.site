@@ -1,0 +1,315 @@
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
+/*
+  Tokens. Light = P01 (bone, ink) and dark = P03 (graphite, readout), both with a signal red accent:
+  deeper on bone, brighter on graphite, so it holds contrast in each theme.
+  The OS decides until the Visitor picks a theme; the pick is stored as data-theme on <html>.
+*/
+:root {
+  --bg: #eceae4;
+  --fg: #111110;
+  --card: #e2dfd7;
+  --mute: #6b675f;
+  --line: #cfcbc1;
+  --accent: #e01e1e;
+  --on-accent: #eceae4;
+  --loader-bg: #111110;
+  --loader-fg: #eceae4;
+  --screen-dim: 1;
+  --gutter-l: max(16px, env(safe-area-inset-left, 0px), 2.2vw);
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px), 2.2vw);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121417;
+    --fg: #e4e7ea;
+    --card: #1c2025;
+    --mute: #7a828c;
+    --line: #2a2f36;
+    --accent: #ff3b30;
+    --on-accent: #121417;
+    --loader-bg: #1c2025;
+    --loader-fg: #e4e7ea;
+    --screen-dim: 0.72;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #121417;
+  --fg: #e4e7ea;
+  --card: #1c2025;
+  --mute: #7a828c;
+  --line: #2a2f36;
+  --accent: #ff3b30;
+  --on-accent: #121417;
+  --loader-bg: #1c2025;
+  --loader-fg: #e4e7ea;
+  --screen-dim: 0.72;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-card: var(--card);
+  --color-mute: var(--mute);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-loader-bg: var(--loader-bg);
+  --color-loader-fg: var(--loader-fg);
+
+  --font-display: var(--font-clash), "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-general), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-sharp: cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+/* Mono label: the terminal accent used for meta text, routes and small UI. */
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@utility gutter {
+  padding-left: var(--gutter-l);
+  padding-right: var(--gutter-r);
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    /* Lenis owns scrolling, and route changes reset to the top; the browser's own
+       anchoring would otherwise nudge the position while pages swap. */
+    overflow-anchor: none;
+  }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+/* Page changes crossfade, so a new page's text eases in instead of popping. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 450ms;
+  animation-timing-function: ease-out;
+}
+
+/* Theme switch (E12): the new theme grows out of the toggle as a circle, so no crossfade. */
+:root[data-theme-switching]::view-transition-old(root),
+:root[data-theme-switching]::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Swaps a label by theme without waiting for hydration. */
+.theme-when-light { display: inline; }
+.theme-when-dark { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-when-light { display: none; }
+  :root:not([data-theme="light"]) .theme-when-dark { display: inline; }
+}
+:root[data-theme="dark"] .theme-when-light { display: none; }
+:root[data-theme="dark"] .theme-when-dark { display: inline; }
+
+/* E01 boot preloader. Skipped before paint when already seen or under reduced motion.
+   The failsafe hides it if the script never takes over, so the work is never locked away. */
+.boot-loader {
+  animation: boot-failsafe 0s 8s forwards;
+}
+:root[data-boot="skip"] .boot-loader {
+  display: none;
+}
+@keyframes boot-failsafe {
+  to { visibility: hidden; }
+}
+
+/* Entrance targets wait hidden for their intro, only when JS runs and motion is allowed.
+   Same failsafe idea: they show on their own if the intro never plays. */
+@media (prefers-reduced-motion: no-preference) {
+  :root.js [data-intro] {
+    visibility: hidden;
+    animation: intro-failsafe 0s 5s forwards;
+  }
+}
+@keyframes intro-failsafe {
+  to { visibility: visible; }
+}
+
+/* C16 block reveal: one bar per line, sized to the line's text. */
+.block-line {
+  position: relative;
+  width: fit-content;
+}
+.block-bar {
+  position: absolute;
+  inset: 0.04em -0.02em 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  pointer-events: none;
+}
+
+/* E07 velocity marquee: solid and outlined words, accent separators. */
+.marquee-word:nth-child(even) {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--fg);
+}
+.marquee-word .marquee-sep {
+  color: var(--accent);
+  -webkit-text-stroke: 0;
+}
+
+/* Logo: the status square blinks like a block cursor. */
+.logo-cursor {
+  animation: logo-cursor 1.06s steps(1) infinite;
+}
+@keyframes logo-cursor {
+  50% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-cursor { animation: none; }
+}
+
+/* E06b fill button: the ink rises from the bottom as a curved wave and settles flat. */
+.btn-fill {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  border: 1px solid var(--fg);
+  border-radius: 999px;
+  padding: 16px 28px;
+  font-weight: 500;
+  transition: color 0.3s 0.05s;
+}
+.btn-fill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--fg);
+  border-radius: 50% 50% 0 0 / 40% 40% 0 0;
+  transform: translateY(102%);
+  transition: transform 0.6s var(--ease-out-expo), border-radius 0.6s var(--ease-out-expo);
+}
+.btn-fill:hover,
+.btn-fill:focus-visible {
+  color: var(--bg);
+}
+.btn-fill:hover::before,
+.btn-fill:focus-visible::before {
+  transform: translateY(0);
+  border-radius: 0;
+}
+
+/* E06b underline link: the line draws in from the left, leaves to the right; the arrow nudges up. */
+.link-line {
+  position: relative;
+  display: inline-flex;
+  gap: 0.35em;
+  padding-bottom: 4px;
+  font-weight: 500;
+}
+.link-line::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.6s var(--ease-in-out-sharp);
+}
+.link-line:hover::after,
+.link-line:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.link-line .arrow {
+  display: inline-block;
+  transition: transform 0.5s var(--ease-out-expo);
+}
+.link-line:hover .arrow,
+.link-line:focus-visible .arrow {
+  transform: translate(3px, -3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-fill::before,
+  .link-line::after,
+  .link-line .arrow {
+    transition: none;
+  }
+}
+
+/* E06c: the labelled disc replaces the pointer only over its zones. */
+:root.has-cursor [data-cursor],
+:root.has-cursor [data-cursor] * {
+  cursor: none;
+}
+
+/* Clash's tight display tracking also closes up the word spaces; open them back up. */
+.font-display {
+  word-spacing: 0.1em;
+}
+
+/* C40: the project image morphs into the Case Study cover. */
+::view-transition-group(.morph) {
+  animation-duration: 700ms;
+  animation-timing-function: var(--ease-out-expo);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: morph-blur;
+}
+@keyframes morph-blur {
+  30% { filter: blur(3px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* Real project screens, muted toward the page until hovered: colour pulled to a
+   quarter, a tint of the page laid over it, and dimmed on graphite so a pale
+   app doesn't glare in the dark theme. */
+@layer components {
+  .screen-muted {
+    filter: saturate(0.25) contrast(0.95) brightness(var(--screen-dim));
+    transition: filter 0.5s var(--ease-out-expo);
+  }
+  .screen-tint {
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+    opacity: 0.35;
+    mix-blend-mode: color;
+    pointer-events: none;
+    transition: opacity 0.5s var(--ease-out-expo);
+  }
+}
