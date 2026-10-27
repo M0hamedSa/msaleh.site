@@ -461,5 +461,7 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
   aqsat,
   "true-legal": trueLegal,
   kidzenia,
-  "tiba-masr": tibaMasr,
+  // Local only until the owner confirms its problem and outcome; the live site
+  // keeps the "being written" note for Tiba Masr until then.
+  ...(process.env.NODE_ENV !== "production" && { "tiba-masr": tibaMasr }),
 };
