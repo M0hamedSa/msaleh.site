@@ -83,7 +83,7 @@ Featured Projects: True Legal · Kidzenia · Tiba Masr · Aqsat · True Visor (l
 - **Signature Moment, C4:** hovering an Archive row plays that project inside a 3D vintage CRT (Three.js, lazy-loaded). On touch screens and under reduced motion, a static framed screenshot replaces it.
 
 ### `/about` About
-- **E03b** word-scrub paragraph (the only place it's used).
+- **Header** (2026-10-27, replacing the E03b word-scrub paragraph): "About me. / **Who builds them.**" rises line by line out of masks, then the intro with the same reveal: "I'm a systems developer in Giza. I learn how a business really works, then build the software its people use every day." (`ABOUT_HEADING`, `INTRO` in `content/about.ts`; `line-reveal.tsx`).
 - **E09** pinned horizontal track record: 2016 CS degree → 2023 Semi-Code → 2024 Kazareen ERP & Odoo → −40% SQL agent → −60% QR system → 2026 independent.
 - A short "How I work" block (discover → map → build → train). Static text, no extra effect.
 - CV download.
@@ -114,7 +114,7 @@ Featured Projects: True Legal · Kidzenia · Tiba Masr · Aqsat · True Visor (l
 4. Featured Projects (C10) → `/work` (A1) → C40 transition
 5. Case Study template (C26, C15) with True Visor as the first full Case Study
 6. Footer (F1 + C6 + E13)
-7. `/about` (E03b, E09)
+7. `/about` (line-reveal header, E09)
 8. `/archive` + CRT Signature Moment (C4)
 9. `/playground` (C12)
 10. Screenshot capture and treatment, then the remaining four Case Studies

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 
 import { TrackRecord } from "@/components/about/track-record";
-import { WordScrub } from "@/components/about/word-scrub";
+import { LineReveal } from "@/components/line-reveal";
 import { Magnetic } from "@/components/magnetic";
 import { RevealHeading } from "@/components/reveal-heading";
-import { CV, HOW_I_WORK, INTRO, TRACK_RECORD } from "@/content/about";
+import { ABOUT_HEADING, CV, HOW_I_WORK, INTRO, TRACK_RECORD } from "@/content/about";
 
 export const metadata: Metadata = {
   title: "About · Mohamed Saleh",
@@ -18,10 +18,17 @@ export default function AboutPage() {
     <main className="grid gap-28 pt-[calc(120px+env(safe-area-inset-top,0px))] pb-28">
       <section className="gutter grid gap-10">
         <p className="label-mono text-mute">/about</p>
-        <WordScrub
-          text={INTRO}
+        <LineReveal as="h1" className="font-display text-[clamp(3.1rem,10vw,10rem)] leading-[0.9] tracking-[-0.045em]">
+          {ABOUT_HEADING[0]}
+          <br />
+          <span className="text-accent">{ABOUT_HEADING[1]}</span>
+        </LineReveal>
+        <LineReveal
+          delay={0.3}
           className="max-w-[24ch] font-display text-[clamp(1.9rem,4.4vw,4.25rem)] leading-[1.02] tracking-[-0.03em] text-balance"
-        />
+        >
+          {INTRO}
+        </LineReveal>
       </section>
 
       <section aria-labelledby="track-heading" className="grid gap-8">

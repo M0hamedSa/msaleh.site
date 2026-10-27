@@ -1,12 +1,11 @@
 // The About page's content. Facts come from the CV (Mohamed_Saleh_CV_2P.pdf);
 // the 2026 line summarises the Featured Projects.
 
-export const INTRO =
-  "I'm Mohamed Saleh, a systems developer in Giza. I keep a textile mill's ERP running, was a core part of its move to Odoo, and build the web systems around it: barcode inspection on the factory floor, audits that work offline, ledgers a law firm trusts with its clients' money.";
+/** The About header: two lines, the second in red (answers the hero's "I build them."). */
+export const ABOUT_HEADING = ["About me.", "Who builds them."] as const;
 
-/** The About section at the end of the home page: a two-line header, then who you are in one sentence. */
-export const TEASER_HEADING = ["About me.", "Who builds them."] as const;
-export const SUMMARY = "I'm a systems developer in Giza. I learn how a business really works, then build the software its people use every day.";
+/** Who you are in one sentence: the About page intro, and the About section at the end of the home page. */
+export const INTRO = "I'm a systems developer in Giza. I learn how a business really works, then build the software its people use every day.";
 
 export type Milestone = {
   label: string;

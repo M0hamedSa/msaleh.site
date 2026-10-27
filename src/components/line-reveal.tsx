@@ -7,7 +7,7 @@ import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 type Props = {
   children: React.ReactNode;
-  as?: "h2" | "h3" | "p";
+  as?: "h1" | "h2" | "h3" | "p";
   id?: string;
   className?: string;
   /** Seconds to wait after the text comes into view, to queue it behind another reveal. */

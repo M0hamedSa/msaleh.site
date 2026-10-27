@@ -85,8 +85,8 @@ listFile('src/app/not-found.tsx'); listFile('src/components/missing-path.tsx');
 h(2, 'Part 2 · Home');
 h(3, 'Boot preloader, hero, stack marquee'); listFile('src/components/home/boot-preloader.tsx'); listFile('src/components/home/hero.tsx'); listFile('src/components/home/stack-marquee.tsx');
 h(3, 'Featured Projects (text comes from the projects, Part 3)'); listFile('src/components/home/featured-projects.tsx');
-h(3, 'About section'); src('src/content/about.ts → TEASER_HEADING, SUMMARY');
-out.push(`**Heading:** ${about.TEASER_HEADING.join(' / ')}`, '', `**Text:** ${about.SUMMARY}`, '', '*Results and method below come from the About page (Part 5).*', '');
+h(3, 'About section'); src('src/content/about.ts → ABOUT_HEADING, INTRO (shared with the About page)');
+out.push(`**Heading:** ${about.ABOUT_HEADING.join(' / ')}`, '', `**Text:** ${about.INTRO}`, '', '*Results and method below come from the About page (Part 5).*', '');
 listFile('src/components/home/about-teaser.tsx'); listFile('src/app/page.tsx');
 
 h(2, 'Part 3 · Projects (home rows, /work, case-study headers)');
@@ -105,8 +105,8 @@ for (const [slug, cs] of Object.entries(cases.CASE_STUDIES as Record<string, any
 for (const f of [...jsx.keys()].filter(f => f.includes('/case/') || f.includes('work/[slug]'))) listFile(f);
 
 h(2, 'Part 5 · About page');
-src('src/content/about.ts → INTRO, TRACK_RECORD, HOW_I_WORK, CV');
-out.push(`**Intro:** ${about.INTRO}`, '');
+src('src/content/about.ts → ABOUT_HEADING, INTRO, TRACK_RECORD, HOW_I_WORK, CV');
+out.push(`**Heading:** ${about.ABOUT_HEADING.join(' / ')}`, '', `**Intro:** ${about.INTRO}`, '');
 h(3, 'Track record'); about.TRACK_RECORD.forEach((m: any, i: number) => { out.push(`**${i + 1}. ${m.mark} · ${m.label}${m.current ? ' (current)' : ''}**`, '', `**Title:** ${m.title}`, '', `**Text:** ${m.body}`, ''); });
 h(3, 'How I work'); about.HOW_I_WORK.forEach((s: any, i: number) => out.push(`${i + 1}. **${s.step}:** ${s.body}`)); out.push('');
 out.push(`**CV download:** ${about.CV ? about.CV.label : 'hidden until a copy without the phone number is ready'}`, '');

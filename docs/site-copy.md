@@ -128,7 +128,7 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 ### About section
 
-<sub>source: `src/content/about.ts → TEASER_HEADING, SUMMARY`</sub>
+<sub>source: `src/content/about.ts → ABOUT_HEADING, INTRO (shared with the About page)`</sub>
 
 **Heading:** About me. / Who builds them.
 
@@ -824,9 +824,11 @@ A separate demo copy with the real catalog and invented customers, for showing t
 
 ## Part 5 · About page
 
-<sub>source: `src/content/about.ts → INTRO, TRACK_RECORD, HOW_I_WORK, CV`</sub>
+<sub>source: `src/content/about.ts → ABOUT_HEADING, INTRO, TRACK_RECORD, HOW_I_WORK, CV`</sub>
 
-**Intro:** I'm Mohamed Saleh, a systems developer in Giza. I keep a textile mill's ERP running, was a core part of its move to Odoo, and build the web systems around it: barcode inspection on the factory floor, audits that work offline, ledgers a law firm trusts with its clients' money.
+**Heading:** About me. / Who builds them.
+
+**Intro:** I'm a systems developer in Giza. I learn how a business really works, then build the software its people use every day.
 
 ### Track record
 
@@ -880,12 +882,12 @@ A separate demo copy with the real catalog and invented customers, for showing t
 - L10: About · Mohamed Saleh
 - L11: Systems developer in Giza: ERP, Odoo, and the web systems businesses run on.
 - L20: /about
-- L29: Track record
-- L31: From a CS degree to systems in production.
-- L42: Method
-- L44: How I work
-- L61: The full story on two pages: experience, projects, skills and education.
-- L64: data-cursor: Get
+- L36: Track record
+- L38: From a CS degree to systems in production.
+- L49: Method
+- L51: How I work
+- L68: The full story on two pages: experience, projects, skills and education.
+- L71: data-cursor: Get
 
 ## Part 6 · Archive
 

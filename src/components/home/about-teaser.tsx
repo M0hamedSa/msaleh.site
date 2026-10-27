@@ -1,7 +1,7 @@
 import { LineReveal } from "@/components/line-reveal";
 import { Magnetic } from "@/components/magnetic";
 import { TransitionLink } from "@/components/transition/transition-link";
-import { HOW_I_WORK, SUMMARY, TEASER_HEADING, TRACK_RECORD } from "@/content/about";
+import { ABOUT_HEADING, HOW_I_WORK, INTRO, TRACK_RECORD } from "@/content/about";
 
 // The track record's measured results (the marks that are numbers, not years).
 const RESULTS = TRACK_RECORD.filter((m) => m.mark.endsWith("%"));
@@ -20,9 +20,9 @@ export function AboutTeaser() {
         id="about-teaser-heading"
         className="mb-14 font-display text-[clamp(3rem,9vw,9rem)] leading-[0.9] tracking-[-0.045em]"
       >
-        {TEASER_HEADING[0]}
+        {ABOUT_HEADING[0]}
         <br />
-        <span className="text-accent">{TEASER_HEADING[1]}</span>
+        <span className="text-accent">{ABOUT_HEADING[1]}</span>
       </LineReveal>
 
       <div className="grid gap-12 border-t border-fg pt-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:gap-16">
@@ -30,7 +30,7 @@ export function AboutTeaser() {
           delay={0.25}
           className="max-w-[22ch] font-display text-[clamp(2rem,3.6vw,3.5rem)] leading-[0.98] tracking-[-0.035em] text-balance"
         >
-          {SUMMARY}
+          {INTRO}
         </LineReveal>
 
         <div className="grid content-start gap-10">
