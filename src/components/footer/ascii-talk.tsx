@@ -34,21 +34,32 @@ function layout(width: number, height: number, display: string) {
   c.width = cols;
   c.height = Math.round(rows * (cellH / cellW));
   const ctx = c.getContext("2d", { willReadFrequently: true })!;
+  // Letters are set one by one: Safari can ignore the canvas's letterSpacing. On a phone
+  // the gap a letter brings with it comes to under a column, so letters ran together;
+  // there they are set two columns apart.
   const measure = (size: number) => {
     ctx.font = `600 ${size}px ${display}`;
-    ctx.letterSpacing = `${-0.03 * size}px`;
-    const boxes = lines.map((line) => ctx.measureText(line));
-    const lineH = Math.max(...boxes.map((b) => b.actualBoundingBoxAscent)) * 1.18;
-    return { boxes, lineH, width: Math.max(...boxes.map((b) => b.width)), height: lineH * lines.length };
+    const track = cellW === 4 ? 2 : -0.03 * size;
+    const sets = lines.map((line) => {
+      const glyphs = [...line].map((ch) => ({ ch, w: ctx.measureText(ch).width }));
+      const width = glyphs.reduce((sum, g) => sum + g.w, 0) + track * (glyphs.length - 1);
+      return { glyphs, width, ascent: ctx.measureText(line).actualBoundingBoxAscent };
+    });
+    const lineH = Math.max(...sets.map((s) => s.ascent)) * 1.18;
+    return { sets, track, lineH, width: Math.max(...sets.map((s) => s.width)), height: lineH * lines.length };
   };
   let size = c.height;
   let m = measure(size);
   while (size > 6 && (m.width > c.width * 0.96 || m.height > c.height * 0.92)) m = measure(--size);
   ctx.textBaseline = "alphabetic";
   const top = (c.height - m.height) / 2;
-  lines.forEach((line, i) => {
-    const box = m.boxes[i];
-    ctx.fillText(line, (c.width - box.width) / 2, top + m.lineH * i + box.actualBoundingBoxAscent + (m.lineH - box.actualBoundingBoxAscent) / 2);
+  m.sets.forEach((set, i) => {
+    let x = (c.width - set.width) / 2;
+    const y = top + m.lineH * i + set.ascent + (m.lineH - set.ascent) / 2;
+    for (const g of set.glyphs) {
+      ctx.fillText(g.ch, x, y);
+      x += g.w + m.track;
+    }
   });
   const { data } = ctx.getImageData(0, 0, c.width, c.height);
 
