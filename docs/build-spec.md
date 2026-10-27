@@ -1,4 +1,4 @@
-# Build spec: mohamedsa.xyz
+# Build spec: msaleh.site
 
 Status: **draft for confirmation** (2026-10-21). Vocabulary follows `CONTEXT.md`.
 Effect codes (E01, C16, …) refer to cards in the Motion Library:
@@ -15,7 +15,7 @@ https://claude.ai/artifact/GxGEV68JmyVPg2WBtdx9vr
 
 | Concern | Choice |
 |---|---|
-| Framework | Next.js (App Router, TypeScript), deployed on Vercel at mohamedsa.xyz |
+| Framework | Next.js (App Router, TypeScript), deployed on Vercel at www.msaleh.site (mohamedsa.xyz retired 2026-10-27) |
 | Styling | Tailwind CSS v4 with CSS custom-property tokens |
 | Animation | GSAP 3.15 (ScrollTrigger, SplitText, Flip, ScrambleText) via `@gsap/react` `useGSAP` |
 | Scroll | Lenis, driven by the GSAP ticker |
@@ -119,7 +119,7 @@ Featured Projects: True Legal · Kidzenia · Tiba Masr · Aqsat · True Visor (l
 8. `/archive` + CRT Signature Moment (C4)
 9. `/playground` (C12)
 10. Screenshot capture and treatment, then the remaining four Case Studies
-11. Accessibility and performance pass, then deploy to mohamedsa.xyz and archive the old portfolio repos
+11. Accessibility and performance pass, then deploy (now www.msaleh.site) and archive the old portfolio repos
 
 ## 9. Open items (not blocking)
 
