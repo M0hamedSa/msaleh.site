@@ -149,6 +149,36 @@
 :root[data-theme="dark"] .theme-when-light { display: none; }
 :root[data-theme="dark"] .theme-when-dark { display: inline; }
 
+/* Header icons (header-icons.tsx). The theme icon follows the theme; the menu's dots
+   turn while it is open; the typing dots loop, and rest while the menu covers them. */
+.ic-theme [data-sun],
+.ic-theme [data-moon],
+.ic-menu {
+  transform-origin: 12px 12px;
+  transition: transform 0.6s var(--ease-out-expo), opacity 0.35s;
+}
+.ic-theme [data-moon] { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ic-theme [data-sun] { opacity: 0; transform: rotate(90deg) scale(0.5); }
+  :root:not([data-theme="light"]) .ic-theme [data-moon] { opacity: 1; transform: none; }
+}
+:root[data-theme="dark"] .ic-theme [data-sun] { opacity: 0; transform: rotate(90deg) scale(0.5); }
+:root[data-theme="dark"] .ic-theme [data-moon] { opacity: 1; transform: none; }
+[aria-expanded="true"] > .ic-menu { transform: rotate(45deg); }
+@media (prefers-reduced-motion: no-preference) {
+  .ic-typing circle { animation: ic-typing 1.4s ease-in-out infinite; }
+  .ic-typing circle:nth-of-type(2) { animation-delay: 0.18s; }
+  .ic-typing circle:nth-of-type(3) { animation-delay: 0.36s; }
+  [data-menu-open="true"] .ic-typing circle { animation-play-state: paused; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ic-theme [data-sun], .ic-theme [data-moon], .ic-menu { transition: none; }
+}
+@keyframes ic-typing {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30% { transform: translateY(-2.4px); opacity: 1; }
+}
+
 /* E01 boot preloader. Skipped before paint when already seen or under reduced motion.
    The failsafe hides it if the script never takes over, so the work is never locked away. */
 .boot-loader {

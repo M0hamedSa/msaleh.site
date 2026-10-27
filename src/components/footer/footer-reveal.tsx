@@ -57,7 +57,17 @@ export function FooterReveal({ children }: { children: React.ReactNode }) {
           clear();
         },
       });
+      // The page can grow or shrink after the last refresh (late images, filters), which
+      // left the reveal stuck short of the end on short pages; measure again when it does.
+      let height = page.offsetHeight;
+      const ro = new ResizeObserver(() => {
+        if (page.offsetHeight === height) return;
+        height = page.offsetHeight;
+        ScrollTrigger.refresh();
+      });
+      ro.observe(page);
       return () => {
+        ro.disconnect();
         trigger.kill();
         clear();
       };

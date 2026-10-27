@@ -1,5 +1,6 @@
 "use client";
 
+import { ThemeIcon } from "@/components/header-icons";
 import { THEME_KEY } from "@/lib/init-script";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 
@@ -9,7 +10,7 @@ function currentTheme(): "light" | "dark" {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-/** E12: switches theme; the new one grows out of the button as a circle. */
+/** E12: switches theme; the new one grows out of the button as a circle. A sun or a moon icon. */
 export function ThemeToggle({ className = "" }: { className?: string }) {
   const reduced = useReducedMotion();
 
@@ -50,12 +51,13 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     <button
       type="button"
       onClick={toggle}
-      className={`label-mono rounded-full border border-line bg-bg px-3 py-1.5 transition-colors hover:border-fg ${className}`}
+      className={`grid size-10 place-items-center rounded-full border border-line bg-bg transition-colors hover:border-fg ${className}`}
     >
-      <span className="sr-only">Switch to </span>
-      <span className="theme-when-light">Dark</span>
-      <span className="theme-when-dark">Light</span>
-      <span className="sr-only"> theme</span>
+      <ThemeIcon />
+      <span className="sr-only">
+        Switch to <span className="theme-when-light">dark</span>
+        <span className="theme-when-dark">light</span> theme
+      </span>
     </button>
   );
 }

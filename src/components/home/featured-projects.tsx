@@ -37,7 +37,8 @@ const px = (v: string) => parseFloat(v) || 0;
  * button on touch screens), one large screen and two smaller ones on the right,
  * all whole at 16:10. The others fold to a single line with their name. The
  * section pins and the scroll hands the space from one project to the next,
- * resting briefly on each; every move is scrubbed, so nothing snaps.
+ * resting briefly on each; every move is scrubbed, so nothing snaps. Tabbing
+ * to a project's name scrolls to it, so keyboard users open rows too.
  * Phones and reduced motion get a plain list with every project open.
  */
 export function FeaturedProjects() {
@@ -111,7 +112,7 @@ export function FeaturedProjects() {
         const state = { f: 0 };
         measure();
         layout(0);
-        gsap.to(state, {
+        const tween = gsap.to(state, {
           f: last,
           ease: "none",
           onUpdate: () => layout(state.f),
@@ -129,7 +130,20 @@ export function FeaturedProjects() {
           },
         });
 
+        // Tabbing to a folded project scrolls to where it rests open. The browser would
+        // otherwise scroll the clipped view itself to reveal the link, so that is undone.
+        const onFocus = (e: FocusEvent) => {
+          const i = rows.findIndex((row) => row.contains(e.target as Node));
+          const st = tween.scrollTrigger;
+          view.scrollTop = 0;
+          if (i < 0 || !st) return;
+          const rest = i < last ? i + 0.04 : i;
+          window.scrollTo(0, st.start + ((st.end - st.start) * rest) / last);
+        };
+        list.addEventListener("focusin", onFocus);
+
         return () => {
+          list.removeEventListener("focusin", onFocus);
           delete stage.dataset.pinned;
           stage.style.removeProperty("--tiles-h");
           stage.style.removeProperty("--tiles-w");

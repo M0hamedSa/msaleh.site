@@ -1,3 +1,4 @@
+import { ContactLink } from "@/components/contact-link";
 import { LineReveal } from "@/components/line-reveal";
 import { Magnetic } from "@/components/magnetic";
 import { TransitionLink } from "@/components/transition/transition-link";
@@ -10,7 +11,8 @@ const RESULTS = TRACK_RECORD.filter((m) => m.mark.endsWith("%"));
  * The end of the home page. A big "About me. / Who builds them." rises line by
  * line (answering the hero's "I build them."), then who you are in one sentence
  * with the same reveal, the two results that can be measured, the method, and
- * the ways onward (About, all work, Archive).
+ * the way in: "Start a project" (to the contact block), with About, all work and
+ * Archive as plain links.
  */
 export function AboutTeaser() {
   return (
@@ -64,10 +66,13 @@ export function AboutTeaser() {
 
       <div className="mt-14 flex flex-wrap items-center gap-x-10 gap-y-6">
         <Magnetic>
-          <TransitionLink href="/about" data-cursor="Open" className="btn-fill">
-            <span data-magnetic-inner>More about me</span>
-          </TransitionLink>
+          <ContactLink data-cursor="Write" className="btn-fill">
+            <span data-magnetic-inner>Start a project</span>
+          </ContactLink>
         </Magnetic>
+        <TransitionLink href="/about" className="link-line">
+          More about me <span className="arrow">↗</span>
+        </TransitionLink>
         <TransitionLink href="/work" className="link-line">
           All work <span className="arrow">↗</span>
         </TransitionLink>

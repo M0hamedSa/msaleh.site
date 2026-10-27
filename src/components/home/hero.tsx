@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 
+import { ContactLink } from "@/components/contact-link";
 import { AsciiMark } from "@/components/home/ascii-mark";
 import { LiveClock } from "@/components/live-clock";
 import { createBlockReveal } from "@/lib/block-reveal";
@@ -73,7 +74,8 @@ export function Hero() {
       </dl>
 
       <div data-mark data-intro className="min-h-0 self-center justify-self-end">
-        <AsciiMark className="text-[clamp(4px,calc((100vw-32px)/58),10px)] text-fg" />
+        {/* Smaller on phones so the headline comes first, but still big enough to read as MS. */}
+        <AsciiMark className="text-[clamp(4px,calc((100vw-32px)/80),10px)] text-fg md:text-[clamp(4px,calc((100vw-32px)/58),10px)]" />
       </div>
 
       <div className="self-end">
@@ -92,7 +94,10 @@ export function Hero() {
           </p>
           <p className="label-mono">
             <span className="mr-1.5 inline-block size-[7px] rounded-full bg-live align-[1px]" />
-            Open to select projects · 2026
+            Now building for new clients ·{" "}
+            <ContactLink className="link-line text-accent-ink">
+              Let&apos;s build <span className="arrow">↗</span>
+            </ContactLink>
           </p>
         </div>
       </div>

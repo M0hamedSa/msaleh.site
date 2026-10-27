@@ -3,11 +3,12 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
-import { LiveClock } from "@/components/live-clock";
+import { useGoToContact } from "@/components/contact-link";
 import { LogoMark } from "@/components/logo-mark";
 import { useLenis } from "@/components/providers/smooth-scroll";
 import { TransitionLink } from "@/components/transition/transition-link";
 import { ARCHIVE } from "@/content/archive";
+import { EMAIL } from "@/content/contact";
 import { featuredCount } from "@/content/projects";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
@@ -36,6 +37,7 @@ export function SiteMenu({ open, onClose, returnFocus }: Props) {
   const pathname = usePathname();
   const reduced = useReducedMotion();
   const lenis = useLenis();
+  const goToContact = useGoToContact();
   const wasOpen = useRef(false);
 
   useGSAP(
@@ -104,13 +106,10 @@ export function SiteMenu({ open, onClose, returnFocus }: Props) {
   }, [open, onClose, lenis]);
 
   // Contact is the footer, at the bottom of every page: close and glide down to it.
-  const goToContact = (e: React.MouseEvent) => {
+  const closeToContact = (e: React.MouseEvent) => {
     e.preventDefault();
     onClose();
-    window.setTimeout(() => {
-      if (lenis) lenis.scrollTo(lenis.limit, { duration: 1.4 });
-      else window.scrollTo(0, document.documentElement.scrollHeight);
-    }, reduced ? 0 : 600);
+    window.setTimeout(goToContact, reduced ? 0 : 600);
   };
 
   // Arriving on a new route (under the transition cover) closes the menu at once.
@@ -154,7 +153,7 @@ export function SiteMenu({ open, onClose, returnFocus }: Props) {
           <TransitionLink
             key={href}
             href={href}
-            onClick={href === "#contact" ? goToContact : undefined}
+            onClick={href === "#contact" ? closeToContact : undefined}
             aria-current={pathname === href ? "page" : undefined}
             // The letters are separate spans for the build animation; name the link as one word.
             aria-label={count ? `${label}, ${Number(count)} items` : label}
@@ -168,21 +167,18 @@ export function SiteMenu({ open, onClose, returnFocus }: Props) {
                 </span>
               ))}
             </span>
-            {count && <sup className="label-mono text-accent-ink">({count})</sup>}
+            {count && <sup className="label-mono text-bg/70">({count})</sup>}
           </TransitionLink>
         ))}
       </nav>
 
       <div data-fade className="label-mono flex flex-wrap justify-between gap-3 border-t border-bg/25 pt-3">
-        <a href="mailto:moh.sa.dev@gmail.com" className="link-line">
-          moh.sa.dev@gmail.com
+        <a href={`mailto:${EMAIL}`} className="link-line">
+          {EMAIL}
         </a>
         <a href="https://github.com/M0hamedSa" target="_blank" rel="noopener" className="link-line">
           GitHub <span className="arrow">↗</span>
         </a>
-        <span>
-          Giza <LiveClock seconds={false} />
-        </span>
       </div>
     </div>
   );

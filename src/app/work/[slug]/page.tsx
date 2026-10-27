@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { CaseAsk } from "@/components/case/case-ask";
 import { CaseStudyHeader } from "@/components/case/case-study-header";
 import { NextCaseStudy } from "@/components/case/next-case-study";
 import { ScreenGallery } from "@/components/case/screen-gallery";
@@ -55,6 +56,8 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
           </p>
         </section>
       )}
+
+      <CaseAsk name={project.name} />
 
       <ScreenGallery screens={project.screens.slice(1)} />
 

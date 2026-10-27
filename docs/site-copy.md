@@ -13,34 +13,32 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 **`src/components/site-header.tsx`**
 
-- L47: aria-label: Mohamed Saleh, home
-- L51: Systems developer · Giza
-- L63: Menu
+- L52: aria-label: Mohamed Saleh, home
+- L56: Systems developer · Giza
+- L61: aria-label: Write to me
+- L62: data-cursor: Write
+- L73: aria-label: Menu
 
 **`src/components/site-menu.tsx`**
 
-- L16: Work
-- L17: About
-- L18: Archive
-- L19: Contact
-- L132: aria-label: Site menu
-- L140: / Index
-- L148: Close
-- L152: aria-label: Main
-- L178: moh.sa.dev@gmail.com
-- L181: GitHub
-- L184: Giza
+- L17: Work
+- L18: About
+- L19: Archive
+- L20: Contact
+- L131: aria-label: Site menu
+- L139: / Index
+- L147: Close
+- L151: aria-label: Main
+- L180: GitHub
 
 **`src/components/site-footer.tsx`**
 
-- L8: moh.sa.dev@gmail.com
-- L27: Have a system in mind?
-- L32: GitHub
-- L39: data-cursor: Write
-- L42: Write to me
-- L48: © 2026 Mohamed Saleh
-- L50: Giza
-- L53: Playground
+- L39: Have a system in mind?
+- L44: GitHub
+- L51: data-cursor: Write
+- L54: Write to me
+- L60: © 2026 Mohamed Saleh
+- L62: Playground
 
 **`src/components/footer/copy-email.tsx`**
 
@@ -85,17 +83,18 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 **`src/components/home/hero.tsx`**
 
-- L53: Name
-- L54: Mohamed Saleh
-- L57: Role
-- L58: Systems developer
-- L61: Based
-- L62: Giza · 30.01°N 31.21°E
-- L65: Local
-- L83: Business runs on systems.
-- L84: I build them.
-- L88: ERP, ledgers, factory-floor tools and offline apps for textile mills, law firms and compliance teams.
-- L92: Open to select projects · 2026
+- L57: Name
+- L58: Mohamed Saleh
+- L61: Role
+- L62: Systems developer
+- L65: Based
+- L66: Giza · 30.01°N 31.21°E
+- L69: Local
+- L88: Business runs on systems.
+- L89: I build them.
+- L93: ERP, ledgers, factory-floor tools and offline apps for textile mills, law firms and compliance teams.
+- L97: Now building for new clients ·
+- L99: Let&apos;s build
 
 **`src/components/home/stack-marquee.tsx`**
 
@@ -138,11 +137,12 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 **`src/components/home/about-teaser.tsx`**
 
-- L48: How I work
-- L67: data-cursor: Open
-- L68: More about me
-- L72: All work
-- L75: Archive
+- L50: How I work
+- L69: data-cursor: Write
+- L70: Start a project
+- L74: More about me
+- L77: All work
+- L80: Archive
 
 ## Part 3 · Projects (home rows, /work, case-study headers)
 
@@ -788,15 +788,22 @@ A separate demo copy with the real catalog and invented customers, for showing t
 
 **`src/app/work/[slug]/page.tsx`**
 
-- L52: In progress
-- L54: The full Case Study, with the problem and the decisions behind the system, is being written.
-- L85: title: The problem
-- L93: title: Constraints
-- L104: title: Under the Hood
-- L108: title: Three key decisions
-- L113: Decision
-- L119: Trade-off
-- L127: title: Outcome
+- L53: In progress
+- L55: The full Case Study, with the problem and the decisions behind the system, is being written.
+- L88: title: The problem
+- L96: title: Constraints
+- L107: title: Under the Hood
+- L111: title: Three key decisions
+- L116: Decision
+- L122: Trade-off
+- L130: title: Outcome
+
+**`src/components/case/case-ask.tsx`**
+
+- L15: Need something like
+- L15: for your business?
+- L22: data-cursor: Write
+- L23: Write to me
 
 **`src/components/case/case-study-header.tsx`**
 
@@ -809,8 +816,8 @@ A separate demo copy with the real catalog and invented customers, for showing t
 
 **`src/components/case/next-case-study.tsx`**
 
-- L51: data-cursor: Open
-- L53: Next project
+- L58: data-cursor: Open
+- L60: Next project
 
 **`src/components/case/screen-gallery.tsx`**
 
@@ -979,22 +986,28 @@ ALTER TABLE "ledger_entries" ADD CONSTRAINT "ledger_no_late_payment_fee"
 
 **`src/components/playground/desktop.tsx`**
 
-- L18: projects
-- L18: projects/
-- L19: readme
-- L19: README.md
-- L20: schema
-- L20: schema.sql
-- L111: archive/
-- L112: items
-- L129: /playground
-- L130: Drag the windows by their title bars
-- L171: aria-label: Windows
-- L188: Giza
+- L19: projects
+- L19: projects/
+- L20: readme
+- L20: README.md
+- L21: schema
+- L21: schema.sql
+- L114: archive/
+- L115: items
+- L132: /playground
+- L133: Drag the windows by their title bars
+- L174: aria-label: Windows
+- L191: Giza
 
 ## Part 8 · Other text in components
 
 Labels, accessibility text and small UI words not covered above.
+
+**`src/components/header-icons.tsx`**
+
+- L7: currentColor
+- L9: round
+- L10: round
 
 **`src/components/home/ascii-mark.tsx`**
 
@@ -1039,16 +1052,16 @@ Labels, accessibility text and small UI words not covered above.
 
 **`src/components/theme-toggle.tsx`**
 
-- L44: cubic-bezier(0.7, 0, 0.3, 1)
-- L55: Switch to
-- L56: Dark
-- L57: Light
-- L58: theme
+- L45: cubic-bezier(0.7, 0, 0.3, 1)
+- L58: Switch to
+- L58: dark
+- L59: light
+- L59: theme
 
 **`src/components/transition/page-transition.tsx`**
 
-- L18: Work
-- L19: About
-- L20: Archive
-- L21: Playground
+- L19: Work
+- L20: About
+- L21: Archive
+- L22: Playground
 
