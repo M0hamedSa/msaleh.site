@@ -412,7 +412,9 @@
 .feat-body {
   opacity: var(--open, 1);
 }
-.feat-row:is([data-active], :hover) .screen-muted {
+/* Grey only while folded in the pinned rows; the plain list (phones, reduced motion) shows every project open, in colour. */
+.feat-row:is([data-active], :hover, :focus-within) .screen-muted,
+.feat-stage:not([data-pinned]) .screen-muted {
   filter: brightness(var(--screen-dim));
 }
 @media (hover: none) {
