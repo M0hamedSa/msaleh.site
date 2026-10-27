@@ -13,6 +13,10 @@ const CELL_W = 6;
 const CELL_H = 10;
 const RADIUS = 5;
 const FRAME_MS = 50;
+// The characters are always set at a readable size and the whole mark is scaled down to
+// its box. Set directly at 4-5px, phones with a minimum text size (a browser or
+// accessibility setting) blew it up past its box: cropped, and wider than the screen.
+const SET_PX = 10;
 
 const randomGlyph = () => GLYPHS[(Math.random() * GLYPHS.length) | 0];
 
@@ -96,10 +100,27 @@ function blinkOrigin() {
 /**
  * C5: the logo drawn in characters, its square blinking in step with the header's.
  * Characters scramble around the pointer or a finger; left alone, the disturbance wanders on its own.
+ * `className` sizes the box (its width; the height follows) and sets the colour.
  */
 export function AsciiMark({ className = "" }: { className?: string }) {
+  const box = useRef<HTMLDivElement>(null);
   const pre = useRef<HTMLPreElement>(null);
   const reduced = useReducedMotion();
+
+  // Scale the mark to its box, and the box's height to the mark.
+  useEffect(() => {
+    const outer = box.current!;
+    const el = pre.current!;
+    const fit = () => {
+      const scale = outer.clientWidth / el.offsetWidth;
+      el.style.transform = `scale(${scale})`;
+      outer.style.height = `${el.offsetHeight * scale}px`;
+    };
+    const ro = new ResizeObserver(fit);
+    ro.observe(outer);
+    document.fonts.ready.then(fit);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     const el = pre.current!;
@@ -183,11 +204,14 @@ export function AsciiMark({ className = "" }: { className?: string }) {
   }, [reduced]);
 
   return (
-    <pre
-      ref={pre}
-      aria-hidden="true"
-      className={`m-0 overflow-hidden font-mono leading-none whitespace-pre select-none ${className}`}
-      style={{ width: `${COLS}ch`, height: `${ROWS}em` }}
-    />
+    // Until measured, the box assumes a mono cell of 0.6em by 1em.
+    <div ref={box} className={`relative ${className}`} style={{ aspectRatio: `${COLS * 0.6} / ${ROWS}` }}>
+      <pre
+        ref={pre}
+        aria-hidden="true"
+        className="absolute top-0 left-0 m-0 origin-top-left overflow-hidden font-mono leading-none whitespace-pre select-none"
+        style={{ width: `${COLS}ch`, height: `${ROWS}em`, fontSize: SET_PX }}
+      />
+    </div>
   );
 }

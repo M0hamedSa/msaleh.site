@@ -75,7 +75,7 @@ export function Hero() {
 
       <div data-mark data-intro className="min-h-0 self-center justify-self-end">
         {/* Smaller on phones so the headline comes first, but still big enough to read as MS. */}
-        <AsciiMark className="text-[clamp(4px,calc((100vw-32px)/80),10px)] text-fg md:text-[clamp(4px,calc((100vw-32px)/58),10px)]" />
+        <AsciiMark className="w-[min(calc((100vw-32px)*0.72),576px)] text-fg md:w-[min(calc(100vw-32px),576px)]" />
       </div>
 
       <div className="self-end">
