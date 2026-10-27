@@ -89,7 +89,8 @@ export function BootPreloader() {
       });
       tl.to("[data-inner]", { autoAlpha: 0, duration: 0.3 }, "+=0.15")
         .to("[data-col]", { yPercent: -100, duration: 0.9, ease: "expo.inOut", stagger: 0.06 }, "-=0.05")
-        .add(markIntroReady, "-=0.55")
+        // The hero starts as the last columns clear, not underneath them.
+        .add(markIntroReady, "-=0.15")
         .add(() => setRunning(false));
     },
     { scope: root },

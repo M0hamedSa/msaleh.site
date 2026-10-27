@@ -6,7 +6,7 @@ import { AsciiMark } from "@/components/home/ascii-mark";
 import { LiveClock } from "@/components/live-clock";
 import { createBlockReveal } from "@/lib/block-reveal";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { onIntroReady } from "@/lib/intro";
+import { onIntroReady, onPageShown } from "@/lib/intro";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 /** E02 statement hero: meta row, the line with a C16 reveal, the C5 mark and the status line. */
@@ -24,19 +24,22 @@ export function Hero() {
       gsap.set("[data-mark]", { autoAlpha: 0 });
 
       // contextSafe keeps the selectors scoped to the hero, whoever triggers the intro.
-      const cancel = onIntroReady(
-        contextSafe!(() => {
+      // It waits for the boot preloader and for any page-transition cover, so it is never played unseen.
+      let cancelShown = () => {};
+      const cancelIntro = onIntroReady(() => {
+        cancelShown = onPageShown(contextSafe!(() => {
           gsap
             .timeline()
             .add(() => void reveal.play(), 0.1)
             .to("[data-meta] > *", { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.06 }, 0.2)
             .to("[data-mark]", { autoAlpha: 1, duration: 1.2, ease: "power2.out" }, 0.3)
             .to("[data-sub] > *", { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.08 }, 0.55);
-        }),
-      );
+        }));
+      });
 
       return () => {
-        cancel();
+        cancelIntro();
+        cancelShown();
         reveal.revert();
       };
     },

@@ -4,6 +4,7 @@ import { useRef } from "react";
 
 import { createBlockReveal } from "@/lib/block-reveal";
 import { ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { onPageShown } from "@/lib/intro";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 type Props = { children: React.ReactNode; id?: string; className?: string; as?: "h2" | "h3" };
@@ -17,15 +18,18 @@ export function RevealHeading({ children, id, className = "", as: Tag = "h2" }: 
     () => {
       if (reduced) return;
       const reveal = createBlockReveal(ref.current!);
-      const trigger = ScrollTrigger.create({
-        trigger: ref.current,
-        start: "top 88%",
-        once: true,
-        onEnter: () => void reveal.play(),
-      });
+      // Never under a page-transition cover: wait until the page is on screen.
+      let cancel = () => {};
+      const play = () => {
+        cancel = onPageShown(() => void reveal.play());
+      };
+      const trigger = ScrollTrigger.create({ trigger: ref.current, start: "top 88%", once: true, onEnter: play });
       // Already scrolled past it (a restored position): show it now.
-      if (window.scrollY > trigger.start) reveal.play();
-      return () => reveal.revert();
+      if (window.scrollY > trigger.start) play();
+      return () => {
+        cancel();
+        reveal.revert();
+      };
     },
     { dependencies: [reduced] },
   );

@@ -101,6 +101,7 @@ Featured Projects: True Legal · Kidzenia · Tiba Masr · Aqsat · True Visor (l
 
 ## 7. Motion rules
 
+- **No animation plays under another (2026-10-27).** Entrance animations wait until their page is on screen: the home hero waits for the boot preloader's columns to clear and for any page-transition cover (`onIntroReady` + `onPageShown` in `lib/intro.ts`); section headings, the About line reveal, the next-case-study block and the Playground windows wait for `onPageShown`. The page transition lowers the flag as its cover comes down and raises it 0.3s into the lift. Any new entrance animation must use the same gate.
 - **`prefers-reduced-motion`:** no Lenis, no preloader, no pinning or scrubbing. Text is shown immediately and the CRT is static. It's a complete Reduced Motion Experience, not a broken page.
 - **Touch:** no custom cursor, no ink trail, no magnetic buttons, no flashlight, no CRT and no ASCII scatter. Everything else runs.
 - **One WebGL context at a time.** Three.js loads only on `/archive`.

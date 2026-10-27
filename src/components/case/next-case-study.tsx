@@ -8,6 +8,7 @@ import { ProjectVisual } from "@/components/project-visual";
 import { featuredCount, type FeaturedProject } from "@/content/projects";
 import { createBlockReveal } from "@/lib/block-reveal";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { onPageShown } from "@/lib/intro";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 /**
@@ -33,15 +34,21 @@ export function NextCaseStudy({ project, number }: { project: FeaturedProject; n
       gsap.set(q("[data-fade]"), { autoAlpha: 0, y: 16 });
       gsap.set(q("[data-image]"), { clipPath: "inset(100% 0 0 0)" });
 
+      let cancel = () => {};
       const play = () => {
-        reveal.play();
-        gsap.to(q("[data-fade]"), { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.08 });
-        gsap.to(q("[data-image]"), { clipPath: "inset(0% 0 0 0)", duration: 1.2, ease: "expo.out", delay: 0.2 });
+        cancel = onPageShown(() => {
+          reveal.play();
+          gsap.to(q("[data-fade]"), { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.08 });
+          gsap.to(q("[data-image]"), { clipPath: "inset(0% 0 0 0)", duration: 1.2, ease: "expo.out", delay: 0.2 });
+        });
       };
       const trigger = ScrollTrigger.create({ trigger: root.current, start: "top 75%", once: true, onEnter: play });
       // Already past it (a restored position): show it now.
       if (window.scrollY > trigger.start) play();
-      return () => reveal.revert();
+      return () => {
+        cancel();
+        reveal.revert();
+      };
     },
     { scope: root, dependencies: [reduced, href] },
   );

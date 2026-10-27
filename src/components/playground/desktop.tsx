@@ -10,6 +10,7 @@ import { ARCHIVE } from "@/content/archive";
 import { README, SCHEMA } from "@/content/playground";
 import { FEATURED_PROJECTS } from "@/content/projects";
 import { gsap, useGSAP } from "@/lib/gsap";
+import { onPageShown } from "@/lib/intro";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 type WindowId = "projects" | "readme" | "schema";
@@ -50,7 +51,9 @@ export function Desktop() {
         .filter((el) => !shown.current.has(el.dataset.window as WindowId));
       fresh.forEach((el) => shown.current.add(el.dataset.window as WindowId));
       if (!reduced && fresh.length) {
-        gsap.from(fresh, { scale: 0.85, autoAlpha: 0, duration: 0.55, ease: "back.out(1.8)", stagger: 0.12, delay: 0.15 });
+        // Held until the page is on screen, so the pop-in never plays under a page transition.
+        const pop = gsap.from(fresh, { scale: 0.85, autoAlpha: 0, duration: 0.55, ease: "back.out(1.8)", stagger: 0.12, delay: 0.15, paused: true });
+        return onPageShown(() => void pop.play());
       }
     },
     { scope: root, dependencies: [reduced, open] },

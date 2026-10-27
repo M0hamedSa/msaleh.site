@@ -7,6 +7,7 @@ import { useLenis } from "@/components/providers/smooth-scroll";
 import { BLOCKS, COLUMNS, CURVE, PANELS, pickTransition, type Transition } from "@/components/transition/transitions";
 import { FEATURED_PROJECTS } from "@/content/projects";
 import { gsap } from "@/lib/gsap";
+import { setPageCovered } from "@/lib/intro";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 const GLYPHS = "01<>/_#%&*+=";
@@ -60,11 +61,16 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
     heading.current = null;
     lenis?.start();
     const transition = active.current;
-    if (!transition) return;
+    if (!transition) {
+      setPageCovered(false);
+      return;
+    }
     gsap
       .timeline()
       .to(label.current, { autoAlpha: 0, duration: 0.2 })
       .add(transition.reveal(overlay.current!))
+      // Entrance animations on the new page start once the cover is partly lifted, so they are seen.
+      .add(() => setPageCovered(false), "<0.3")
       .set(overlay.current, { visibility: "hidden" });
   }, [lenis]);
 
@@ -76,6 +82,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
         return;
       }
       heading.current = target;
+      setPageCovered(true);
       lenis?.stop();
       const transition = pickTransition();
       active.current = transition;
