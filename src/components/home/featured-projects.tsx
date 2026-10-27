@@ -33,8 +33,8 @@ const px = (v: string) => parseFloat(v) || 0;
 /**
  * The Featured Projects as rows that fight for space (after Codegrid's
  * "Every Project Fights for More Space", from Ingamana). One project is open
- * at a time: its summary, stack and status on the left (plus a case-study
- * button on touch screens), one large screen and two smaller ones on the right,
+ * at a time: a small "Case study" link in its name line (a button on touch
+ * screens), its summary, stack and status on the left, one large screen and two smaller ones on the right,
  * all whole at 16:10. The others fold to a single line with their name. The
  * section pins and the scroll hands the space from one project to the next,
  * resting briefly on each; every move is scrubbed, so nothing snaps. Tabbing
@@ -181,8 +181,20 @@ export function FeaturedProjects() {
                         {p.name}
                       </ProjectLink>
                     </h3>
-                    <span className="label-mono ml-auto hidden text-mute sm:inline">
-                      {p.sector} · {p.year}
+                    <span className="label-mono ml-auto flex items-baseline gap-6">
+                      {/* A visible way in for mouse users, on the open row only; keyboards use the name link. */}
+                      <ProjectLink
+                        slug={p.slug}
+                        data-cursor="View"
+                        tabIndex={-1}
+                        aria-hidden="true"
+                        className="link-line hidden text-accent-ink [opacity:var(--open,1)] pointer-fine:inline"
+                      >
+                        Case study <span className="arrow">↗</span>
+                      </ProjectLink>
+                      <span className="hidden text-mute sm:inline">
+                        {p.sector} · {p.year}
+                      </span>
                     </span>
                   </div>
 
