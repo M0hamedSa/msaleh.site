@@ -59,7 +59,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 
       <CaseAsk name={project.name} />
 
-      <ScreenGallery screens={project.screens.slice(1)} />
+      <ScreenGallery screens={project.screens.slice(1)} demo={!project.publicScreens} />
 
       <NextCaseStudy project={next} number={projectNumber(next.slug)} />
     </main>

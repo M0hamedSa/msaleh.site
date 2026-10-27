@@ -6,8 +6,9 @@ import type { Screen } from "@/content/projects";
 /**
  * The Case Study's screens, after the cover, in full colour. Every frame keeps
  * the same 16:10 box so the grid stays even; phone captures sit inside it whole.
+ * Client apps are shown with invented data, and say so; public websites don't need to.
  */
-export function ScreenGallery({ screens }: { screens: Screen[] }) {
+export function ScreenGallery({ screens, demo = true }: { screens: Screen[]; demo?: boolean }) {
   if (screens.length === 0) return null;
   return (
     <section aria-labelledby="screens" className="mt-14 grid gap-8 border-t border-fg pt-3">
@@ -15,7 +16,7 @@ export function ScreenGallery({ screens }: { screens: Screen[] }) {
         <RevealHeading id="screens" className="font-display text-[clamp(2rem,3.6vw,3.5rem)] leading-[0.95] tracking-[-0.035em]">
           Screens
         </RevealHeading>
-        <p className="label-mono text-mute">Demo data, invented for this page</p>
+        {demo && <p className="label-mono text-mute">Demo data, invented for this page</p>}
       </div>
       <ul className="grid gap-x-6 gap-y-10 md:grid-cols-2">
         {screens.map((s, i) => (

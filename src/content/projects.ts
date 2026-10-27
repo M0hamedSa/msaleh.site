@@ -54,6 +54,8 @@ export type FeaturedProject = {
   stack: string[];
   visual: PlaceholderVisual;
   screens: Screen[];
+  /** The screens show a public website, so they carry no "demo data" note. */
+  publicScreens?: boolean;
 };
 
 export const FEATURED_PROJECTS: FeaturedProject[] = [
@@ -113,6 +115,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     year: "2026",
     stack: ["Astro", "TypeScript"],
     visual: "lens",
+    publicScreens: true,
     screens: [
       desktop("/projects/tiba-masr/home.png", "Tiba Masr home page: a farmer with a basket of fruit and the line Harvested Fresh, Delivered Pure", "The home page, written for buyers abroad.", "left"),
       desktop("/projects/tiba-masr/products.png", "Tiba Masr products page with fresh fruit and vegetables on a wooden table", "The product catalogue, in English and Arabic.", "left"),

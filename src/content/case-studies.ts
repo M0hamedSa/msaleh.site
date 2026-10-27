@@ -367,9 +367,99 @@ authentication. A staff member reading a message that says only
   },
 };
 
+const tibaMasr: CaseStudy = {
+  draft: true,
+  problem: [
+    "Tiba Masr grows and exports Egyptian fruit and vegetables, from its farms in the Nile Delta and Nubaria through its own packhouse, cooling and dispatch. Its buyers are importers abroad, who compare varieties, sizes, packaging and the months each crop is available before they ask for a quote.",
+    "To confirm: how buyers found and contacted the company before the site, and why it needed one now.",
+  ],
+  constraints: [
+    {
+      title: "Two languages, both directions",
+      body: "Every page in English and Arabic. The Arabic site mirrors the English one page for page, right to left, with its own type scale rather than the Latin one flipped.",
+    },
+    {
+      title: "Written for importers",
+      body: "Each product carries what a buyer compares: varieties, sizes, packaging, availability by month, minimum order and how it ships, by sea, air or refrigerated container.",
+    },
+    {
+      title: "Shared hosting",
+      body: "The site runs on ordinary shared hosting: static pages, plus one small PHP script to send the quote requests. No server to maintain.",
+    },
+    {
+      title: "Heavy photography",
+      body: "The source photos run 8 to 10 MB a frame. Visitors must get small, resized images, and the deploy must not carry the originals.",
+    },
+  ],
+  underTheHood: {
+    intro:
+      "Each product is written once in both languages, and the build throws away every image no page links to.",
+    excerpts: [
+      {
+        file: "src/content.config.ts",
+        text: `/* A localised string pair. Every buyer-facing field carries both
+   languages in one entry so a product is added once, not twice. */
+const i18nText = z.object({ en: z.string(), ar: z.string() });`,
+      },
+      {
+        file: "integrations/prune-unused-assets.mjs",
+        text: `/**
+ * Drops image files that the finished build never links to.
+ * On this site that was 123 files and ~146MB of a 216MB build.
+ * A file is removed only if its name appears in no emitted
+ * HTML, CSS, JS, JSON, XML or plain-text file in the output.
+ */`,
+      },
+      {
+        file: "public/contact.php",
+        text: `/**
+ * The line-break strip has to happen before anything is
+ * interpolated into a mail header: htmlspecialchars() leaves
+ * CR and LF intact, and the name goes into "Reply-To:".
+ */`,
+      },
+    ],
+  },
+  decisions: [
+    {
+      title: "A static site, not an app",
+      choice:
+        "The catalogue changes a few times a season, so the site is built ahead of time with Astro and served as plain files. Products live as content files with a checked schema, so a missing Arabic name or a wrong month fails the build instead of reaching a buyer.",
+      tradeoff:
+        "Changing a product means editing a file and rebuilding, not logging in to an admin panel.",
+      source: "src/content.config.ts",
+    },
+    {
+      title: "One entry per product, both languages inside",
+      choice:
+        "Each product holds its English and Arabic text side by side, and the Arabic pages mirror the English ones one to one. Certifications cover the farms and the packhouse, not single crops, so they live in one file every product reads from.",
+      tradeoff:
+        "Every new field has to be written twice before it can ship, in exchange for the two sites never drifting apart.",
+      source: "src/content.config.ts",
+    },
+    {
+      title: "The export map, drawn at build time",
+      choice:
+        "The markets live in one list (the United Kingdom, Romania, Saudi Arabia and the UAE). A script projects the world map, centres it on Egypt and draws a shipping lane to each market, then saves the result, so the live site needs none of the mapping libraries.",
+      tradeoff:
+        "Adding a market means re-running the script, not just editing a list.",
+      source: "scripts/generate-export-map.mjs",
+    },
+  ],
+  outcome: {
+    points: [
+      "Live at tibamasr.com in English and Arabic, with 14 products, each with its specifications and availability by month.",
+      "Quote requests go straight to the export desk's inbox, with a fallback if the host's mailer is down.",
+      "The deploy shrank from 216 MB to about 70 MB once unused source images were dropped.",
+    ],
+    note: "To confirm: what changed for the company once the site went live.",
+  },
+};
+
 export const CASE_STUDIES: Record<string, CaseStudy> = {
   "true-visor": trueVisor,
   aqsat,
   "true-legal": trueLegal,
   kidzenia,
+  "tiba-masr": tibaMasr,
 };
