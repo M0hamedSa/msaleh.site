@@ -1,8 +1,10 @@
-# msaleh.site
+# [msaleh.site](https://www.msaleh.site)
 
-Portfolio of Mohamed Saleh, systems developer in Giza. It shows four systems running in real businesses, each with a Case Study, plus an Archive of earlier work.
+Portfolio of Mohamed Saleh, systems developer in Giza. It shows five client projects, four of them with a full Case Study so far, plus an Archive of earlier work.
 
-Every screen on the site was captured from the real app running against invented demo data.
+Live at **https://www.msaleh.site**.
+
+The app screens were captured from the real apps running against invented demo data; Tiba Masr's are its public website.
 
 ## Stack
 
