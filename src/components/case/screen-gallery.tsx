@@ -21,14 +21,16 @@ export function ScreenGallery({ screens }: { screens: Screen[] }) {
         {screens.map((s, i) => (
           <li key={s.src}>
             <figure className="grid gap-3">
-              <div className="relative aspect-[16/10] overflow-hidden rounded-sm bg-card">
-                <Image
-                  src={s.src}
-                  alt={s.alt}
-                  fill
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  className={s.phone ? "object-contain py-[4%]" : `object-cover ${s.focus === "left" ? "object-left-top" : "object-right-top"}`}
-                />
+              <div className="aspect-[16/10] rounded-sm border border-line bg-card p-[3px]">
+                <div className="relative size-full overflow-hidden rounded-[2px]">
+                  <Image
+                    src={s.src}
+                    alt={s.alt}
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className={`screen-lit ${s.phone ? "object-contain py-[4%]" : `object-cover ${s.focus === "left" ? "object-left-top" : "object-right-top"}`}`}
+                  />
+                </div>
               </div>
               <figcaption className="grid grid-cols-[auto_minmax(0,1fr)] gap-3 text-mute">
                 <span className="label-mono text-fg">{String(i + 1).padStart(2, "0")}</span>

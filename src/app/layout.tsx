@@ -3,6 +3,7 @@ import { Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
 import { Cursor } from "@/components/cursor";
+import { InkTrail } from "@/components/ink-trail";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -43,7 +44,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#eceae4" },
-    { media: "(prefers-color-scheme: dark)", color: "#121417" },
+    { media: "(prefers-color-scheme: dark)", color: "#141311" },
   ],
 };
 
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </div>
             <SiteFooter />
           </PageTransition>
+          <InkTrail />
           <Cursor />
         </SmoothScroll>
       </body>

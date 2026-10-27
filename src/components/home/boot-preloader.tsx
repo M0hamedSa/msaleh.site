@@ -10,10 +10,9 @@ import { markIntroReady } from "@/lib/intro";
 
 const BOOT_LOG = [
   ["postgres", "ok"],
-  ["powersync replication", "ok"],
-  ["odoo bridge", "ok"],
+  ["sql server", "ok"],
+  ["odoo", "ok"],
   ["barcode scanner", "ok"],
-  ["telegram agent", "ok"],
   ["mount /work", `${featuredCount} projects`],
 ] as const;
 
@@ -114,7 +113,7 @@ export function BootPreloader() {
             <li key={name} className="invisible flex items-baseline gap-2.5">
               <span>{name}</span>
               <i className="flex-1 -translate-y-[3px] border-b border-dotted border-current opacity-35" />
-              <b className="font-medium text-accent">{status}</b>
+              <b className="font-medium text-loader-accent">{status}</b>
             </li>
           ))}
         </ol>

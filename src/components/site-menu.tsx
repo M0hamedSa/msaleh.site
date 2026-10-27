@@ -156,9 +156,11 @@ export function SiteMenu({ open, onClose, returnFocus }: Props) {
             href={href}
             onClick={href === "#contact" ? goToContact : undefined}
             aria-current={pathname === href ? "page" : undefined}
+            // The letters are separate spans for the build animation; name the link as one word.
+            aria-label={count ? `${label}, ${Number(count)} items` : label}
             className="group flex items-baseline gap-3.5 font-display text-[clamp(52px,11vw,150px)] leading-[0.92] tracking-[-0.045em]"
           >
-            <span className="flex transition-colors group-hover:text-accent group-aria-[current=page]:text-accent">
+            <span aria-hidden="true" className="flex transition-colors group-hover:text-accent group-aria-[current=page]:text-accent">
               {[...label].map((char, i) => (
                 <span key={i} data-char className="relative inline-block">
                   {char}
@@ -166,7 +168,7 @@ export function SiteMenu({ open, onClose, returnFocus }: Props) {
                 </span>
               ))}
             </span>
-            {count && <sup className="label-mono text-accent">({count})</sup>}
+            {count && <sup className="label-mono text-accent-ink">({count})</sup>}
           </TransitionLink>
         ))}
       </nav>

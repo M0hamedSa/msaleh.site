@@ -17,7 +17,7 @@ export type CaseStudy = {
 const trueVisor: CaseStudy = {
   draft: true,
   problem: [
-    "A social-compliance consulting firm audits its clients' factories against WRAP, amfori BSCI, SMETA and Egyptian labour law. Its method lived in an Excel checklist and a Word manual: 177 checks, interviews with workers, supervisors and management, and photos of evidence.",
+    "A social-compliance consulting firm audits its clients' factories against social-compliance standards, adding new ones as its clients need them. Its method lived in an Excel checklist and a Word manual: 177 checks, interviews with workers, supervisors and management, and photos of evidence.",
     "Every problem found becomes a corrective action the factory must fix and prove with evidence before a consultant closes it. The interview notes that explain why have to stay away from the people they are about.",
   ],
   constraints: [
@@ -34,8 +34,8 @@ const trueVisor: CaseStudy = {
       body: "Worker interview notes are never visible to factory people or client managers, in the app, reports or exports, and they live on devices that can be lost.",
     },
     {
-      title: "One developer, pilot budget",
-      body: "Built and run by one person, with hosting planned at about $10–40 a month for the pilot.",
+      title: "Evidence can't be lost",
+      body: "Photos and findings are audit evidence. A dropped connection or a closed app must never lose one or record it twice.",
     },
   ],
   underTheHood: {
@@ -77,11 +77,11 @@ keeps the first.`,
       source: "ADR-0001",
     },
     {
-      title: "Self-hosted sync, own uploads",
+      title: "A proven sync engine, our own uploads",
       choice:
-        "Writing a sync engine would put the riskiest code, the kind that can silently lose audit evidence, on one developer. PowerSync Cloud starts at $49 a month. The same engine, self-hosted on the existing server, costs nothing extra. It only downloads; uploads go through the app's own endpoint, which owns validation, permissions and conflict rules.",
+        "A hand-written sync engine is exactly the kind of code that can silently lose audit evidence. PowerSync, self-hosted, brings data down to each device; everything a device sends back goes through the app's own endpoint, which owns validation, permissions and conflict rules.",
       tradeoff:
-        "One more service to run and upgrade, logical replication on Postgres, and no serverless-only hosting for the sync service.",
+        "One more service to run beside the app and the database, in exchange for not owning the riskiest part of the system.",
       source: "ADR-0002",
     },
     {
@@ -97,9 +97,9 @@ keeps the first.`,
     points: [
       "Offline drills pass on Android and on iPhone: photos and notes survive the app being killed mid-upload, and each photo is saved exactly once.",
       "Deactivating a consultant, or another person signing in, wipes the device's offline copy.",
-      "Runs in English and Arabic on one server, with hosting planned at about $10–12 a month for the first two years.",
+      "Fully bilingual: every check, screen and report in English and Arabic.",
     ],
-    note: "Numbers from the pilot will replace these once it has run.",
+    note: "The pilot starts in November 2026; its results will be added here.",
   },
 };
 
@@ -112,7 +112,7 @@ const aqsat: CaseStudy = {
   constraints: [
     {
       title: "Lateness is never charged",
-      body: "Adding to a debt in return for delay is riba, which the business does not take. The system counts how late a contract is and shows it, but never charges for it, and the database refuses a late fee whatever code tries to write one.",
+      body: "The business doesn't charge for late payment. The system counts how late a contract is and shows it, but never charges for it, and the database refuses a late fee whatever code tries to write one.",
     },
     {
       title: "Arabic, right to left",
@@ -123,8 +123,8 @@ const aqsat: CaseStudy = {
       body: "Customers, guarantors, phones and addresses come across from the old database with their old keys, while the old system stays open for lookups.",
     },
     {
-      title: "One shared CPU",
-      body: "The server is a single shared vCPU with 4 GB of RAM and no paid services, so PDF rendering runs one report at a time and images are never built on it.",
+      title: "Every number explained",
+      body: "Staff must be able to show a customer exactly how their balance was reached, line by line, years after the fact.",
     },
   ],
   underTheHood: {
@@ -160,7 +160,7 @@ database and the calculation core.`,
     {
       title: "Lateness is counted, never charged",
       choice:
-        "An earlier design charged a flat amount per late day. It was replaced the same morning, before go-live, because an increase in a debt for delay is riba. The system now counts Late Days per contract and shows them on the contract, the statement and the dashboard; what to do about a late customer the owner decides himself.",
+        "An earlier design charged a flat amount per late day. It was replaced the same morning, before go-live, when the owner decided lateness should never be charged. The system now counts Late Days per contract and shows them on the contract, the statement and the dashboard; what to do about a late customer the owner decides himself.",
       tradeoff:
         "No income from late payment, and a fee engine already designed was dropped. A database check makes sure no future code can quietly bring one back.",
       source: "ADR-0035",
@@ -186,9 +186,9 @@ database and the calculation core.`,
     points: [
       "Schedules, payment allocation and Late Days are pure functions tested in milliseconds, down to month-end due dates and 29 February, across 28 test files in the core alone.",
       "An importer carries the 7,000 customers and their guarantors over from the PowerBuilder system, keeping each one's old key.",
-      "Arabic statements and PDFs on a single shared CPU, with an encrypted backup kept off the server from day one.",
+      "Arabic statements and PDF exports, with encrypted off-site backups from day one.",
     ],
-    note: "Go-live is set for 1 November 2026; results will follow.",
+    note: "Go-live is set for November 2026; results will be added here.",
   },
 };
 
@@ -196,7 +196,7 @@ const trueLegal: CaseStudy = {
   draft: true,
   problem: [
     "A small Egyptian law firm needed one place for its clients, their cases and the money that moves on their behalf: payments clients make, expenses the firm spends on their cases, its fees, and the cash advances it hands to its seven staff.",
-    "The first version ran on Vercel and Supabase. An audit of it in October 2026 led to fixes on production and to a second version on the firm's own server, with clearer money rules: a dated Settlement replaces resetting a client's payments, and screens say who owes whom in words instead of with a minus sign.",
+    "The first version has run the firm's daily work since launch. A review in October 2026 led to fixes in production and to a second version on the firm's own infrastructure, with clearer money rules and reports.",
   ],
   constraints: [
     {
@@ -204,16 +204,16 @@ const trueLegal: CaseStudy = {
       body: "Staff see every client but only their own expenses, never payments or fees. Admins see payments and balance, never fees or what is due. Only the owner sees everything.",
     },
     {
-      title: "A fixed hosting ceiling",
-      body: "One vCPU and 4 GB of RAM is the most the firm will pay for, so the design must fit it rather than grow into a bigger plan.",
+      title: "Live system, no downtime",
+      body: "The firm works in the system every day, so every change has to land without interrupting it or losing a single entry.",
     },
     {
       title: "Nobody resets a password",
-      body: "Moving off Supabase must not lock anyone out, and there is no email service, because seven staff don't justify running one.",
+      body: "Moving to the new version must not lock anyone out or ask seven busy people to choose new passwords.",
     },
     {
       title: "Arabic reports",
-      body: "Seven PDF reports in Arabic, rendered by Chrome with embedded fonts, one at a time so a report never takes the server down.",
+      body: "Seven Arabic PDF reports that read correctly right to left and match the screens to the piastre.",
     },
   ],
   underTheHood: {
@@ -227,53 +227,55 @@ const trueLegal: CaseStudy = {
 // policy it replaces. Every query and action goes through them.`,
       },
       {
-        file: "lib/pdf.ts",
-        text: `// Reports render one at a time, because the VPS has a single vCPU
-// and 4 GB of RAM. Fixed weights rather than variable fonts: Chrome
-// writes variable fonts into the PDF as Type 3 glyphs, which makes
-// the files several times larger.`,
+        file: "lib/money.ts",
+        text: `// The one place a Client's money is calculated. Every screen and PDF report
+// uses these functions so their totals always agree.
+
+// What the Client owes: Fees not covered by the Balance. Never negative.
+due: number;`,
       },
       {
-        file: "docs/vps-migration-plan.md",
-        text: `Say who owes whom in words, never with a bare minus sign
-("Client owes the firm 17,637"). A test Settlement carrying
-−17,637 (the client's debt) read as "we owe the client".`,
+        file: "lib/actions/settlements.ts",
+        text: `// What is carried forward is worked out here from the Client's
+// books, not taken from the form: what the firm holds minus the
+// Fees, less any refund paid out that day.
+if (latest && input.date <= latest.date) refuse("SETTLEMENT_TOO_EARLY");`,
       },
     ],
   },
   decisions: [
     {
-      title: "Plain PostgreSQL on the firm's server",
+      title: "Plain PostgreSQL, rules in one place",
       choice:
-        "Self-hosting the Supabase stack would likely need the 8 GB plan; staying on Supabase meant free-plan limits and backups the firm doesn't control. Plain PostgreSQL with its own login and data-access code fits the 4 GB server. The move was rehearsed on a Mac against a copy of production, so go-live is one switch.",
+        "Moving from Supabase to plain PostgreSQL gives the firm control of its data and backups. The access rules that Supabase enforced in the database now live in one module every query goes through. The move was rehearsed against a copy of production, so go-live is one switch.",
       tradeoff:
-        "Row-level security no longer guards the data by itself: every server route checks the caller's role, and Supabase's auth, realtime and storage each needed a replacement.",
+        "Row-level security no longer guards the data by itself, so every server route checks the caller's role, and Supabase's login, realtime and storage each needed a replacement.",
       source: "ADR-0001",
     },
     {
       title: "Keep everyone's password",
       choice:
-        "Better Auth takes over logins, and Supabase's bcrypt hashes are imported as they are and checked by a custom verify function, so nobody resets a password at cutover. The owner creates accounts and resets passwords from the Users page.",
+        "Better Auth takes over logins. The existing password hashes are carried over and checked as they are, so everyone signs in with the password they already have. The owner manages accounts from the Users page.",
       tradeoff:
-        "No self-service “forgot password” without an email service, accepted for a team of seven.",
+        "The old hashing scheme stays in use until each password is next changed.",
       source: "ADR-0002",
     },
     {
-      title: "A shared, separable server",
+      title: "Settle, don't reset",
       choice:
-        "The server is the developer's and the firm pays for it; the developer's monitoring system, WakeUp, runs beside True Legal. True Legal keeps its own database, user, volumes and backups, and a full handover export can be produced at any time.",
+        "Settling a client used to mean resetting their payments, which erased the history behind the balance. A dated Settlement now closes the account at a point in time, and screens say who owes whom in words (\"Client owes the firm 17,637\") instead of with a minus sign.",
       tradeoff:
-        "Logs sent to WakeUp must carry no client names, phones, case titles or amounts, and a watchdog outside the server is needed because both share one machine.",
-      source: "ADR-0004",
+        "One more record type for staff to learn, in exchange for statements that can always be reproduced.",
+      source: "Migration plan",
     },
   ],
   outcome: {
     points: [
       "The second version was checked against the first as each of the three roles: the same pages, every exported amount, and each action allowed or refused as the role requires.",
-      "All seven PDF reports render through one module, in about one to two seconds each at a peak of around 480 MB.",
+      "All seven Arabic PDF reports render through one module in one to two seconds each.",
       "Production fixes from the audit went live first, verified against a full backup of the live database.",
     ],
-    note: "The second version goes live when the server is bought; usage figures will follow.",
+    note: "The second version goes live once the firm's new server is in place.",
   },
 };
 
@@ -297,8 +299,8 @@ const kidzenia: CaseStudy = {
       body: "The order-taking number is in daily manual use. Registering it to WhatsApp's API would take it out of the normal app.",
     },
     {
-      title: "Bespoke, one developer",
-      body: "The client knew the off-the-shelf platforms and turned them down; Shopify Payments isn't available in Egypt, and the Gulf platforms don't serve it.",
+      title: "Why not an off-the-shelf store",
+      body: "The client reviewed the hosted platforms and turned them down: none handled shared stock and cash on delivery the way the factory works, and several don't serve Egypt.",
     },
   ],
   underTheHood: {
@@ -361,7 +363,7 @@ authentication. A staff member reading a message that says only
       "Placing an order reserves its stock, writes the order and records the movement in one transaction, so stock and orders can't disagree.",
       "A separate demo copy with the real catalog and invented customers, for showing the shop without touching live data.",
     ],
-    note: "Order figures from the live shop will replace these.",
+    note: "The shop is live; order figures will be added as they come in.",
   },
 };
 

@@ -26,7 +26,10 @@ export function CaseStudyHeader({ project, number, count, draft = false, as: Tit
     <header className="grid gap-6">
       <p data-rise className="label-mono flex flex-wrap items-center gap-3 text-mute">
         {number} / {count} · Case Study
-        {draft && <span className="rounded-full border border-accent px-2 py-0.5 text-accent">Draft · to confirm</span>}
+        {/* A reminder for the author while running locally; visitors never see it. */}
+        {draft && process.env.NODE_ENV !== "production" && (
+          <span className="rounded-full border border-accent-ink px-2 py-0.5 text-accent-ink">Draft · to confirm</span>
+        )}
       </p>
       <Title
         data-rise

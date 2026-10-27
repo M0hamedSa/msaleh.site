@@ -46,7 +46,7 @@ export function CopyEmail({ email }: { email: string }) {
       <span ref={address} className="select-all">
         {email}
       </span>
-      <span ref={state} aria-live="polite" className="min-w-[8ch] text-left font-medium text-accent uppercase">
+      <span ref={state} aria-live="polite" className="min-w-[8ch] text-left font-medium text-loader-accent uppercase">
         Copy
       </span>
     </button>

@@ -2,20 +2,27 @@
 @import "lenis/dist/lenis.css";
 
 /*
-  Tokens. Light = P01 (bone, ink) and dark = P03 (graphite, readout), both with a signal red accent:
-  deeper on bone, brighter on graphite, so it holds contrast in each theme.
-  The OS decides until the Visitor picks a theme; the pick is stored as data-theme on <html>.
+  Tokens. Light = bone and ink; dark = the same paper at night (warm graphite),
+  so both themes are one material. Red is a signal, kept to a few places:
+  --accent for large marks and fills, --accent-ink for small red text (AA on
+  bone and card), --loader-accent for red text on the always-dark surfaces
+  (footer, preloader, Under the Hood). --live is the green of live work and
+  availability. The OS decides until the Visitor picks a theme; the pick is
+  stored as data-theme on <html>.
 */
 :root {
   --bg: #eceae4;
   --fg: #111110;
   --card: #e2dfd7;
-  --mute: #6b675f;
+  --mute: #625e56;
   --line: #cfcbc1;
   --accent: #e01e1e;
-  --on-accent: #eceae4;
+  --accent-ink: #bc1919;
+  --on-accent: #ffffff;
+  --live: #1f8a4c;
   --loader-bg: #111110;
   --loader-fg: #eceae4;
+  --loader-accent: #ff4b3a;
   --screen-dim: 1;
   --gutter-l: max(16px, env(safe-area-inset-left, 0px), 2.2vw);
   --gutter-r: max(16px, env(safe-area-inset-right, 0px), 2.2vw);
@@ -24,31 +31,37 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #121417;
-    --fg: #e4e7ea;
-    --card: #1c2025;
-    --mute: #7a828c;
-    --line: #2a2f36;
-    --accent: #ff3b30;
-    --on-accent: #121417;
-    --loader-bg: #1c2025;
-    --loader-fg: #e4e7ea;
-    --screen-dim: 0.72;
+    --bg: #141311;
+    --fg: #ebe8e1;
+    --card: #1e1c19;
+    --mute: #8c877d;
+    --line: #2c2a26;
+    --accent: #ff4b3a;
+    --accent-ink: #ff4b3a;
+    --on-accent: #141311;
+    --live: #3ddc84;
+    --loader-bg: #1e1c19;
+    --loader-fg: #ebe8e1;
+    --loader-accent: #ff4b3a;
+    --screen-dim: 0.85;
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --bg: #121417;
-  --fg: #e4e7ea;
-  --card: #1c2025;
-  --mute: #7a828c;
-  --line: #2a2f36;
-  --accent: #ff3b30;
-  --on-accent: #121417;
-  --loader-bg: #1c2025;
-  --loader-fg: #e4e7ea;
-  --screen-dim: 0.72;
+  --bg: #141311;
+  --fg: #ebe8e1;
+  --card: #1e1c19;
+  --mute: #8c877d;
+  --line: #2c2a26;
+  --accent: #ff4b3a;
+  --accent-ink: #ff4b3a;
+  --on-accent: #141311;
+  --live: #3ddc84;
+  --loader-bg: #1e1c19;
+  --loader-fg: #ebe8e1;
+  --loader-accent: #ff4b3a;
+  --screen-dim: 0.85;
   color-scheme: dark;
 }
 
@@ -60,6 +73,9 @@
   --color-line: var(--line);
   --color-accent: var(--accent);
   --color-on-accent: var(--on-accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-live: var(--live);
+  --color-loader-accent: var(--loader-accent);
   --color-loader-bg: var(--loader-bg);
   --color-loader-fg: var(--loader-fg);
 
@@ -295,21 +311,82 @@
   }
 }
 
-/* Real project screens, muted toward the page until hovered: colour pulled to a
-   quarter, a tint of the page laid over it, and dimmed on graphite so a pale
-   app doesn't glare in the dark theme. */
+/* Real project screens. At rest they are plain grayscale (never tinted toward
+   the page, which turned them sepia); lit, they show their own colours. In the
+   dark theme both states are dimmed a little (--screen-dim), so a pale app never
+   glares as the brightest thing on the page. */
 @layer components {
   .screen-muted {
-    filter: saturate(0.25) contrast(0.95) brightness(var(--screen-dim));
+    filter: grayscale(1) contrast(1.02) brightness(var(--screen-dim));
     transition: filter 0.5s var(--ease-out-expo);
   }
-  .screen-tint {
-    position: absolute;
-    inset: 0;
-    background: var(--bg);
-    opacity: 0.35;
-    mix-blend-mode: color;
-    pointer-events: none;
-    transition: opacity 0.5s var(--ease-out-expo);
+  .screen-lit {
+    filter: brightness(var(--screen-dim));
+    transition: filter 0.5s var(--ease-out-expo);
+  }
+}
+
+/* Project thumbnails (project-thumb.tsx): slow ambient motion only, never a
+   jump, and none at all under reduced motion. */
+@keyframes thumb-float {
+  50% {
+    transform: translate3d(0, -2.5%, 0);
+  }
+}
+@keyframes thumb-zoom {
+  to {
+    transform: scale(1.08);
+  }
+}
+@keyframes thumb-blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .thumb-float {
+    animation: thumb-float 4.5s ease-in-out infinite;
+  }
+  .thumb-zoom {
+    animation: thumb-zoom 12s ease-in-out infinite alternate;
+  }
+  .thumb-blink {
+    animation: thumb-blink 1.6s steps(2, jump-none) infinite;
+  }
+}
+
+/* Featured Projects rows (featured-projects.tsx). Pinned, the section fills the
+   screen and the rows share it: GSAP sets each row's height and --open, how far
+   it is open. The screens keep a fixed height (--tiles-h, whole at 16:10), so a
+   closing row covers them like a blind instead of squashing them. The open row,
+   or the one under the cursor, shows its screens in colour; touch screens always
+   do, since there is no hover. */
+.feat-stage[data-pinned] {
+  height: 100svh;
+}
+.feat-stage[data-pinned] .feat-view {
+  flex: 1;
+  overflow: hidden;
+  /* Folded lines scrolling past an edge fade instead of being cut in half; GSAP
+     grows each fade with how much of the list is hidden past that edge. */
+  mask-image: linear-gradient(transparent, #000 var(--fade-top, 0px), #000 calc(100% - var(--fade-bottom, 0px)), transparent);
+}
+.feat-stage[data-pinned] .feat-tiles {
+  height: var(--tiles-h);
+  max-width: var(--tiles-w, none);
+}
+.feat-stage[data-pinned] .feat-tile {
+  height: 100%;
+  aspect-ratio: auto;
+}
+.feat-body {
+  opacity: var(--open, 1);
+}
+.feat-row:is([data-active], :hover) .screen-muted {
+  filter: brightness(var(--screen-dim));
+}
+@media (hover: none) {
+  .feat-row .screen-muted {
+    filter: brightness(var(--screen-dim));
   }
 }

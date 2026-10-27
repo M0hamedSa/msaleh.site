@@ -6,7 +6,7 @@
 export const README = `# Mohamed Saleh
 Systems developer · Giza
 
-I keep a textile mill's ERP running, led its move to Odoo, and build the web systems around it.
+I keep a textile mill's ERP running, was a core part of its move to Odoo, and build the web systems around it.
 
 ## Featured
 - True Visor   offline factory audits

@@ -99,17 +99,17 @@ export function Desktop() {
     projects: (
       <ul className="grid">
         {FEATURED_PROJECTS.map((p) => (
-          <li key={p.slug} className="border-b border-black/10 last:border-0">
-            <ProjectLink slug={p.slug} className="flex justify-between gap-4 px-4 py-2.5 hover:bg-black/5">
+          <li key={p.slug} className="border-b border-loader-bg/10 last:border-0">
+            <ProjectLink slug={p.slug} className="flex justify-between gap-4 px-4 py-2.5 hover:bg-loader-bg/5">
               <span>{p.slug}/</span>
-              <span className="text-black/50">{p.year}</span>
+              <span className="text-loader-bg/70">{p.year}</span>
             </ProjectLink>
           </li>
         ))}
         <li>
-          <TransitionLink href="/archive" className="flex justify-between gap-4 px-4 py-2.5 hover:bg-black/5">
+          <TransitionLink href="/archive" className="flex justify-between gap-4 px-4 py-2.5 hover:bg-loader-bg/5">
             <span>archive/</span>
-            <span className="text-black/50">{ARCHIVE.length} items</span>
+            <span className="text-loader-bg/70">{ARCHIVE.length} items</span>
           </TransitionLink>
         </li>
       </ul>
@@ -137,13 +137,12 @@ export function Desktop() {
               data-window={w.id}
               aria-label={w.title}
               onPointerDown={() => raise(w.id)}
-              className="overflow-hidden rounded-lg font-mono text-[13px] leading-relaxed text-[#111110] shadow-[0_20px_50px_-20px_rgba(0,0,0,0.7)] md:absolute max-md:!static max-md:!transform-none"
+              className="overflow-hidden rounded-lg bg-loader-fg font-mono text-[13px] leading-relaxed text-loader-bg shadow-[0_20px_50px_-20px_rgba(0,0,0,0.7)] md:absolute max-md:!static max-md:!transform-none"
               style={{
                 width: w.w,
                 left: `${w.x * 100}%`,
                 top: `calc(${HEADER_CLEARANCE + 8}px + ${w.y} * (100% - ${HEADER_CLEARANCE + 8}px))`,
                 zIndex: 10 + order.indexOf(w.id),
-                backgroundColor: "#eceae4",
               }}
             >
               <div
@@ -152,7 +151,7 @@ export function Desktop() {
                 aria-label={`Move ${w.title} (arrow keys)`}
                 onPointerDown={(e) => startDrag(w.id, e)}
                 onKeyDown={(e) => nudge(w.id, e)}
-                className="flex cursor-grab touch-none items-center gap-2 bg-[#111110] px-3 py-2 text-[#eceae4] select-none active:cursor-grabbing max-md:cursor-default"
+                className="flex cursor-grab touch-none items-center gap-2 bg-loader-bg px-3 py-2 text-loader-fg select-none active:cursor-grabbing max-md:cursor-default"
               >
                 <button
                   type="button"

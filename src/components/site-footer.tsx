@@ -1,7 +1,6 @@
 import { LiveClock } from "@/components/live-clock";
 import { AsciiTalk } from "@/components/footer/ascii-talk";
 import { CopyEmail } from "@/components/footer/copy-email";
-import { FlutedGlass } from "@/components/footer/fluted-glass";
 import { FooterReveal } from "@/components/footer/footer-reveal";
 import { Magnetic } from "@/components/magnetic";
 import { TransitionLink } from "@/components/transition/transition-link";
@@ -11,13 +10,11 @@ const EMAIL = "moh.sa.dev@gmail.com";
 /**
  * The footer on every page: it waits under the page and is revealed as the page
  * lifts away (F1). "LET'S TALK" in scattering characters (C6) above the contact
- * block (E13), with fluted glass behind it all in the dark theme (C30). Always
- * dark, in either theme.
+ * block (E13). Always dark, and the same in either theme.
  */
 export function SiteFooter() {
   return (
     <FooterReveal>
-      <FlutedGlass />
       <div
         data-footer-inner
         className="gutter relative grid h-full grid-rows-[minmax(0,1fr)_auto_auto] gap-8 pt-[calc(88px+env(safe-area-inset-top,0px))] pb-[calc(20px+env(safe-area-inset-bottom,0px))]"

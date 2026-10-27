@@ -1,70 +1,151 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
-import { ProjectLink, ProjectMorph } from "@/components/project-link";
-import { ProjectVisual } from "@/components/project-visual";
+import { ProjectLink } from "@/components/project-link";
+import { ProjectStatus } from "@/components/project-thumb";
+import { ScreenVisual } from "@/components/project-visual";
 import { TransitionLink } from "@/components/transition/transition-link";
-import { FEATURED_PROJECTS, featuredCount } from "@/content/projects";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
-import { useReducedMotion } from "@/lib/use-reduced-motion";
+import { FEATURED_PROJECTS, featuredCount, type FeaturedProject, type Screen } from "@/content/projects";
+import { gsap, useGSAP } from "@/lib/gsap";
 
-// Scroll distance per project while the scene is pinned, as a share of the viewport.
-const STEP = 0.7;
+const TILES = 3;
+
+// Tiba Masr has two screens; the harvest photo from its home page fills the third tile.
+const FILL: Record<string, Screen> = {
+  "tiba-masr": {
+    src: "/projects/tiba-masr/photo.jpg",
+    width: 1800,
+    height: 1004,
+    alt: "A crate of fresh fruit and vegetables in a field at sunset",
+    caption: "",
+    focus: "left",
+  },
+};
+
+const tilesOf = (p: FeaturedProject) => {
+  const screens = p.screens.filter((s) => !s.phone);
+  return [...screens, ...(FILL[p.slug] ? [FILL[p.slug]] : [])].slice(0, TILES);
+};
+
+const px = (v: string) => parseFloat(v) || 0;
 
 /**
- * C10: one pinned scene. Scrolling walks through the Featured Projects;
- * the titles sit on the left, the image wipes to the current one on the right.
- * Hovering or focusing a title shows it at once; opening it morphs the image
- * into the Case Study (C40). Reduced motion keeps the scene unpinned.
+ * The Featured Projects as rows that fight for space (after Codegrid's
+ * "Every Project Fights for More Space", from Ingamana). One project is open
+ * at a time: its summary, stack and status on the left (plus a case-study
+ * button on touch screens), one large screen and two smaller ones on the right,
+ * all whole at 16:10. The others fold to a single line with their name. The
+ * section pins and the scroll hands the space from one project to the next,
+ * resting briefly on each; every move is scrubbed, so nothing snaps.
+ * Phones and reduced motion get a plain list with every project open.
  */
 export function FeaturedProjects() {
   const root = useRef<HTMLElement>(null);
-  const [scrolled, setScrolled] = useState(0);
-  const [pointed, setPointed] = useState<number | null>(null);
-  const active = pointed ?? scrolled;
-  const shown = useRef(0);
-  const reduced = useReducedMotion();
 
-  // Pin the scene and map scroll progress to a project.
   useGSAP(
     () => {
-      if (reduced) return;
-      ScrollTrigger.create({
-        trigger: "[data-scene]",
-        start: "top top",
-        end: () => `+=${window.innerHeight * STEP * (FEATURED_PROJECTS.length - 1)}`,
-        pin: true,
-        onUpdate: (self) => setScrolled(Math.round(self.progress * (FEATURED_PROJECTS.length - 1))),
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+        const stage = root.current!.querySelector<HTMLElement>("[data-stage]")!;
+        const view = stage.querySelector<HTMLElement>("[data-view]")!;
+        const list = view.querySelector<HTMLElement>("[data-list]")!;
+        const rows = gsap.utils.toArray<HTMLElement>("[data-row]", list);
+        const last = rows.length - 1;
+        stage.dataset.pinned = "";
+
+        // Measured once per refresh: a folded row is its name line; an open one adds the body.
+        let closed = 0;
+        let open = 0;
+        const measure = () => {
+          const row = rows[0];
+          const head = row.querySelector<HTMLElement>("[data-head]")!;
+          const body = row.querySelector<HTMLElement>("[data-body]")!;
+          const tiles = row.querySelector<HTMLElement>("[data-tiles]")!;
+          const rs = getComputedStyle(row);
+          const bodyPad = px(getComputedStyle(body).paddingTop);
+          closed = px(rs.paddingTop) + px(rs.paddingBottom) + px(rs.borderTopWidth) + head.offsetHeight;
+          // One large screen and two stacked beside it, all whole at 16:10: the column's width sets the height.
+          stage.style.removeProperty("--tiles-w");
+          const gap = px(getComputedStyle(tiles).columnGap);
+          const side = (tiles.clientWidth - gap) / 3;
+          const natural = side * 0.625 * 2 + gap;
+          // The open project may take the whole screen, the folded ones scrolling out of the way;
+          // on a short screen the screens narrow instead of being cropped.
+          const tilesH = Math.min(natural, view.clientHeight - closed - bodyPad);
+          if (tilesH < natural) stage.style.setProperty("--tiles-w", `${((tilesH - gap) / 2 / 0.625) * 3 + gap}px`);
+          stage.style.setProperty("--tiles-h", `${tilesH}px`);
+          open = closed + bodyPad + tilesH;
+        };
+
+        // Each project rests open for a short beat at the end of its stretch; the rest of the
+        // scroll always moves something, easing in and out so two half-open rows pass quickly.
+        const settle = (f: number) => {
+          const i = Math.floor(f);
+          const t = gsap.utils.clamp(0, 1, (f - i - 0.08) / 0.84);
+          return i + t * t * (3 - 2 * t);
+        };
+
+        const layout = (f: number) => {
+          const focus = settle(f);
+          const vh = view.clientHeight;
+          const shares = rows.map((_, i) => gsap.utils.clamp(0, 1, 1 - Math.abs(i - focus)));
+          const heights = shares.map((w) => closed + (open - closed) * w);
+          const total = heights.reduce((a, b) => a + b, 0);
+          const tops: number[] = [];
+          heights.reduce((y, h, i) => ((tops[i] = y), y + h), 0);
+          // Everything usually fits; on short screens, keep the open row in view.
+          const lo = Math.floor(focus);
+          const hi = Math.min(lo + 1, last);
+          const centre = (i: number) => tops[i] + heights[i] / 2;
+          const offset = gsap.utils.clamp(0, Math.max(0, total - vh), gsap.utils.interpolate(centre(lo), centre(hi), focus - lo) - vh / 2);
+          gsap.set(list, { y: -offset });
+          view.style.setProperty("--fade-top", `${Math.min(offset, 32)}px`);
+          view.style.setProperty("--fade-bottom", `${gsap.utils.clamp(0, 32, total - vh - offset)}px`);
+          rows.forEach((row, i) => {
+            gsap.set(row, { height: heights[i], "--open": shares[i] });
+            row.toggleAttribute("data-active", i === Math.round(focus));
+          });
+        };
+
+        const state = { f: 0 };
+        measure();
+        layout(0);
+        gsap.to(state, {
+          f: last,
+          ease: "none",
+          onUpdate: () => layout(state.f),
+          scrollTrigger: {
+            trigger: stage,
+            start: "top top",
+            end: () => `+=${last * window.innerHeight * 0.6}`,
+            pin: true,
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+            onRefresh: () => {
+              measure();
+              layout(state.f);
+            },
+          },
+        });
+
+        return () => {
+          delete stage.dataset.pinned;
+          stage.style.removeProperty("--tiles-h");
+          stage.style.removeProperty("--tiles-w");
+          view.style.removeProperty("--fade-top");
+          view.style.removeProperty("--fade-bottom");
+          rows.forEach((row) => row.removeAttribute("data-active"));
+        };
       });
     },
-    { scope: root, dependencies: [reduced] },
+    { scope: root },
   );
-
-  // Wipe the new image up over the old one, in the direction of travel.
-  useGSAP(
-    () => {
-      const from = shown.current;
-      if (from === active) return;
-      shown.current = active;
-      const frames = gsap.utils.toArray<HTMLElement>("[data-frame]");
-      const down = active > from;
-      frames.forEach((f, i) => gsap.set(f, { zIndex: i === active ? 2 : i === from ? 1 : 0 }));
-      gsap.fromTo(
-        frames[active],
-        { clipPath: down ? "inset(100% 0 0 0)" : "inset(0 0 100% 0)" },
-        { clipPath: "inset(0% 0 0% 0)", duration: reduced ? 0 : 0.8, ease: "expo.out", overwrite: true },
-      );
-    },
-    { scope: root, dependencies: [active] },
-  );
-
-  const current = FEATURED_PROJECTS[active];
 
   return (
-    <section ref={root} aria-labelledby="featured-heading" className="gutter">
-      <div data-scene className="grid min-h-svh content-center gap-8 py-[calc(72px+env(safe-area-inset-top,0px))]">
-        <div className="flex items-baseline justify-between gap-4 border-t border-fg pt-3">
+    <section ref={root} aria-labelledby="featured-heading">
+      <div data-stage className="feat-stage gutter flex flex-col pt-24 pb-6">
+        <div className="flex items-baseline justify-between gap-4 border-t border-fg pt-3 pb-6">
           <h2 id="featured-heading" className="label-mono">
             Featured Projects <span className="text-mute">({featuredCount})</span>
           </h2>
@@ -73,52 +154,64 @@ export function FeaturedProjects() {
           </TransitionLink>
         </div>
 
-        <div className="grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] md:gap-12">
-          <ol className="order-2 grid md:order-1" onPointerLeave={() => setPointed(null)}>
-            {FEATURED_PROJECTS.map((p, i) => (
-              <li key={p.slug} className="border-b border-line first:border-t">
-                <ProjectLink
-                  slug={p.slug}
-                  data-cursor="View"
-                  data-active={i === active}
-                  aria-current={i === active ? "true" : undefined}
-                  onPointerEnter={() => setPointed(i)}
-                  onFocus={() => setPointed(i)}
-                  onBlur={() => setPointed(null)}
-                  className="group grid grid-cols-[3ch_minmax(0,1fr)] items-baseline gap-3 py-2.5 text-mute transition-colors duration-300 data-[active=true]:text-fg md:py-3"
-                >
-                  <span className="label-mono">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="font-display text-[clamp(28px,3.6vw,56px)] leading-none tracking-[-0.035em]">
-                    {p.name}
-                  </span>
-                </ProjectLink>
-              </li>
-            ))}
-          </ol>
+        <div data-view className="feat-view min-h-0">
+          <ol data-list className="grid gap-10 md:block md:will-change-transform">
+            {FEATURED_PROJECTS.map((p, i) => {
+              const tiles = tilesOf(p);
+              return (
+                <li key={p.slug} data-row className="feat-row border-t border-line py-3 md:overflow-hidden md:last:border-b">
+                  <div data-head className="flex items-baseline gap-4">
+                    <span className="label-mono w-[3ch] shrink-0 text-mute">{String(i + 1).padStart(2, "0")}</span>
+                    <h3 className="font-display text-[clamp(28px,2.8vw,48px)] leading-none tracking-[-0.04em]">
+                      <ProjectLink slug={p.slug} data-cursor="View" className="outline-offset-4">
+                        {p.name}
+                      </ProjectLink>
+                    </h3>
+                    <span className="label-mono ml-auto hidden text-mute sm:inline">
+                      {p.sector} · {p.year}
+                    </span>
+                  </div>
 
-          <div className="order-1 grid gap-3 md:order-2">
-            <div className="group relative aspect-[4/3] overflow-hidden rounded-sm">
-              {FEATURED_PROJECTS.map((p, i) => (
-                <div
-                  key={p.slug}
-                  data-frame
-                  className="absolute inset-0"
-                  style={{ zIndex: i === 0 ? 2 : 0, clipPath: i === 0 ? "inset(0% 0 0% 0)" : "inset(100% 0 0 0)" }}
-                >
-                  <ProjectMorph slug={p.slug}>
-                    <ProjectVisual project={p} tone="hover" sizes="(min-width: 768px) 50vw, 100vw" className="size-full" />
-                  </ProjectMorph>
-                </div>
-              ))}
-            </div>
-            <div className="label-mono flex flex-wrap justify-between gap-x-6 gap-y-1" aria-live="polite">
-              <span>
-                {current.sector} · {current.year}
-              </span>
-              <span className="text-mute">{current.stack.join(" · ")}</span>
-            </div>
-            <p className="max-w-[46ch] text-[clamp(16px,1.3vw,18px)]">{current.summary}</p>
-          </div>
+                  <div data-body className="feat-body grid gap-5 pt-5 md:grid-cols-[minmax(0,0.22fr)_minmax(0,1fr)] md:gap-6">
+                    <div className="flex min-w-0 flex-col gap-4">
+                      <p className="max-w-[32ch] text-[clamp(15px,1.15vw,19px)]">{p.summary}</p>
+                      <p className="label-mono text-mute">{p.stack.join(" · ")}</p>
+                      <div className="grid justify-items-start gap-4 md:mt-auto">
+                        <ProjectStatus project={p} className="label-mono" />
+                        {/* With a mouse the "View" cursor already says the row opens; touch screens keep the button. */}
+                        <span className="pointer-fine:hidden">
+                          <ProjectLink slug={p.slug} className="btn-fill">
+                            <span>Read the case study</span>
+                          </ProjectLink>
+                        </span>
+                      </div>
+                    </div>
+
+                    <ProjectLink
+                      slug={p.slug}
+                      data-cursor="View"
+                      tabIndex={-1}
+                      aria-hidden="true"
+                      data-tiles
+                      className="feat-tiles grid min-h-0 grid-cols-2 gap-2 md:grid-cols-[2fr_1fr] md:grid-rows-2"
+                    >
+                      {tiles.map((s, k) => (
+                        <ScreenVisual
+                          key={s.src}
+                          screen={s}
+                          tone="dither"
+                          sizes={k === 0 ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 25vw, 50vw"}
+                          eager={false}
+                          // The first screen leads: full width on phones, two rows tall beside the others on wider screens.
+                          className={`feat-tile aspect-[16/10] rounded-sm ${k === 0 ? "col-span-2 md:col-span-1 md:row-span-2 md:aspect-auto" : ""}`}
+                        />
+                      ))}
+                    </ProjectLink>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </div>
     </section>

@@ -44,16 +44,16 @@ export function TrackRecord({ milestones }: { milestones: Milestone[] }) {
           <li
             key={m.title}
             className={`grid min-h-[min(62vh,520px)] w-[min(78vw,540px)] grid-rows-[auto_1fr_auto] gap-5 rounded-md border p-6 ${
-              m.current ? "border-accent bg-accent text-on-accent" : "border-line bg-bg"
+              m.current ? "border-loader-bg bg-loader-bg text-loader-fg" : "border-line bg-bg"
             }`}
           >
             <span className={`label-mono ${m.current ? "" : "text-mute"}`}>
               {String(i + 1).padStart(2, "0")} · {m.label}
             </span>
-            <span className="font-display text-[clamp(4rem,9vw,8.75rem)] leading-[0.85] tracking-[-0.05em]">{m.mark}</span>
+            <span className={`font-display text-[clamp(4rem,9vw,8.75rem)] leading-[0.85] tracking-[-0.05em] ${m.current ? "text-loader-accent" : ""}`}>{m.mark}</span>
             <div className="grid gap-2">
               <h3 className="font-display text-[clamp(1.4rem,2vw,1.75rem)] leading-tight tracking-[-0.02em]">{m.title}</h3>
-              <p className={`max-w-[42ch] ${m.current ? "opacity-80" : "text-mute"}`}>{m.body}</p>
+              <p className={`max-w-[42ch] ${m.current ? "text-loader-fg/80" : "text-mute"}`}>{m.body}</p>
             </div>
           </li>
         ))}

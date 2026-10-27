@@ -77,16 +77,18 @@ export function Hero() {
         <h1
           data-title
           data-intro
-          className="font-display text-[clamp(3.1rem,10.4vw,11.5rem)] leading-[0.9] tracking-[-0.045em] text-balance"
+          className="font-display text-[clamp(3.1rem,7.6vw,9.5rem)] leading-[0.9] tracking-[-0.045em] text-balance"
         >
-          I build the <span className="text-accent">systems</span> businesses run on.
+          {/* Two beats, two lines from tablet up: the truth, then the answer in red. */}
+          Business runs on systems. <br className="max-md:hidden" />
+          <span className="text-accent">I build them.</span>
         </h1>
         <div data-sub data-intro className="mt-7 flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
           <p className="max-w-[36ch] text-[clamp(16px,1.4vw,19px)]">
             ERP, ledgers, factory-floor tools and offline apps for textile mills, law firms and compliance teams.
           </p>
           <p className="label-mono">
-            <span className="mr-1.5 inline-block size-[7px] animate-pulse rounded-full bg-accent align-[1px]" />
+            <span className="mr-1.5 inline-block size-[7px] rounded-full bg-live align-[1px]" />
             Open to select projects · 2026
           </p>
         </div>

@@ -116,7 +116,7 @@ function CaseStudyBody({ study }: { study: CaseStudy }) {
               <h3 className="font-display text-[clamp(1.5rem,2.4vw,2.25rem)] leading-tight tracking-[-0.025em]">{d.title}</h3>
               <p className="max-w-[62ch] leading-relaxed">{d.choice}</p>
               <p className="max-w-[62ch] leading-relaxed text-mute">
-                <span className="label-mono mr-2 text-accent">Trade-off</span>
+                <span className="label-mono mr-2 text-accent-ink">Trade-off</span>
                 {d.tradeoff}
               </p>
             </li>

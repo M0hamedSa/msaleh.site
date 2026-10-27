@@ -2,7 +2,11 @@
 // the 2026 line summarises the Featured Projects.
 
 export const INTRO =
-  "I'm Mohamed Saleh, a systems developer in Giza. I keep a textile mill's ERP running, led its move to Odoo, and build the web systems around it: barcode inspection on the factory floor, audits that work offline, ledgers a law firm trusts with its clients' money.";
+  "I'm Mohamed Saleh, a systems developer in Giza. I keep a textile mill's ERP running, was a core part of its move to Odoo, and build the web systems around it: barcode inspection on the factory floor, audits that work offline, ledgers a law firm trusts with its clients' money.";
+
+/** The About section at the end of the home page: a two-line header, then who you are in one sentence. */
+export const TEASER_HEADING = ["About me.", "Who builds them."] as const;
+export const SUMMARY = "I'm a systems developer in Giza. I learn how a business really works, then build the software its people use every day.";
 
 export type Milestone = {
   label: string;
@@ -10,7 +14,7 @@ export type Milestone = {
   mark: string;
   title: string;
   body: string;
-  /** The current role, set in the accent. */
+  /** The current role: an ink panel with its year in red. */
   current?: boolean;
 };
 
@@ -31,7 +35,7 @@ export const TRACK_RECORD: Milestone[] = [
     label: "Kazareen, Giza",
     mark: "2024",
     title: "Systems developer & ERP specialist",
-    body: "Maintains the PowerBuilder ERP and led the Odoo implementation, including training the teams who use it.",
+    body: "Maintains the PowerBuilder ERP and was a core part of the move to Odoo: training the teams who use it, loading product data and fixing store and warehouse issues.",
     current: true,
   },
   {

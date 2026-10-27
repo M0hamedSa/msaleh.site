@@ -15,7 +15,7 @@ function Excerpts({ intro, excerpts }: Props) {
       <div className="grid gap-6">
         {excerpts.map((x) => (
           <div key={x.file} className="grid min-w-0 content-start gap-2 md:grid-cols-[16rem_minmax(0,1fr)] md:gap-8">
-            <p className="label-mono text-accent">{x.file}</p>
+            <p className="label-mono text-loader-accent">{x.file}</p>
             <pre className="overflow-x-auto font-mono text-[12.5px] leading-relaxed whitespace-pre opacity-80">{x.text}</pre>
           </div>
         ))}

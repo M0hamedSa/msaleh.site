@@ -15,7 +15,7 @@ The dedicated page for one Project, explaining the problem, Mohamed's role, the 
 _Avoid_: Project page, detail page, post
 
 **Featured Project**:
-One of the Projects (True Visor, Aqsat, True Legal, Kidzenia) shown prominently in the Work section, each with a full Case Study. KTC Scanner Hub is paused until its Case Study can be written.
+One of the Projects (True Legal, Kidzenia, Tiba Masr, Aqsat, True Visor) shown prominently in the Work section, each with a full Case Study. KTC Scanner Hub is paused until its Case Study can be written.
 _Avoid_: Highlight, top project
 
 **Archive**:

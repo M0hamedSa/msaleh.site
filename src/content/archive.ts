@@ -28,7 +28,7 @@ export const ARCHIVE: ArchiveProject[] = [
   {
     slug: "odoo",
     name: "Odoo implementation",
-    line: "Led a textile mill's move to Odoo ERP: workflows from the business's requirements, and training for the teams who use it.",
+    line: "A core part of a textile mill's move to Odoo ERP: training the teams who use it, loading product data and fixing store and warehouse issues.",
     kind: "Production",
     year: "2025",
     stack: ["Odoo"],
@@ -58,14 +58,7 @@ export const ARCHIVE: ArchiveProject[] = [
     stack: ["Next.js", "SQL Server"],
     url: "https://sales-order-wl.vercel.app",
   },
-  {
-    slug: "tiba-masr",
-    name: "Tiba Masr",
-    line: "A bilingual website for an Egyptian grower and exporter of fresh produce.",
-    kind: "Client",
-    year: "2026",
-    stack: ["Astro"],
-  },
+
   {
     slug: "wakeup",
     name: "WakeUp",

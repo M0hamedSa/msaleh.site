@@ -5,7 +5,9 @@ import { useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 
-const STACK = ["Next.js", "PostgreSQL", "Odoo", "PowerSync", "SQL Server", "n8n", "Telegram bots", "Payload", "Drizzle", "PowerBuilder"];
+// The core of the CV's Skills section (Mohamed_Saleh_CV_source.html): languages, frontend, backend,
+// databases, ERP, automation and delivery. Specialist tools used on one project stay in that project's stack.
+const STACK = ["TypeScript", "Next.js", "React", "Node.js", "PostgreSQL", "SQL Server", "Drizzle", "Payload", "Astro", "Odoo", "PowerBuilder", "n8n", "Docker", "Playwright"];
 const ROWS = [STACK, [...STACK].reverse()];
 
 /** E07: two rows of the stack drift in opposite directions; scrolling speeds them up, scrolling back reverses them. */

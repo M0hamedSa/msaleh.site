@@ -132,24 +132,28 @@ export function ProjectVisual({ project, tone = "dither", tagged = true, sizes =
 const fullToneClass = (tone: NonNullable<Props["tone"]>) =>
   tone === "hover" ? "opacity-0 transition-opacity duration-500 group-hover:opacity-100" : "";
 
-/** A real screen: the captured pixels, muted toward the page unless the tone is "full". */
-function ScreenVisual({ screen, tone, sizes, eager, className }: { screen: Screen; tone: NonNullable<Props["tone"]>; sizes: string; eager: boolean; className: string }) {
+/**
+ * A real screen: the captured pixels on a card-coloured mat with a hairline rule,
+ * so pale apps don't float on the page. Grayscale unless the tone is "full".
+ */
+export function ScreenVisual({ screen, tone, sizes, eager, className }: { screen: Screen; tone: NonNullable<Props["tone"]>; sizes: string; eager: boolean; className: string }) {
   const muted = tone !== "full";
   const reveal = tone === "hover";
   return (
-    <div className={`relative overflow-hidden bg-card ${className}`}>
-      <Image
-        src={screen.src}
-        alt={screen.alt}
-        fill
-        sizes={sizes}
-        loading={eager ? "eager" : "lazy"}
-        fetchPriority={eager ? "high" : "auto"}
-        className={`object-cover ${screen.focus === "left" ? "object-left-top" : "object-right-top"} ${
-          muted ? `screen-muted ${reveal ? "group-hover:[filter:none]" : ""}` : ""
-        }`}
-      />
-      {muted && <span aria-hidden="true" className={`screen-tint ${reveal ? "group-hover:opacity-0" : ""}`} />}
+    <div className={`relative overflow-hidden border border-line bg-card p-[3px] ${className}`}>
+      <div className="relative size-full overflow-hidden rounded-[2px]">
+        <Image
+          src={screen.src}
+          alt={screen.alt}
+          fill
+          sizes={sizes}
+          loading={eager ? "eager" : "lazy"}
+          fetchPriority={eager ? "high" : "auto"}
+          className={`object-cover ${screen.focus === "left" ? "object-left-top" : "object-right-top"} ${
+            muted ? `screen-muted ${reveal ? "group-hover:[filter:brightness(var(--screen-dim))]" : ""}` : "screen-lit"
+          }`}
+        />
+      </div>
     </div>
   );
 }
