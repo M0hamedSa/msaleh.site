@@ -314,12 +314,28 @@ export function InkTrail() {
     };
     const onMove = (e: PointerEvent) => e.pointerType === "mouse" && draw(e.clientX, e.clientY);
     const onLeave = () => { px = py = -1; };
-    // Touch events keep coming while the finger scrolls the page; pointer events stop.
-    const onTouchStart = (e: TouchEvent) => {
-      onLeave();
-      draw(e.touches[0].clientX, e.touches[0].clientY, true);
+    // Pointer events stop once the finger scrolls the page. iOS keeps sending touchmoves,
+    // but Android's Chrome sends few or none; it does fire scroll every frame, and a
+    // finger scrolling the page moves with it, so its position follows from the scroll.
+    let touching = false, tx = 0, ty = 0, sx = 0, sy = 0;
+    const onTouch = (e: TouchEvent) => {
+      tx = e.touches[0].clientX;
+      ty = e.touches[0].clientY;
+      sx = window.scrollX;
+      sy = window.scrollY;
+      draw(tx, ty, true);
     };
-    const onTouchMove = (e: TouchEvent) => draw(e.touches[0].clientX, e.touches[0].clientY, true);
+    const onTouchStart = (e: TouchEvent) => {
+      touching = true;
+      onLeave();
+      onTouch(e);
+    };
+    const onTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length) return;
+      touching = false;
+      onLeave();
+    };
+    const onScroll = () => touching && draw(tx - (window.scrollX - sx), ty - (window.scrollY - sy), true);
     // Phones resize the window as their address bar slides in and out while scrolling;
     // only a real change (rotation, a new width) rebuilds the grids and drops the ink.
     let width = window.innerWidth, height = window.innerHeight;
@@ -333,16 +349,20 @@ export function InkTrail() {
     window.addEventListener("pointermove", onMove, { passive: true });
     document.documentElement.addEventListener("pointerleave", onLeave);
     window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: true });
-    window.addEventListener("touchend", onLeave, { passive: true });
+    window.addEventListener("touchmove", onTouch, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    window.addEventListener("touchcancel", onTouchEnd, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
       document.documentElement.removeEventListener("pointerleave", onLeave);
       window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove);
-      window.removeEventListener("touchend", onLeave);
+      window.removeEventListener("touchmove", onTouch);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", onTouchEnd);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
       fluid.lose();
       canvas.remove();
