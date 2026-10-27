@@ -34,8 +34,13 @@ export function WorkIndex() {
       const tilt = gsap.quickTo(float, "rotation", { duration: 0.5, ease: "power3" });
       let lastX = 0;
       const onMove = (e: PointerEvent) => {
-        x(e.clientX - float.offsetWidth / 2);
-        y(e.clientY - float.offsetHeight / 2);
+        // Above the pointer (below it near the top), over the faded rows rather than
+        // the hovered name, and kept inside the window.
+        const w = float.offsetWidth;
+        const h = float.offsetHeight;
+        const above = e.clientY - 72 - h;
+        x(gsap.utils.clamp(16, window.innerWidth - w - 16, e.clientX - w / 2));
+        y(above >= 16 ? above : e.clientY + 72);
         tilt(gsap.utils.clamp(-12, 12, (e.clientX - lastX) * 0.8));
         lastX = e.clientX;
       };
@@ -73,7 +78,10 @@ export function WorkIndex() {
               onPointerEnter={() => setHovered(i)}
               onFocus={() => setHovered(i)}
               onBlur={() => setHovered(null)}
-              className="group grid grid-cols-[3ch_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-2 py-4 transition-opacity duration-300 data-[dim=true]:opacity-25 md:grid-cols-[4ch_minmax(0,1fr)_14rem_4ch] md:py-5"
+              // Without the float, each row carries its own thumbnail in a fifth column from tablet up.
+              className={`group grid grid-cols-[3ch_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-2 py-4 transition-opacity duration-300 data-[dim=true]:opacity-25 md:py-5 ${
+                follow ? "md:grid-cols-[4ch_minmax(0,1fr)_14rem_4ch]" : "md:grid-cols-[4ch_minmax(0,1fr)_14rem_4ch_8rem]"
+              }`}
             >
               <span className="label-mono text-mute">{String(i + 1).padStart(2, "0")}</span>
               <span className="font-display text-[clamp(34px,6.4vw,104px)] leading-none tracking-[-0.045em] transition-transform duration-500 ease-out-expo group-data-[dim=false]:group-hover:translate-x-[2vw]">
@@ -81,11 +89,11 @@ export function WorkIndex() {
               </span>
               {!follow && (
                 <ProjectMorph slug={p.slug}>
-                  <ProjectVisual project={p} tone="full" tagged={false} sizes="128px" className="row-span-2 aspect-[4/3] w-24 rounded-sm md:w-32" />
+                  <ProjectVisual project={p} tone="full" tagged={false} sizes="128px" className="row-span-2 aspect-[4/3] w-24 rounded-sm md:col-start-5 md:row-span-1 md:row-start-1 md:w-32" />
                 </ProjectMorph>
               )}
-              <span className="label-mono col-start-2 text-mute md:col-start-auto">{p.sector}</span>
-              <span className="label-mono hidden text-right text-mute md:block">{p.year}</span>
+              <span className="label-mono col-start-2 text-mute md:col-start-3 md:row-start-1">{p.sector}</span>
+              <span className="label-mono hidden text-right text-mute md:col-start-4 md:row-start-1 md:block">{p.year}</span>
             </ProjectLink>
           </li>
         ))}

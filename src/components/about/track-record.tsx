@@ -38,12 +38,12 @@ export function TrackRecord({ milestones }: { milestones: Milestone[] }) {
   );
 
   return (
-    <div ref={root} className="min-w-0 overflow-hidden motion-reduce:overflow-x-auto">
+    <div ref={root} className="min-w-0 overflow-hidden motion-reduce:snap-x motion-reduce:snap-mandatory motion-reduce:overflow-x-auto">
       <ol data-track className="flex w-max gap-4 pr-4">
         {milestones.map((m, i) => (
           <li
             key={m.title}
-            className={`grid min-h-[min(62vh,520px)] w-[min(78vw,540px)] grid-rows-[auto_1fr_auto] gap-5 rounded-md border p-6 ${
+            className={`grid min-h-[min(62vh,520px)] w-[min(78vw,540px)] snap-start grid-rows-[auto_1fr_auto] gap-5 rounded-md border p-6 ${
               m.current ? "border-loader-bg bg-loader-bg text-loader-fg" : "border-line bg-bg"
             }`}
           >

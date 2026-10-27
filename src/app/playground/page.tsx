@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 export default function PlaygroundPage() {
   return (
     <main>
+      <h1 className="sr-only">Playground</h1>
       <Desktop />
     </main>
   );

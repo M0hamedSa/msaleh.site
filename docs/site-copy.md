@@ -10,6 +10,7 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 - L38: Mohamed Saleh · Systems developer
 - L40: Mohamed Saleh builds the systems businesses run on: ERP, ledgers, factory-floor tools and offline apps, from Giza.
+- L64: Skip to content
 
 **`src/components/site-header.tsx`**
 
@@ -294,7 +295,7 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 **`src/components/work/work-index.tsx`**
 
-- L71: data-cursor: View
+- L76: data-cursor: View
 
 ## Part 4 · Case studies
 
@@ -1050,12 +1051,12 @@ The deploy shrank from 216 MB to about 70 MB once unused source images were drop
 **`src/components/archive/archive-index.tsx`**
 
 - L18: All
-- L26: All
-- L28: All
-- L28: All
-- L32: aria-label: Filter by kind
+- L32: All
 - L34: All
-- L77: Live demo
+- L34: All
+- L38: aria-label: Filter by kind
+- L40: All
+- L88: Live demo
 
 ## Part 7 · Playground
 
@@ -1110,6 +1111,7 @@ ALTER TABLE "ledger_entries" ADD CONSTRAINT "ledger_no_late_payment_fee"
 
 - L6: Playground · Mohamed Saleh
 - L7: A desktop to play with: drag the windows around.
+- L14: Playground
 
 **`src/components/playground/desktop.tsx`**
 

@@ -17,8 +17,8 @@ export function SiteFooter() {
         data-footer-inner
         className="gutter relative grid h-full grid-rows-[minmax(0,1fr)_auto_auto_auto] gap-8 pt-[calc(88px+env(safe-area-inset-top,0px))] pb-[calc(20px+env(safe-area-inset-bottom,0px))]"
       >
-        {/* Half the footer it once filled: wide enough for one line on desktop. */}
-        <div className="grid min-h-0 items-end">
+        {/* Half the footer it once filled: wide enough for one line on desktop, centred in what's left. */}
+        <div className="grid min-h-0 items-center">
           <AsciiTalk className="h-full max-h-[24svh] min-h-[90px]" />
         </div>
 

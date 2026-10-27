@@ -57,9 +57,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <SmoothScroll>
           <PageTransition>
+            <a
+              href="#content"
+              className="label-mono sr-only rounded-full bg-fg px-4 py-2 text-bg focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100]"
+            >
+              Skip to content
+            </a>
             <SiteHeader />
             {/* The page sits above the footer, which waits underneath to be revealed. */}
-            <div data-page className="relative z-10 bg-bg">
+            <div id="content" tabIndex={-1} data-page className="relative z-10 bg-bg outline-none">
               {children}
             </div>
             <SiteFooter />

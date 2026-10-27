@@ -17,6 +17,12 @@ import { useReducedMotion } from "@/lib/use-reduced-motion";
 export function ArchiveIndex() {
   const [kind, setKind] = useState<ArchiveKind | "All">("All");
   const [selected, setSelected] = useState(ARCHIVE[0].slug);
+  // The screen opens on the first project, but no row is marked until the Visitor picks one.
+  const [picked, setPicked] = useState(false);
+  const pick = (slug: string) => {
+    setSelected(slug);
+    setPicked(true);
+  };
   const [ready3d, setReady3d] = useState(false);
   const fine = useFinePointer();
   const reduced = useReducedMotion();
@@ -54,11 +60,14 @@ export function ArchiveIndex() {
               <li key={p.slug} className="border-b border-line">
                 <button
                   type="button"
-                  aria-pressed={isActive}
+                  aria-pressed={picked && isActive}
                   aria-controls="archive-screen"
-                  onPointerEnter={(e) => e.pointerType === "mouse" && setSelected(p.slug)}
-                  onFocus={() => setSelected(p.slug)}
-                  onClick={() => setSelected(p.slug)}
+                  // Named by the project alone; the one-line description is read after it, once.
+                  aria-label={`${p.name}, ${p.kind} · ${p.year}`}
+                  aria-describedby={`archive-line-${p.slug}`}
+                  onPointerEnter={(e) => e.pointerType === "mouse" && pick(p.slug)}
+                  onFocus={() => pick(p.slug)}
+                  onClick={() => pick(p.slug)}
                   className="group grid w-full grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 gap-y-2 py-5 text-left"
                 >
                   <span className="font-display text-[clamp(1.6rem,2.8vw,2.6rem)] leading-none tracking-[-0.035em] transition-colors group-hover:text-accent group-aria-pressed:text-accent">
@@ -67,7 +76,9 @@ export function ArchiveIndex() {
                   <span className="label-mono text-mute">
                     {p.kind} · {p.year}
                   </span>
-                  <span className="col-span-2 max-w-[60ch] text-mute">{p.line}</span>
+                  <span id={`archive-line-${p.slug}`} className="col-span-2 max-w-[60ch] text-mute">
+                    {p.line}
+                  </span>
                 </button>
                 {(p.url || p.stack.length > 0) && (
                   <div className="label-mono -mt-2 flex flex-wrap items-center justify-between gap-3 pb-5 text-mute">
@@ -91,7 +102,6 @@ export function ArchiveIndex() {
 
         <div
           id="archive-screen"
-          aria-live="polite"
           className="sticky top-[calc(96px+env(safe-area-inset-top,0px))] hidden aspect-[1.05] w-full lg:block"
         >
           <div className={`absolute inset-[6%] transition-opacity duration-500 ${use3d && ready3d ? "opacity-0" : "opacity-100"}`}>
