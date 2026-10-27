@@ -9,7 +9,6 @@ export type CaseStudy = {
   draft: boolean;
   problem: string[];
   constraints: { title: string; body: string }[];
-  underTheHood: { intro: string; excerpts: { file: string; text: string }[] };
   decisions: { title: string; choice: string; tradeoff: string; source: string }[];
   outcome: { points: string[]; note: string };
 };
@@ -38,35 +37,6 @@ const trueVisor: CaseStudy = {
       body: "Photos and findings are audit evidence. A dropped connection or a closed app must never lose one or record it twice.",
     },
   ],
-  underTheHood: {
-    intro:
-      "The device only ever holds the Audits its Consultant chose to take offline, and nothing it uploads can land twice.",
-    excerpts: [
-      {
-        file: "powersync/sync-config.yaml",
-        text: `# The device learns which Audits to open from this small user-scoped stream.
-offline_selections:
-  auto_subscribe: true
-  query: SELECT audit_id AS id, audit_id FROM offline_audit
-         WHERE user_id = auth.user_id()`,
-      },
-      {
-        file: "src/server/idempotency.ts",
-        text: `/**
- * Runs \`create\` once per actor and key, inside the caller's transaction.
- * A repeated key returns the first request's record instead;
- * a concurrent repeat waits for the first to commit.
- */`,
-      },
-      {
-        file: "docs/offline-drills.md",
-        text: `A photo's file and details stay on the device until the server
-confirms it has recorded the photo. An upload that was cut off goes
-to the same storage key again, and recording the same photo twice
-keeps the first.`,
-      },
-    ],
-  },
   decisions: [
     {
       title: "Offline from the first release",
@@ -127,35 +97,6 @@ const aqsat: CaseStudy = {
       body: "Staff must be able to show a customer exactly how their balance was reached, line by line, years after the fact.",
     },
   ],
-  underTheHood: {
-    intro: "Every piastre is accounted for: money never passes through floating point, and the database itself refuses a charge for lateness.",
-    excerpts: [
-      {
-        file: "drizzle/0029_legal_expense_charges.sql",
-        text: `ALTER TABLE "ledger_entries"
-  ADD CONSTRAINT "ledger_no_late_payment_fee"
-  CHECK ("ledger_entries"."entry_type" <> 'late_payment_fee')
-  NOT VALID;`,
-      },
-      {
-        file: "docs/adr/0023-money-is-numeric…md",
-        text: `Money columns are numeric(14,2). The pure functions convert to
-integer piastres at their boundary and calculate in whole integers.
-
-The review rule: money never becomes a JS number between the
-database and the calculation core.`,
-      },
-      {
-        file: "src/lib/allocation.ts",
-        text: `/**
- * Walk the Customer's Scheduled Installments oldest to newest,
- * settling each completely before moving to the next. Oldest first
- * is what makes arrears come first. No database, no clock, no
- * rounding: whole piastres in, whole piastres out.
- */`,
-      },
-    ],
-  },
   decisions: [
     {
       title: "Lateness is counted, never charged",
@@ -216,33 +157,6 @@ const trueLegal: CaseStudy = {
       body: "Seven Arabic PDF reports that read correctly right to left and match the screens to the piastre.",
     },
   ],
-  underTheHood: {
-    intro: "Row-level security used to guard the data from the browser. On the firm's own server, the same rules live in one module every query goes through.",
-    excerpts: [
-      {
-        file: "lib/data/access.ts",
-        text: `// Who may see and change what (CONTEXT.md). The server reaches the
-// database as its owner, so these rules stand in for the row-level
-// security policies the browser used to go through; each names the
-// policy it replaces. Every query and action goes through them.`,
-      },
-      {
-        file: "lib/money.ts",
-        text: `// The one place a Client's money is calculated. Every screen and PDF report
-// uses these functions so their totals always agree.
-
-// What the Client owes: Fees not covered by the Balance. Never negative.
-due: number;`,
-      },
-      {
-        file: "lib/actions/settlements.ts",
-        text: `// What is carried forward is worked out here from the Client's
-// books, not taken from the form: what the firm holds minus the
-// Fees, less any refund paid out that day.
-if (latest && input.date <= latest.date) refuse("SETTLEMENT_TOO_EARLY");`,
-      },
-    ],
-  },
   decisions: [
     {
       title: "Plain PostgreSQL, rules in one place",
@@ -303,34 +217,6 @@ const kidzenia: CaseStudy = {
       body: "The client reviewed the hosted platforms and turned them down: none handled shared stock and cash on delivery the way the factory works, and several don't serve Egypt.",
     },
   ],
-  underTheHood: {
-    intro: "The storefront sells against one number, defined once, and an order either reserves its stock completely or not at all.",
-    excerpts: [
-      {
-        file: "src/inventory/availability.ts",
-        text: `/**
- * The failure mode is chosen deliberately. The site says sold out
- * while stock exists, which costs a sale. It does not oversell,
- * which would cost a customer under cash on delivery.
- */
-export function availableFrom({ onHand, webAllocation, committed }) {
-  return Math.min(webAllocation, onHand) - committed
-}`,
-      },
-      {
-        file: "docs/adr/0003-payload-owns-schema…md",
-        text: `Placing an order must lock the Variant's stock row, check
-availability against the ring-fence, write the order and its lines,
-write the Reservation and write a Movement — atomically.`,
-      },
-      {
-        file: "docs/adr/0006-confirmation-by-whatsapp…md",
-        text: `The confirmation token exists for unambiguous matching, not
-authentication. A staff member reading a message that says only
-"تمام" needs to know which order it belongs to.`,
-      },
-    ],
-  },
   decisions: [
     {
       title: "Sell from a ring-fenced share",
@@ -391,35 +277,6 @@ const tibaMasr: CaseStudy = {
       body: "The source photos run 8 to 10 MB a frame. Visitors must get small, resized images, and the deploy must not carry the originals.",
     },
   ],
-  underTheHood: {
-    intro:
-      "Each product is written once in both languages, and the build throws away every image no page links to.",
-    excerpts: [
-      {
-        file: "src/content.config.ts",
-        text: `/* A localised string pair. Every buyer-facing field carries both
-   languages in one entry so a product is added once, not twice. */
-const i18nText = z.object({ en: z.string(), ar: z.string() });`,
-      },
-      {
-        file: "integrations/prune-unused-assets.mjs",
-        text: `/**
- * Drops image files that the finished build never links to.
- * On this site that was 123 files and ~146MB of a 216MB build.
- * A file is removed only if its name appears in no emitted
- * HTML, CSS, JS, JSON, XML or plain-text file in the output.
- */`,
-      },
-      {
-        file: "public/contact.php",
-        text: `/**
- * The line-break strip has to happen before anything is
- * interpolated into a mail header: htmlspecialchars() leaves
- * CR and LF intact, and the name goes into "Reply-To:".
- */`,
-      },
-    ],
-  },
   decisions: [
     {
       title: "A static site, not an app",

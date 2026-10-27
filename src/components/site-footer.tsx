@@ -2,7 +2,6 @@ import { AsciiTalk } from "@/components/footer/ascii-talk";
 import { CopyEmail } from "@/components/footer/copy-email";
 import { FooterReveal } from "@/components/footer/footer-reveal";
 import { Magnetic } from "@/components/magnetic";
-import { TransitionLink } from "@/components/transition/transition-link";
 import { EMAIL, NEXT_STEPS } from "@/content/contact";
 
 /**
@@ -58,9 +57,6 @@ export function SiteFooter() {
 
         <div className="label-mono flex flex-wrap justify-between gap-x-6 gap-y-2 text-loader-fg/60">
           <span>© 2026 Mohamed Saleh</span>
-          <TransitionLink href="/playground" className="link-line">
-            Playground <span className="arrow">↗</span>
-          </TransitionLink>
         </div>
       </div>
     </FooterReveal>

@@ -7,7 +7,7 @@ const ROOT = process.cwd(); // run from the project root: node scripts/site-copy
 const require = createRequire(join(ROOT, 'package.json'));
 const ts = require('typescript');
 const C = (f: string) => import(join(ROOT, 'src/content', f + '.ts'));
-const about = await C('about'), archive = await C('archive'), cases = await C('case-studies'), play = await C('playground'), proj = await C('projects');
+const about = await C('about'), archive = await C('archive'), cases = await C('case-studies'), proj = await C('projects');
 
 const out: string[] = [];
 const h = (n: number, t: string) => out.push('', '#'.repeat(n) + ' ' + t, '');
@@ -75,7 +75,7 @@ const listFile = (f: string) => { const t = jsx.get(f); if (!t) return; out.push
 /* ---------- the document ---------- */
 out.push('# Portfolio copy: every piece of text on the site', '',
   `Generated from the code on ${new Date().toISOString().slice(0, 10)}. Edit any text in place, keep the \`source\` tags and the \`Lnn:\` line numbers as they are, and send the file back (or point me at it); I apply each change to the file it came from.`, '',
-  'It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 projects, 4 case studies, 5 about, 6 archive, 7 playground, 8 small UI text left over. Text from the content files (\`src/content/*.ts\`) appears as labelled fields under a `source` tag; text written straight into a page or component appears as `- Lnn:` lines under its file name. Lines starting `aria-label:` are read out by screen readers, and `data-cursor:` is the word on the red cursor disc. Code excerpts in the case studies are real code comments from the projects; change them only if you want the excerpt itself different.');
+  'It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 projects, 4 case studies, 5 about, 6 archive, 7 small UI text left over. Text from the content files (\`src/content/*.ts\`) appears as labelled fields under a `source` tag; text written straight into a page or component appears as `- Lnn:` lines under its file name. Lines starting `aria-label:` are read out by screen readers, and `data-cursor:` is the word on the red cursor disc.');
 
 h(2, 'Part 1 · Every page');
 listFile('src/app/layout.tsx'); listFile('src/components/site-header.tsx'); listFile('src/components/site-menu.tsx');
@@ -118,12 +118,7 @@ out.push(`**Filters:** ${archive.ARCHIVE_KINDS.join(' · ')}`, '');
 archive.ARCHIVE.forEach((a: any, i: number) => out.push(`${i + 1}. **${a.name}** (${a.kind}, ${a.year}, ${a.stack.join(' · ')}): ${a.line}`)); out.push('');
 for (const f of [...jsx.keys()].filter(f => f.includes('/archive'))) listFile(f);
 
-h(2, 'Part 7 · Playground');
-src('src/content/playground.ts → README, SCHEMA');
-out.push('**README.md window**', ''); code(play.README); out.push('**schema.sql window**', ''); code(play.SCHEMA);
-for (const f of [...jsx.keys()].filter(f => f.includes('/playground'))) listFile(f);
-
-h(2, 'Part 8 · Other text in components');
+h(2, 'Part 7 · Other text in components');
 para('Labels, accessibility text and small UI words not covered above.');
 for (const f of [...jsx.keys()].sort()) listFile(f);
 

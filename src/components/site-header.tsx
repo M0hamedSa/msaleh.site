@@ -1,6 +1,5 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ContactLink } from "@/components/contact-link";
@@ -23,9 +22,6 @@ export function SiteHeader() {
   const [solid, setSolid] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
-  // The Playground's desktop is dark in both themes, so the header keeps its own
-  // background there, like an OS menu bar.
-  const onDesktop = usePathname() === "/playground";
 
   useEffect(() => {
     let last = window.scrollY;
@@ -44,8 +40,9 @@ export function SiteHeader() {
   return (
     <>
       <header
+        data-site-header
         data-hidden={hidden && !menuOpen}
-        data-solid={solid || onDesktop}
+        data-solid={solid}
         data-menu-open={menuOpen}
         className="gutter fixed inset-x-0 top-0 z-50 grid grid-cols-2 items-center gap-4 border-b border-transparent pt-[calc(14px+env(safe-area-inset-top,0px))] pb-3.5 transition-[transform,background-color,border-color] duration-500 ease-out-expo data-[hidden=true]:-translate-y-full data-[solid=true]:border-line data-[solid=true]:bg-bg md:grid-cols-3"
       >

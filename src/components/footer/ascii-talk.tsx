@@ -67,14 +67,14 @@ function layout(width: number, height: number, display: string) {
 
 /**
  * C6: "LET'S TALK" drawn in characters. They scatter away from the pointer,
- * turn red while displaced, and spring back home. Touch screens and reduced
- * motion get the still lettering.
+ * turn red while displaced, and spring back home. A finger on the lettering does
+ * the same on touch screens. Reduced motion gets the still lettering.
  */
 export function AsciiTalk({ className = "" }: { className?: string }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const fine = useFinePointer();
   const reduced = useReducedMotion();
-  const live = fine && !reduced;
+  const live = !reduced;
 
   useEffect(() => {
     const el = canvas.current!;
@@ -139,6 +139,10 @@ export function AsciiTalk({ className = "" }: { className?: string }) {
       pointer = { x: e.clientX - r.left, y: e.clientY - r.top };
     };
     const onLeave = () => (pointer = null);
+    const onTouch = (e: TouchEvent) => {
+      const r = el.getBoundingClientRect();
+      pointer = { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top };
+    };
 
     document.fonts.load(`600 40px ${display}`).then(() => {
       if (disposed) return;
@@ -151,6 +155,9 @@ export function AsciiTalk({ className = "" }: { className?: string }) {
     if (live) {
       el.addEventListener("pointermove", onMove);
       el.addEventListener("pointerleave", onLeave);
+      el.addEventListener("touchstart", onTouch, { passive: true });
+      el.addEventListener("touchmove", onTouch, { passive: true });
+      el.addEventListener("touchend", onLeave, { passive: true });
       gsap.ticker.add(step);
     }
 
@@ -161,6 +168,9 @@ export function AsciiTalk({ className = "" }: { className?: string }) {
       gsap.ticker.remove(step);
       el.removeEventListener("pointermove", onMove);
       el.removeEventListener("pointerleave", onLeave);
+      el.removeEventListener("touchstart", onTouch);
+      el.removeEventListener("touchmove", onTouch);
+      el.removeEventListener("touchend", onLeave);
     };
   }, [live]);
 
@@ -169,7 +179,7 @@ export function AsciiTalk({ className = "" }: { className?: string }) {
       ref={canvas}
       role="img"
       aria-label="Let's talk"
-      className={`block size-full ${live ? "cursor-crosshair" : ""} ${className}`}
+      className={`block size-full ${live && fine ? "cursor-crosshair" : ""} ${className}`}
     />
   );
 }

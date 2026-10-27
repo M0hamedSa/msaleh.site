@@ -46,3 +46,12 @@ export function MenuIcon() {
     </svg>
   );
 }
+
+/** A cross that closes the menu, in the same place and stroke as the Menu icon. */
+export function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="ic-close size-5 overflow-visible" {...STROKE}>
+      <path d="M6.5 6.5l11 11M17.5 6.5l-11 11" />
+    </svg>
+  );
+}

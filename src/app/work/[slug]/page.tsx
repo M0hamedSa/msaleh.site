@@ -5,7 +5,6 @@ import { CaseAsk } from "@/components/case/case-ask";
 import { CaseStudyHeader } from "@/components/case/case-study-header";
 import { NextCaseStudy } from "@/components/case/next-case-study";
 import { ScreenGallery } from "@/components/case/screen-gallery";
-import { UnderTheHood } from "@/components/case/under-the-hood";
 import { ProjectMorph } from "@/components/project-link";
 import { ProjectVisual } from "@/components/project-visual";
 import { RevealHeading } from "@/components/reveal-heading";
@@ -67,7 +66,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 }
 
 /** One numbered part of a Case Study: label and heading on the left, content on the right (stacked on phones). */
-function Part({ n, title, wide = false, children }: { n: string; title: string; wide?: boolean; children: React.ReactNode }) {
+function Part({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
   const id = `part-${n}`;
   return (
     <section aria-labelledby={id} className="grid gap-x-12 gap-y-6 border-t border-fg pt-3 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
@@ -77,7 +76,7 @@ function Part({ n, title, wide = false, children }: { n: string; title: string; 
           {title}
         </RevealHeading>
       </div>
-      <div className={`min-w-0 ${wide ? "md:col-span-2" : ""}`}>{children}</div>
+      <div className="min-w-0">{children}</div>
     </section>
   );
 }
@@ -104,11 +103,7 @@ function CaseStudyBody({ study }: { study: CaseStudy }) {
         </ul>
       </Part>
 
-      <Part n="03" title="Under the Hood" wide>
-        <UnderTheHood {...study.underTheHood} />
-      </Part>
-
-      <Part n="04" title="Three key decisions">
+      <Part n="03" title="Three key decisions">
         <ol className="grid gap-12">
           {study.decisions.map((d, i) => (
             <li key={d.title} className="grid gap-3 border-t border-line pt-3">
@@ -127,7 +122,7 @@ function CaseStudyBody({ study }: { study: CaseStudy }) {
         </ol>
       </Part>
 
-      <Part n="05" title="Outcome">
+      <Part n="04" title="Outcome">
         <div className="grid gap-6">
           <ul className="grid gap-4">
             {study.outcome.points.map((p) => (

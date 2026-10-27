@@ -95,7 +95,7 @@ function blinkOrigin() {
 
 /**
  * C5: the logo drawn in characters, its square blinking in step with the header's.
- * Characters scramble around the pointer; on touch the disturbance wanders on its own.
+ * Characters scramble around the pointer or a finger; left alone, the disturbance wanders on its own.
  */
 export function AsciiMark({ className = "" }: { className?: string }) {
   const pre = useRef<HTMLPreElement>(null);
@@ -125,6 +125,18 @@ export function AsciiMark({ className = "" }: { className?: string }) {
         pointer = { x: ((e.clientX - r.left) / r.width) * COLS, y: ((e.clientY - r.top) / r.height) * ROWS };
       };
       const onLeave = () => (pointer = null);
+      // A finger anywhere on the page steers it too, then lets it drift again shortly after.
+      let release = 0;
+      const onTouch = (e: TouchEvent) => {
+        const t = e.touches[0];
+        const r = el.getBoundingClientRect();
+        pointer = { x: ((t.clientX - r.left) / r.width) * COLS, y: ((t.clientY - r.top) / r.height) * ROWS };
+        window.clearTimeout(release);
+      };
+      const onTouchEnd = () => {
+        window.clearTimeout(release);
+        release = window.setTimeout(onLeave, 600);
+      };
       const io = new IntersectionObserver(([entry]) => (visible = entry.isIntersecting));
       io.observe(el);
 
@@ -145,6 +157,9 @@ export function AsciiMark({ className = "" }: { className?: string }) {
         window.addEventListener("pointermove", onMove, { passive: true });
         document.documentElement.addEventListener("pointerleave", onLeave);
       }
+      window.addEventListener("touchstart", onTouch, { passive: true });
+      window.addEventListener("touchmove", onTouch, { passive: true });
+      window.addEventListener("touchend", onTouchEnd, { passive: true });
       const origin = blinkOrigin();
       el.innerHTML = staticFrame(map);
       gsap.ticker.add(tick);
@@ -154,6 +169,10 @@ export function AsciiMark({ className = "" }: { className?: string }) {
         io.disconnect();
         window.removeEventListener("pointermove", onMove);
         document.documentElement.removeEventListener("pointerleave", onLeave);
+        window.removeEventListener("touchstart", onTouch);
+        window.removeEventListener("touchmove", onTouch);
+        window.removeEventListener("touchend", onTouchEnd);
+        window.clearTimeout(release);
       };
     });
 

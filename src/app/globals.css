@@ -6,7 +6,7 @@
   so both themes are one material. Red is a signal, kept to a few places:
   --accent for large marks and fills, --accent-ink for small red text (AA on
   bone and card), --loader-accent for red text on the always-dark surfaces
-  (footer, preloader, Under the Hood). --live is the green of live work and
+  (footer, preloader). --live is the green of live work and
   availability. The OS decides until the Visitor picks a theme; the pick is
   stored as data-theme on <html>.
 */
@@ -165,6 +165,8 @@
 :root[data-theme="dark"] .ic-theme [data-sun] { opacity: 0; transform: rotate(90deg) scale(0.5); }
 :root[data-theme="dark"] .ic-theme [data-moon] { opacity: 1; transform: none; }
 [aria-expanded="true"] > .ic-menu { transform: rotate(45deg); }
+.ic-close { transition: transform 0.6s var(--ease-out-expo); }
+:hover > .ic-close { transform: rotate(90deg); }
 @media (prefers-reduced-motion: no-preference) {
   .ic-typing circle { animation: ic-typing 1.4s ease-in-out infinite; }
   .ic-typing circle:nth-of-type(2) { animation-delay: 0.18s; }
@@ -172,7 +174,7 @@
   [data-menu-open="true"] .ic-typing circle { animation-play-state: paused; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ic-theme [data-sun], .ic-theme [data-moon], .ic-menu { transition: none; }
+  .ic-theme [data-sun], .ic-theme [data-moon], .ic-menu, .ic-close { transition: none; }
 }
 @keyframes ic-typing {
   0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
@@ -189,6 +191,15 @@
 }
 @keyframes boot-failsafe {
   to { visibility: hidden; }
+}
+/* The boot screen sits inside the page, which stacks under the header, so the header
+   waits while it runs; it comes back with the hero, or after the same failsafe. */
+:root:not([data-boot="skip"]):has(.boot-loader) [data-site-header] {
+  visibility: hidden;
+  animation: header-failsafe 0s 8s forwards;
+}
+@keyframes header-failsafe {
+  to { visibility: visible; }
 }
 
 /* Entrance targets wait hidden for their intro, only when JS runs and motion is allowed.

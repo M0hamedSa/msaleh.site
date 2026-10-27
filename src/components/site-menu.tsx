@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 import { useGoToContact } from "@/components/contact-link";
+import { CloseIcon } from "@/components/header-icons";
 import { LogoMark } from "@/components/logo-mark";
 import { useLenis } from "@/components/providers/smooth-scroll";
 import { TransitionLink } from "@/components/transition/transition-link";
@@ -28,7 +29,7 @@ type Props = { open: boolean; onClose: () => void; returnFocus: React.RefObject<
 
 /**
  * E05 + C23: an ink panel wipes down over the page, then each link builds
- * itself letter by letter out of blocks. Escape or Close shuts it, focus is
+ * itself letter by letter out of blocks. Escape or the X shuts it, focus is
  * kept inside while open and returns to the Menu button after.
  */
 export function SiteMenu({ open, onClose, returnFocus }: Props) {
@@ -142,9 +143,10 @@ export function SiteMenu({ open, onClose, returnFocus }: Props) {
           ref={closeButton}
           type="button"
           onClick={onClose}
-          className="label-mono rounded-full border border-bg/30 px-3 py-1.5 transition-colors hover:border-bg"
+          aria-label="Close menu"
+          className="grid size-10 place-items-center rounded-full border border-bg/30 transition-colors hover:border-bg"
         >
-          Close
+          <CloseIcon />
         </button>
       </div>
 

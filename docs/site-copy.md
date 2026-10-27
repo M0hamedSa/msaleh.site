@@ -2,7 +2,7 @@
 
 Generated from the code on 2026-10-27. Edit any text in place, keep the `source` tags and the `Lnn:` line numbers as they are, and send the file back (or point me at it); I apply each change to the file it came from.
 
-It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 projects, 4 case studies, 5 about, 6 archive, 7 playground, 8 small UI text left over. Text from the content files (`src/content/*.ts`) appears as labelled fields under a `source` tag; text written straight into a page or component appears as `- Lnn:` lines under its file name. Lines starting `aria-label:` are read out by screen readers, and `data-cursor:` is the word on the red cursor disc. Code excerpts in the case studies are real code comments from the projects; change them only if you want the excerpt itself different.
+It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 projects, 4 case studies, 5 about, 6 archive, 7 small UI text left over. Text from the content files (`src/content/*.ts`) appears as labelled fields under a `source` tag; text written straight into a page or component appears as `- Lnn:` lines under its file name. Lines starting `aria-label:` are read out by screen readers, and `data-cursor:` is the word on the red cursor disc.
 
 ## Part 1 · Every page
 
@@ -14,32 +14,31 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 **`src/components/site-header.tsx`**
 
-- L52: aria-label: Mohamed Saleh, home
-- L56: Systems developer · Giza
-- L61: aria-label: Write to me
-- L62: data-cursor: Write
-- L73: aria-label: Menu
+- L49: aria-label: Mohamed Saleh, home
+- L53: Systems developer · Giza
+- L58: aria-label: Write to me
+- L59: data-cursor: Write
+- L70: aria-label: Menu
 
 **`src/components/site-menu.tsx`**
 
-- L17: Work
-- L18: About
-- L19: Archive
-- L20: Contact
-- L131: aria-label: Site menu
-- L139: / Index
-- L147: Close
-- L151: aria-label: Main
-- L180: GitHub
+- L18: Work
+- L19: About
+- L20: Archive
+- L21: Contact
+- L132: aria-label: Site menu
+- L140: / Index
+- L146: aria-label: Close menu
+- L153: aria-label: Main
+- L182: GitHub
 
 **`src/components/site-footer.tsx`**
 
-- L39: Have a system in mind?
-- L44: GitHub
-- L51: data-cursor: Write
-- L54: Write to me
-- L60: © 2026 Mohamed Saleh
-- L62: Playground
+- L38: Have a system in mind?
+- L43: GitHub
+- L50: data-cursor: Write
+- L53: Write to me
+- L59: © 2026 Mohamed Saleh
 
 **`src/components/footer/copy-email.tsx`**
 
@@ -51,7 +50,7 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 **`src/components/footer/ascii-talk.tsx`**
 
 - L9: LET'S TALK
-- L171: aria-label: Let's talk
+- L181: aria-label: Let's talk
 
 **`src/app/not-found.tsx`**
 
@@ -335,49 +334,6 @@ Every problem found becomes a corrective action the factory must fix and prove w
 
 **Body:** Photos and findings are audit evidence. A dropped connection or a closed app must never lose one or record it twice.
 
-**Under The Hood**
-
-**Intro:** The device only ever holds the Audits its Consultant chose to take offline, and nothing it uploads can land twice.
-
-**Excerpts**
-
-**1.**
-
-**File:** powersync/sync-config.yaml
-
-**Text**
-
-```
-# The device learns which Audits to open from this small user-scoped stream.
-offline_selections:
-  auto_subscribe: true
-  query: SELECT audit_id AS id, audit_id FROM offline_audit
-         WHERE user_id = auth.user_id()
-```
-
-**2.**
-
-**File:** src/server/idempotency.ts
-
-**Text**
-
-```
-/**
- * Runs `create` once per actor and key, inside the caller's transaction.
- * A repeated key returns the first request's record instead;
- * a concurrent repeat waits for the first to commit.
- */
-```
-
-**3.**
-
-**File:** docs/offline-drills.md
-
-**Text:** A photo's file and details stay on the device until the server
-confirms it has recorded the photo. An upload that was cut off goes
-to the same storage key again, and recording the same photo twice
-keeps the first.
-
 **Decisions**
 
 **1.**
@@ -455,54 +411,6 @@ The new system had to carry 7,000 customers over, keep every guarantor and court
 **Title:** Every number explained
 
 **Body:** Staff must be able to show a customer exactly how their balance was reached, line by line, years after the fact.
-
-**Under The Hood**
-
-**Intro:** Every piastre is accounted for: money never passes through floating point, and the database itself refuses a charge for lateness.
-
-**Excerpts**
-
-**1.**
-
-**File:** drizzle/0029_legal_expense_charges.sql
-
-**Text**
-
-```
-ALTER TABLE "ledger_entries"
-  ADD CONSTRAINT "ledger_no_late_payment_fee"
-  CHECK ("ledger_entries"."entry_type" <> 'late_payment_fee')
-  NOT VALID;
-```
-
-**2.**
-
-**File:** docs/adr/0023-money-is-numeric…md
-
-**Text**
-
-```
-Money columns are numeric(14,2). The pure functions convert to
-integer piastres at their boundary and calculate in whole integers.
-
-The review rule: money never becomes a JS number between the
-database and the calculation core.
-```
-
-**3.**
-
-**File:** src/lib/allocation.ts
-
-**Text**
-
-```
-/**
- * Walk the Customer's Scheduled Installments oldest to newest,
- * settling each completely before moving to the next. Oldest first
- * is what makes arrears come first. No database, no clock, no
- * rounding: whole piastres in, whole piastres out.
- */
-```
 
 **Decisions**
 
@@ -582,52 +490,6 @@ The first version has run the firm's daily work since launch. A review in Octobe
 
 **Body:** Seven Arabic PDF reports that read correctly right to left and match the screens to the piastre.
 
-**Under The Hood**
-
-**Intro:** Row-level security used to guard the data from the browser. On the firm's own server, the same rules live in one module every query goes through.
-
-**Excerpts**
-
-**1.**
-
-**File:** lib/data/access.ts
-
-**Text**
-
-```
-// Who may see and change what (CONTEXT.md). The server reaches the
-// database as its owner, so these rules stand in for the row-level
-// security policies the browser used to go through; each names the
-// policy it replaces. Every query and action goes through them.
-```
-
-**2.**
-
-**File:** lib/money.ts
-
-**Text**
-
-```
-// The one place a Client's money is calculated. Every screen and PDF report
-// uses these functions so their totals always agree.
-
-// What the Client owes: Fees not covered by the Balance. Never negative.
-due: number;
-```
-
-**3.**
-
-**File:** lib/actions/settlements.ts
-
-**Text**
-
-```
-// What is carried forward is worked out here from the Client's
-// books, not taken from the form: what the firm holds minus the
-// Fees, less any refund paid out that day.
-if (latest && input.date <= latest.date) refuse("SETTLEMENT_TOO_EARLY");
-```
-
 **Decisions**
 
 **1.**
@@ -705,45 +567,6 @@ The website would be the smaller channel at launch, about 40 to 80 orders a mont
 **Title:** Why not an off-the-shelf store
 
 **Body:** The client reviewed the hosted platforms and turned them down: none handled shared stock and cash on delivery the way the factory works, and several don't serve Egypt.
-
-**Under The Hood**
-
-**Intro:** The storefront sells against one number, defined once, and an order either reserves its stock completely or not at all.
-
-**Excerpts**
-
-**1.**
-
-**File:** src/inventory/availability.ts
-
-**Text**
-
-```
-/**
- * The failure mode is chosen deliberately. The site says sold out
- * while stock exists, which costs a sale. It does not oversell,
- * which would cost a customer under cash on delivery.
- */
-export function availableFrom({ onHand, webAllocation, committed }) {
-  return Math.min(webAllocation, onHand) - committed
-}
-```
-
-**2.**
-
-**File:** docs/adr/0003-payload-owns-schema…md
-
-**Text:** Placing an order must lock the Variant's stock row, check
-availability against the ring-fence, write the order and its lines,
-write the Reservation and write a Movement — atomically.
-
-**3.**
-
-**File:** docs/adr/0006-confirmation-by-whatsapp…md
-
-**Text:** The confirmation token exists for unambiguous matching, not
-authentication. A staff member reading a message that says only
-"تمام" needs to know which order it belongs to.
 
 **Decisions**
 
@@ -823,53 +646,6 @@ To confirm: how buyers found and contacted the company before the site, and why 
 
 **Body:** The source photos run 8 to 10 MB a frame. Visitors must get small, resized images, and the deploy must not carry the originals.
 
-**Under The Hood**
-
-**Intro:** Each product is written once in both languages, and the build throws away every image no page links to.
-
-**Excerpts**
-
-**1.**
-
-**File:** src/content.config.ts
-
-**Text**
-
-```
-/* A localised string pair. Every buyer-facing field carries both
-   languages in one entry so a product is added once, not twice. */
-const i18nText = z.object({ en: z.string(), ar: z.string() });
-```
-
-**2.**
-
-**File:** integrations/prune-unused-assets.mjs
-
-**Text**
-
-```
-/**
- * Drops image files that the finished build never links to.
- * On this site that was 123 files and ~146MB of a 216MB build.
- * A file is removed only if its name appears in no emitted
- * HTML, CSS, JS, JSON, XML or plain-text file in the output.
- */
-```
-
-**3.**
-
-**File:** public/contact.php
-
-**Text**
-
-```
-/**
- * The line-break strip has to happen before anything is
- * interpolated into a mail header: htmlspecialchars() leaves
- * CR and LF intact, and the name goes into "Reply-To:".
- */
-```
-
 **Decisions**
 
 **1.**
@@ -916,15 +692,14 @@ The deploy shrank from 216 MB to about 70 MB once unused source images were drop
 
 **`src/app/work/[slug]/page.tsx`**
 
-- L53: In progress
-- L55: The full Case Study, with the problem and the decisions behind the system, is being written.
-- L88: title: The problem
-- L96: title: Constraints
-- L107: title: Under the Hood
-- L111: title: Three key decisions
-- L116: Decision
-- L122: Trade-off
-- L130: title: Outcome
+- L52: In progress
+- L54: The full Case Study, with the problem and the decisions behind the system, is being written.
+- L87: title: The problem
+- L95: title: Constraints
+- L106: title: Three key decisions
+- L111: Decision
+- L117: Trade-off
+- L125: title: Outcome
 
 **`src/components/case/case-ask.tsx`**
 
@@ -951,11 +726,6 @@ The deploy shrank from 216 MB to about 70 MB once unused source images were drop
 
 - L17: Screens
 - L19: Demo data, invented for this page
-
-**`src/components/case/under-the-hood.tsx`**
-
-- L106: Lights off
-- L106: Lights on
 
 ## Part 5 · About page
 
@@ -1058,77 +828,7 @@ The deploy shrank from 216 MB to about 70 MB once unused source images were drop
 - L40: All
 - L88: Live demo
 
-## Part 7 · Playground
-
-<sub>source: `src/content/playground.ts → README, SCHEMA`</sub>
-
-**README.md window**
-
-```
-# Mohamed Saleh
-Systems developer · Giza
-
-I keep a textile mill's ERP running, was a core part of its move to Odoo, and build the web systems around it.
-
-## Featured
-- True Visor   offline factory audits
-- Aqsat        installment contracts
-- True Legal   a law firm's client ledger
-- Kidzenia     a factory's online store
-
-## Contact
-moh.sa.dev@gmail.com
-github.com/M0hamedSa
-```
-
-**schema.sql window**
-
-```
--- aqsat · every financial event is one immutable row;
--- a balance is their sum (ADR-0001).
-CREATE TABLE "ledger_entries" (
-  "id" bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  "customer_id" uuid NOT NULL,
-  "contract_id" uuid,
-  "entry_type" text NOT NULL,
-  "entry_date" date NOT NULL,
-  "direction" text NOT NULL,
-  "amount" numeric(14, 2) NOT NULL,
-  "signed_amount" numeric(14, 2) GENERATED ALWAYS AS
-    (case when direction = 'debit' then amount else -amount end) STORED,
-  "created_at" timestamp with time zone DEFAULT now() NOT NULL,
-  CONSTRAINT "ledger_amount_positive" CHECK ("amount" > 0),
-  CONSTRAINT "ledger_direction_check"
-    CHECK ("direction" in ('debit', 'credit'))
-);
-
--- Lateness is counted, never charged (ADR-0035).
-ALTER TABLE "ledger_entries" ADD CONSTRAINT "ledger_no_late_payment_fee"
-  CHECK ("entry_type" <> 'late_payment_fee') NOT VALID;
-```
-
-**`src/app/playground/page.tsx`**
-
-- L6: Playground · Mohamed Saleh
-- L7: A desktop to play with: drag the windows around.
-- L14: Playground
-
-**`src/components/playground/desktop.tsx`**
-
-- L19: projects
-- L19: projects/
-- L20: readme
-- L20: README.md
-- L21: schema
-- L21: schema.sql
-- L114: archive/
-- L115: items
-- L132: /playground
-- L133: Drag the windows by their title bars
-- L174: aria-label: Windows
-- L191: Giza
-
-## Part 8 · Other text in components
+## Part 7 · Other text in components
 
 Labels, accessibility text and small UI words not covered above.
 
@@ -1145,9 +845,10 @@ Labels, accessibility text and small UI words not covered above.
 
 **`src/components/ink-trail.tsx`**
 
-- L36: #version 300 es precision highp float; in vec2 vUv, vL, vR, vT, vB; out vec4 o; 
-- L85: EXT_color_buffer_float
-- L253: WEBGL_lose_context
+- L40: #version 300 es precision highp float; in vec2 vUv, vL, vR, vT, vB; out vec4 o; 
+- L92: EXT_color_buffer_float
+- L92: EXT_color_buffer_half_float
+- L264: WEBGL_lose_context
 
 **`src/components/live-clock.tsx`**
 
@@ -1192,5 +893,4 @@ Labels, accessibility text and small UI words not covered above.
 - L19: Work
 - L20: About
 - L21: Archive
-- L22: Playground
 

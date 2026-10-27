@@ -2,22 +2,26 @@
 
 import { useEffect, useRef } from "react";
 
-import { useFinePointer } from "@/lib/use-fine-pointer";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 // Liquid ink cursor trail (C27, after Codegrid's "Most Satisfying Cursor Trail on
 // the Web", from Cappen). A stable-fluids simulation on the GPU: the pointer pushes
 // the fluid and drops ink into it; the ink is drawn in difference blend over the
 // page, so it inverts whatever it flows across, dark ink on bone and pale ink on
-// graphite, and fades within a second or so.
+// graphite, and fades within a second or so. On touch screens the finger draws it.
 
 const SIM_RES = 128; // velocity and pressure grid (short side)
 const DYE_RES = 768; // ink grid (short side)
+const DYE_RES_TOUCH = 512; // phones: a lighter ink grid, the screen is small anyway
 const PRESSURE_ITERATIONS = 20;
 const CURL = 14; // swirl kept in the flow
 const VELOCITY_DISSIPATION = 1.6; // per second
 const INK_DISSIPATION = 2.8; // per second
 const SPLAT_RADIUS = 0.0007; // as a share of the screen
+// A phone screen is narrow and tall, so the same share draws a blob a third of its width;
+// a finger also crosses more of the screen per stroke. Both are scaled down on touch.
+const TOUCH_RADIUS = 0.35;
+const TOUCH_FORCE = 0.6;
 const SPLAT_FORCE = 3000;
 const IDLE_STOP_MS = 4000; // stop drawing once the ink has gone
 
@@ -81,8 +85,11 @@ type Fbo = { tex: WebGLTexture; fb: WebGLFramebuffer; w: number; h: number };
 type DoubleFbo = { read: Fbo; write: Fbo; swap: () => void; w: number; h: number };
 
 function start(canvas: HTMLCanvasElement) {
+  const touch = window.matchMedia("(pointer: coarse)").matches;
   const gl = canvas.getContext("webgl2", { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false });
-  if (!gl || !gl.getExtension("EXT_color_buffer_float")) return null;
+  // Half-float targets are all the simulation needs. Many phone GPUs (iPhones among
+  // them) only offer the half-float extension; requiring the full one left phones without ink.
+  if (!gl || !(gl.getExtension("EXT_color_buffer_float") || gl.getExtension("EXT_color_buffer_half_float"))) return null;
 
   const compile = (type: number, src: string) => {
     const s = gl.createShader(type)!;
@@ -116,6 +123,7 @@ function start(canvas: HTMLCanvasElement) {
   gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(0);
 
+  let renderable = true;
   const fbo = (w: number, h: number, internal: number, format: number): Fbo => {
     const tex = gl.createTexture()!;
     gl.bindTexture(gl.TEXTURE_2D, tex);
@@ -127,6 +135,7 @@ function start(canvas: HTMLCanvasElement) {
     const fb = gl.createFramebuffer()!;
     gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+    if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) renderable = false;
     gl.viewport(0, 0, w, h);
     gl.clear(gl.COLOR_BUFFER_BIT);
     return { tex, fb, w, h };
@@ -148,7 +157,7 @@ function start(canvas: HTMLCanvasElement) {
     canvas.width = Math.round(canvas.clientWidth * dpr);
     canvas.height = Math.round(canvas.clientHeight * dpr);
     const [sw, sh] = size(SIM_RES);
-    const [dw, dh] = size(DYE_RES);
+    const [dw, dh] = size(touch ? DYE_RES_TOUCH : DYE_RES);
     velocity = double(sw, sh, gl.RG16F, gl.RG);
     pressure = double(sw, sh, gl.R16F, gl.RED);
     divergence = fbo(sw, sh, gl.R16F, gl.RED);
@@ -156,6 +165,7 @@ function start(canvas: HTMLCanvasElement) {
     dye = double(dw, dh, gl.R16F, gl.RED);
   };
   resize();
+  if (!renderable) return null;
 
   const run = (prog: { p: WebGLProgram; u: Record<string, WebGLUniformLocation | null> }, target: Fbo | null, set: (u: Record<string, WebGLUniformLocation | null>) => void, texel: [number, number]) => {
     gl.useProgram(prog.p);
@@ -182,6 +192,7 @@ function start(canvas: HTMLCanvasElement) {
     return unit;
   };
 
+  const radius = SPLAT_RADIUS * (touch ? TOUCH_RADIUS : 1);
   const splat = (x: number, y: number, dx: number, dy: number) => {
     const aspect = canvas.width / canvas.height;
     const simTexel: [number, number] = [1 / velocity.w, 1 / velocity.h];
@@ -190,7 +201,7 @@ function start(canvas: HTMLCanvasElement) {
       gl.uniform1f(u.aspect, aspect);
       gl.uniform2f(u.point, x, y);
       gl.uniform3f(u.color, dx, dy, 0);
-      gl.uniform1f(u.radius, SPLAT_RADIUS * Math.max(aspect, 1));
+      gl.uniform1f(u.radius, radius * Math.max(aspect, 1));
     }, simTexel);
     velocity.swap();
     run(programs.splat, dye.write, (u) => {
@@ -198,7 +209,7 @@ function start(canvas: HTMLCanvasElement) {
       gl.uniform1f(u.aspect, aspect);
       gl.uniform2f(u.point, x, y);
       gl.uniform3f(u.color, 0.9, 0, 0);
-      gl.uniform1f(u.radius, SPLAT_RADIUS * Math.max(aspect, 1));
+      gl.uniform1f(u.radius, radius * Math.max(aspect, 1));
     }, [1 / dye.w, 1 / dye.h]);
     dye.swap();
   };
@@ -253,19 +264,23 @@ function start(canvas: HTMLCanvasElement) {
   return { step, splat, resize, lose: () => gl.getExtension("WEBGL_lose_context")?.loseContext() };
 }
 
-/** The ink layer: a fixed canvas over the page, mouse and trackpad only, off under reduced motion. */
+/** The ink layer: a fixed canvas over the page, drawn by the mouse or a finger; off under reduced motion. */
 export function InkTrail() {
-  const canvas = useRef<HTMLCanvasElement>(null);
-  const fine = useFinePointer();
+  const layer = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
-  const active = fine && !reduced;
+  const active = !reduced;
 
   useEffect(() => {
     if (!active) return;
-    const el = canvas.current!;
-    const fluid = start(el);
+    const el = layer.current!;
+    // A fresh canvas each run: a context lost in cleanup can't be used again, which
+    // left the ink off whenever the effect ran twice (React's dev mode does).
+    const canvas = document.createElement("canvas");
+    canvas.className = "block h-full w-full";
+    el.append(canvas);
+    const fluid = start(canvas);
     if (!fluid) {
-      el.hidden = true;
+      canvas.remove();
       return;
     }
     let raf = 0, last = performance.now(), lastInput = 0, px = -1, py = -1;
@@ -277,43 +292,70 @@ export function InkTrail() {
       for (const s of pending.splice(0)) fluid.splat(...s);
       fluid.step(dt);
       raf = now - lastInput < IDLE_STOP_MS ? requestAnimationFrame(frame) : 0;
+      // Once the ink is gone the layer leaves the screen, so an idle page scrolls
+      // without blending a full-screen canvas every frame (it matters on phones).
+      if (!raf) el.style.visibility = "hidden";
     };
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse") return;
-      const x = e.clientX / window.innerWidth, y = 1 - e.clientY / window.innerHeight;
+    const draw = (clientX: number, clientY: number, fromTouch = false) => {
+      const x = clientX / window.innerWidth, y = 1 - clientY / window.innerHeight;
       if (px >= 0) {
-        const dx = (x - px) * SPLAT_FORCE, dy = (y - py) * SPLAT_FORCE;
+        const force = SPLAT_FORCE * (fromTouch ? TOUCH_FORCE : 1);
+        const dx = (x - px) * force, dy = (y - py) * force;
         if (dx || dy) pending.push([x, y, dx, dy]);
       }
       px = x;
       py = y;
       lastInput = performance.now();
       if (!raf) {
+        el.style.visibility = "";
         last = lastInput;
         raf = requestAnimationFrame(frame);
       }
     };
+    const onMove = (e: PointerEvent) => e.pointerType === "mouse" && draw(e.clientX, e.clientY);
     const onLeave = () => { px = py = -1; };
-    const onResize = () => fluid.resize();
+    // Touch events keep coming while the finger scrolls the page; pointer events stop.
+    const onTouchStart = (e: TouchEvent) => {
+      onLeave();
+      draw(e.touches[0].clientX, e.touches[0].clientY, true);
+    };
+    const onTouchMove = (e: TouchEvent) => draw(e.touches[0].clientX, e.touches[0].clientY, true);
+    // Phones resize the window as their address bar slides in and out while scrolling;
+    // only a real change (rotation, a new width) rebuilds the grids and drops the ink.
+    let width = window.innerWidth, height = window.innerHeight;
+    const onResize = () => {
+      if (window.innerWidth === width && Math.abs(window.innerHeight - height) < 160) return;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      fluid.resize();
+    };
 
     window.addEventListener("pointermove", onMove, { passive: true });
     document.documentElement.addEventListener("pointerleave", onLeave);
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchend", onLeave, { passive: true });
     window.addEventListener("resize", onResize);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
       document.documentElement.removeEventListener("pointerleave", onLeave);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onLeave);
       window.removeEventListener("resize", onResize);
       fluid.lose();
+      canvas.remove();
     };
   }, [active]);
 
   if (!active) return null;
   return (
-    <canvas
-      ref={canvas}
+    <div
+      ref={layer}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-[85] h-full w-full mix-blend-difference"
+      className="pointer-events-none fixed inset-0 z-[85] mix-blend-difference"
+      style={{ visibility: "hidden" }}
     />
   );
 }

@@ -19,7 +19,6 @@ const PAGE_TITLES: Record<string, string> = {
   "/work": "Work",
   "/about": "About",
   "/archive": "Archive",
-  "/playground": "Playground",
 };
 
 /** What the curtain shows: a project's name, or the page's. */

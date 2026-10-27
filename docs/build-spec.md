@@ -27,7 +27,7 @@ https://claude.ai/artifact/GxGEV68JmyVPg2WBtdx9vr
 
 **Light theme (P01):** bone `#ECEAE4` · ink `#111110` · card `#E2DFD7` · mute `#625E56` · line `#CFCBC1` · accent **signal red `#E01E1E`** · small red text `#BC1919` · live `#1F8A4C`
 **Dark theme (warm graphite, the night version of bone):** `#141311` · card `#1E1C19` · text `#EBE8E1` · mute `#8C877D` · line `#2C2A26` · accent **`#FF4B3A`** · live `#3DDC84`
-**Always-dark surfaces** (footer, preloader, Under the Hood): `--loader-bg` / `--loader-fg`, with red text in `--loader-accent #FF4B3A`.
+**Always-dark surfaces** (footer, preloader): `--loader-bg` / `--loader-fg`, with red text in `--loader-accent #FF4B3A`.
 
 The accent was orange/amber in the Motion Library picks; changed to red in both themes on 2026-10-21. On 2026-10-27, after the Impeccable critique (snapshot in `.impeccable/critique/`), the dark theme moved from cold blue graphite (`#121417`, iOS red `#FF3B30`) to warm graphite so both themes are one material, and small text, labels on cards and the live dot were brought to WCAG AA.
 
@@ -44,12 +44,12 @@ The accent was orange/amber in the Motion Library picks; changed to red in both 
 | Smooth scroll | Lenis | Off under reduced motion |
 | Header | Logo (MS + red status square that blinks like a block cursor; chosen in the MS Logo Lab: L3 shape, L2 motion), mono meta row ("Systems developer · Giza"), then three round icon buttons (Header Icon Picks, 2026-10-27; `header-icons.tsx`): theme (E12; a sun that folds into a moon), **Write to me** (red; a speech bubble whose typing dots loop, paused while the menu is open; glides down to the contact block) and Menu (four dots that turn a quarter while open). Screen readers hear "Switch to dark theme", "Write to me" and "Menu" | Hides while scrolling down; comes back with a solid background on the way up. The clock lives only in the hero (removed from the header, menu and footer on 2026-10-27) |
 | Menu | **E05** clip-path overlay + **C23** each link builds letter by letter | Escape closes; focus is trapped and restored |
-| Cursor | **E06c** labelled cursor ("View", "Open", "Drag") + **C27** liquid ink trail (added 2026-10-27, after Codegrid's "Most Satisfying Cursor Trail on the Web", from Cappen) | Fine pointer only, off under reduced motion. The ink is a GPU fluid simulation (`ink-trail.tsx`) drawn in difference blend, so it inverts what it flows over in both themes (red turns cyan inside it, as inversion does) and fades in about a second; it stops drawing when the pointer rests. The red disc appears only over `data-cursor` zones, above the ink; the normal pointer stays everywhere else |
+| Cursor | **E06c** labelled cursor ("View", "Open", "Drag") + **C27** liquid ink trail (added 2026-10-27, after Codegrid's "Most Satisfying Cursor Trail on the Web", from Cappen) | The disc is fine pointer only; the ink also follows a finger on touch screens (see Touch). Both are off under reduced motion. The ink is a GPU fluid simulation (`ink-trail.tsx`) drawn in difference blend, so it inverts what it flows over in both themes (red turns cyan inside it, as inversion does) and fades in about a second; it stops drawing when the pointer rests. The red disc appears only over `data-cursor` zones, above the ink; the normal pointer stays everywhere else |
 | Buttons and links | **E06b** fill and underline hovers; **E06** magnetic on main calls to action | Magnetic on desktop only |
 | Headings | **C16** block reveal, once, on entering the screen | |
 | Route change | One of five at random, never the same twice running: **E11** ink columns, **C43** four panels, **C41** block grid, **C42** curved wave, and the red curtain with the page name | The mono route label scrambles in, except on the curtain |
 | Opening a Case Study | The same random transition as every other link | C40 (card morph) was replaced on 2026-10-21 |
-| Footer | **F1** page lifts away → **C6** ASCII "LET'S TALK" scatters from the cursor (half height since 2026-10-27, one line on desktop) → three steps, "01 You write · 02 We talk · 03 I send a plan" (`NEXT_STEPS` in `content/contact.ts`; phones show the step names only) → **E13** contact block (question, magnetic "Write to me", copy-email with a scramble confirmation) | The footer is dark and the same in both themes (C30 fluted glass was removed on 2026-10-27: its red glow in dark felt odd); sits under every page, and the menu's Contact glides down to it. LinkedIn and the Playground link join it once they exist |
+| Footer | **F1** page lifts away → **C6** ASCII "LET'S TALK" scatters from the cursor (half height since 2026-10-27, one line on desktop) → three steps, "01 You write · 02 We talk · 03 I send a plan" (`NEXT_STEPS` in `content/contact.ts`; phones show the step names only) → **E13** contact block (question, magnetic "Write to me", copy-email with a scramble confirmation) | The footer is dark and the same in both themes (C30 fluted glass was removed on 2026-10-27: its red glow in dark felt odd); sits under every page, and the menu's Contact glides down to it. LinkedIn joins it once it exists |
 
 ## 5. Pages
 
@@ -71,7 +71,7 @@ The accent was orange/amber in the Motion Library picks; changed to red in both 
 2. **The problem:** the business situation before the system existed.
 3. **Constraints:** for example, offline factory floors, Arabic/English, a legacy SQL Server.
 4. *(Removed 2026-10-21.)* The C1 architecture diagram, then a build-log strip, were tried here and dropped: a drawn diagram couldn't be kept accurate.
-5. **Under the Hood (C26):** a flashlight reveals the real stack and config. On touch, it's a plain visible block.
+5. *(Removed 2026-10-27.)* Under the Hood (C26), a flashlight over real code comments, was dropped at the owner's request; the parts are now numbered 01 problem, 02 constraints, 03 decisions, 04 outcome.
 6. **Three key decisions:** each with its trade-off, taken from the repo's ADRs and `CONTEXT.md`.
 7. **Outcome:** numbers or qualitative results, plus screens. Then the ask (`case-ask.tsx`, 2026-10-27): "Need something like {Project} for your business?" with the email and a "Write to me" button, on every Case Study, the unwritten ones too.
 8. **Next project:** the next Case Study as a large link at the end of the page. It plays once on entering view (C16 name reveal, image wipe) and opens by click with the C40 morph. Replaced C15 on 2026-10-21: scroll-driven opening proved unreliable (pinning felt stuck, the hand-off popped).
@@ -88,8 +88,7 @@ Featured Projects: True Legal · Kidzenia · Tiba Masr · Aqsat · True Visor (l
 - A short "How I work" block (discover → map → build → train). Static text, no extra effect.
 - CV download.
 
-### `/playground` Playground
-- **C12** draggable desktop-style interface with windows for projects, the README and the schema. Linked from the footer only.
+*`/playground` (C12, a draggable desktop) was removed on 2026-10-27 at the owner's request, with its footer link.*
 
 ## 6. Images
 
@@ -103,7 +102,7 @@ Featured Projects: True Legal · Kidzenia · Tiba Masr · Aqsat · True Visor (l
 
 - **No animation plays under another (2026-10-27).** Entrance animations wait until their page is on screen: the home hero waits for the boot preloader's columns to clear and for any page-transition cover (`onIntroReady` + `onPageShown` in `lib/intro.ts`); section headings, the About line reveal, the next-case-study block and the Playground windows wait for `onPageShown`. The page transition lowers the flag as its cover comes down and raises it 0.3s into the lift. Any new entrance animation must use the same gate.
 - **`prefers-reduced-motion`:** no Lenis, no preloader, no pinning or scrubbing. Text is shown immediately and the CRT is static. It's a complete Reduced Motion Experience, not a broken page.
-- **Touch:** no custom cursor, no ink trail, no magnetic buttons, no flashlight, no CRT and no ASCII scatter. Everything else runs.
+- **Touch (revised 2026-10-27, after the owner found effects missing on phones):** the finger draws the ink trail (smaller and gentler than with a mouse, and the ink layer leaves the screen when idle), steers the hero's ASCII mark, and scatters the footer's "LET'S TALK". Still mouse-only: the labelled cursor, magnetic buttons and the 3D CRT. While the boot screen runs, the header waits (CSS `:has(.boot-loader)`), since the boot screen sits under the header's layer. Below tablet width the headline scales with the screen so "I build them." stays on one line down to 320px. The menu closes with an X icon.
 - **One WebGL context at a time.** Three.js loads only on `/archive`.
 - **Budgets:** Lighthouse Performance ≥ 90 on mobile for `/` and a Case Study · LCP < 2.5 s · JS for the home route < 200 KB gzip, excluding fonts.
 
@@ -117,7 +116,7 @@ Featured Projects: True Legal · Kidzenia · Tiba Masr · Aqsat · True Visor (l
 6. Footer (F1 + C6 + E13)
 7. `/about` (line-reveal header, E09)
 8. `/archive` + CRT Signature Moment (C4)
-9. `/playground` (C12)
+9. *(Removed 2026-10-27.)* `/playground` (C12)
 10. Screenshot capture and treatment, then the remaining four Case Studies
 11. Accessibility and performance pass, then deploy (now www.msaleh.site) and archive the old portfolio repos
 
