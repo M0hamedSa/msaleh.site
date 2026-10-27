@@ -21,7 +21,9 @@ type Particle = { hx: number; hy: number; x: number; y: number; vx: number; vy: 
  * so the letters come out large enough to read.
  */
 function layout(width: number, height: number, display: string) {
-  const cellW = Math.max(6, Math.min(10, width / 150));
+  // A phone gets finer cells: at 6px a letter was only some eight rows tall, too few
+  // for the strokes of an S or the apostrophe to read.
+  const cellW = Math.max(4, Math.min(10, width / 150));
   const cellH = cellW * 1.55;
   const cols = Math.floor(width / cellW);
   const rows = Math.floor(height / cellH);
