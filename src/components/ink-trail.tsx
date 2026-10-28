@@ -28,8 +28,6 @@ const IDLE_STOP_MS = 4000; // stop drawing once the ink has gone
 // with splats at most this many CSS pixels apart, up to a cap per stroke.
 const TOUCH_STEP_PX = 10;
 const TOUCH_MAX_STEPS = 8;
-const TOUCH_FRESH_MS = 24; // a touchmove this recent places the finger; the scroll waits
-const TOUCH_EASE = 0.8; // share of a correction still left after each drawn point
 
 const VERT = `#version 300 es
 precision highp float;
@@ -329,58 +327,20 @@ export function InkTrail() {
     };
     const onMove = (e: PointerEvent) => e.pointerType === "mouse" && draw(e.clientX, e.clientY);
     const onLeave = () => { px = py = -1; };
-    // Pointer events stop once the finger scrolls the page; touchmoves don't. iOS sends
-    // them every frame. Android's Chrome, while it scrolls, sends one every 200ms (on
-    // time, logged on a real phone), but fires scroll every frame, and the page moves
-    // with the finger to within a few pixels. So between touchmoves the finger follows
-    // the scroll along it and keeps its last sideways place: replayed over strokes from
-    // that phone, guessing the sideways travel (from the slope or speed so far) missed
-    // by more than holding still. Each touchmove eases the ink over rather than jumping.
+    // Pointer events stop once the finger scrolls the page; touchmoves keep coming every
+    // frame, so they alone place the finger. On Android that holds only because Lenis
+    // scrolls touch itself (see SmoothScroll): when Chrome scrolls, it sends one every
+    // 200ms, and estimating the finger from the scroll between them never matched it.
     // The page pans vertically only, so a finger moving across is a plain touch.
     const root = document.documentElement;
     const touchAction = root.style.touchAction;
     if (window.matchMedia("(pointer: coarse)").matches) root.style.touchAction = "pan-y pinch-zoom";
-    let touching = false, guessing = false, lastTouch = 0;
-    let tx = 0, ty = 0, sx = 0, sy = 0, inkX = 0, inkY = 0, offX = 0, offY = 0;
-    const follow = (x: number, y: number) => {
-      inkX = x + offX;
-      inkY = y + offY;
-      draw(inkX, inkY, true);
-      offX = Math.abs(offX) < 0.5 ? 0 : offX * TOUCH_EASE;
-      offY = Math.abs(offY) < 0.5 ? 0 : offY * TOUCH_EASE;
-    };
-    const onTouch = (e: TouchEvent) => {
-      tx = e.touches[0].clientX;
-      ty = e.touches[0].clientY;
-      if (guessing) {
-        offX = inkX - tx;
-        offY = inkY - ty;
-        guessing = false;
-      }
-      sx = window.scrollX;
-      sy = window.scrollY;
-      lastTouch = performance.now();
-      follow(tx, ty);
-    };
+    const onTouch = (e: TouchEvent) => draw(e.touches[0].clientX, e.touches[0].clientY, true);
     const onTouchStart = (e: TouchEvent) => {
-      touching = true;
-      guessing = false;
       onLeave();
-      offX = offY = 0;
       onTouch(e);
     };
-    const onTouchEnd = (e: TouchEvent) => {
-      if (e.touches.length) return;
-      touching = false;
-      onLeave();
-    };
-    // Where touchmoves come every frame (iOS) they place the finger themselves.
-    const onScroll = () => {
-      if (!touching || performance.now() - lastTouch < TOUCH_FRESH_MS) return;
-      guessing = true;
-      const dy = sy - window.scrollY;
-      follow(tx - (window.scrollX - sx), ty + dy);
-    };
+    const onTouchEnd = (e: TouchEvent) => !e.touches.length && onLeave();
     // Phones resize the window as their address bar slides in and out while scrolling;
     // only a real change (rotation, a new width) rebuilds the grids and drops the ink.
     let width = window.innerWidth, height = window.innerHeight;
@@ -398,7 +358,6 @@ export function InkTrail() {
     window.addEventListener("touchmove", onTouch, { passive: true });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
     window.addEventListener("touchcancel", onTouchEnd, { passive: true });
-    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
     return () => {
       cancelAnimationFrame(raf);
@@ -409,7 +368,6 @@ export function InkTrail() {
       window.removeEventListener("touchmove", onTouch);
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("touchcancel", onTouchEnd);
-      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
       fluid.lose();
       canvas.remove();

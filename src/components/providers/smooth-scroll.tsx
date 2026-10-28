@@ -34,7 +34,11 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (reduced) return;
 
-    const lenis = new Lenis({ lerp: 0.1 });
+    // While Android's Chrome scrolls the page itself it sends a touchmove only every
+    // 200ms, so the ink trail can't keep up with the finger. Lenis scrolling a finger's
+    // swipe itself keeps the touchmoves coming every frame. iOS sends them every frame
+    // anyway, so it keeps its native scrolling.
+    const lenis = new Lenis({ lerp: 0.1, syncTouch: /Android/i.test(navigator.userAgent) });
     lenis.on("scroll", ScrollTrigger.update);
     const tick = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(tick);
