@@ -24,12 +24,10 @@ const TOUCH_RADIUS = 0.35;
 const TOUCH_FORCE = 0.6;
 const SPLAT_FORCE = 3000;
 const IDLE_STOP_MS = 4000; // stop drawing once the ink has gone
-// Touch input can arrive sparsely (Android while scrolling), so a finger's stroke is
-// filled in with splats at most this many CSS pixels apart, up to a cap per stroke.
+// A quick finger crosses many pixels between touchmoves, so its stroke is filled in
+// with splats at most this many CSS pixels apart, up to a cap per stroke.
 const TOUCH_STEP_PX = 10;
 const TOUCH_MAX_STEPS = 8;
-const TOUCH_FRESH_MS = 50; // a touchmove this recent outranks the scroll's estimate
-const TOUCH_MAX_SLOPE = 3; // sideways px per px along the scroll, at most
 
 const VERT = `#version 300 es
 precision highp float;
@@ -329,60 +327,20 @@ export function InkTrail() {
     };
     const onMove = (e: PointerEvent) => e.pointerType === "mouse" && draw(e.clientX, e.clientY);
     const onLeave = () => { px = py = -1; };
-    // Pointer events stop once the finger scrolls the page. iOS keeps sending touchmoves,
-    // but Android's Chrome sends few or none; it does fire scroll every frame, and a
-    // finger scrolling the page moves with it, so its position follows from the scroll.
-    // The scroll only says where the finger went along the scroll, so sideways strokes
-    // are kept out of it: the page pans vertically only, and a finger moving across
-    // stays a plain touch whose touchmoves arrive every frame on Android too.
+    // Pointer events stop once the finger scrolls the page; touchmoves keep coming, on
+    // time and every frame, on iOS and on Android's Chrome alike (logged on a Galaxy A55,
+    // Chrome 156), so they alone place the finger. Estimating it from the scroll as well
+    // drew a second, slightly different stroke that the ink zigzagged and flicked between.
+    // The page pans vertically only, so a finger moving across is a plain touch.
     const root = document.documentElement;
     const touchAction = root.style.touchAction;
     if (window.matchMedia("(pointer: coarse)").matches) root.style.touchAction = "pan-y pinch-zoom";
-    // On Android the few touchmoves sent while Chrome scrolls come late, so they put the
-    // finger back where it was a moment before and the ink flicked about. Once the page
-    // scrolls, the scroll alone moves the finger until it lifts: along the scroll by the
-    // scroll itself, and sideways at the slope it set off at, read from the touchmoves
-    // that came before the page started to move (those are on time).
-    const android = /Android/i.test(navigator.userAgent);
-    let touching = false, scrolling = false, tx = 0, ty = 0, sx = 0, sy = 0, ox = 0, oy = 0, slope = 0, lastTouch = 0;
-    const onTouch = (e: TouchEvent) => {
-      if (android && scrolling) return;
-      tx = e.touches[0].clientX;
-      ty = e.touches[0].clientY;
-      sx = window.scrollX;
-      sy = window.scrollY;
-      lastTouch = performance.now();
-      draw(tx, ty, true);
-    };
+    const onTouch = (e: TouchEvent) => draw(e.touches[0].clientX, e.touches[0].clientY, true);
     const onTouchStart = (e: TouchEvent) => {
-      touching = true;
-      scrolling = false;
       onLeave();
-      ox = e.touches[0].clientX;
-      oy = e.touches[0].clientY;
       onTouch(e);
     };
-    const onTouchEnd = (e: TouchEvent) => {
-      if (e.touches.length) return;
-      touching = scrolling = false;
-      onLeave();
-    };
-    const onScroll = () => {
-      if (!touching) return;
-      if (android) {
-        if (!scrolling) {
-          scrolling = true;
-          slope = Math.abs(ty - oy) < 2 ? 0 : Math.max(-TOUCH_MAX_SLOPE, Math.min(TOUCH_MAX_SLOPE, (tx - ox) / (ty - oy)));
-        }
-        const dy = sy - window.scrollY;
-        draw(tx - (window.scrollX - sx) + slope * dy, ty + dy, true);
-        return;
-      }
-      // Where touchmoves keep coming (iOS) they're the truth; drawing the scroll's
-      // estimate in the same frame as well made the stroke zigzag between the two.
-      if (performance.now() - lastTouch < TOUCH_FRESH_MS) return;
-      draw(tx - (window.scrollX - sx), ty - (window.scrollY - sy), true);
-    };
+    const onTouchEnd = (e: TouchEvent) => !e.touches.length && onLeave();
     // Phones resize the window as their address bar slides in and out while scrolling;
     // only a real change (rotation, a new width) rebuilds the grids and drops the ink.
     let width = window.innerWidth, height = window.innerHeight;
@@ -400,7 +358,6 @@ export function InkTrail() {
     window.addEventListener("touchmove", onTouch, { passive: true });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
     window.addEventListener("touchcancel", onTouchEnd, { passive: true });
-    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
     return () => {
       cancelAnimationFrame(raf);
@@ -411,7 +368,6 @@ export function InkTrail() {
       window.removeEventListener("touchmove", onTouch);
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("touchcancel", onTouchEnd);
-      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
       fluid.lose();
       canvas.remove();
