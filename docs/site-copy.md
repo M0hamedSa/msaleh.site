@@ -690,7 +690,7 @@ Quote requests reach the export team's inbox, with a fallback if the host's mail
 
 The deployment shrank from 216 MB to about 70 MB.
 
-**Note:** Business figures are kept private at the client's request.
+**Note:** The site now serves as the company's export catalogue for importers, in English and Arabic.
 
 **`src/app/work/[slug]/opengraph-image.tsx`**
 

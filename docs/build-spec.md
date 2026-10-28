@@ -76,7 +76,7 @@ The accent was orange/amber in the Motion Library picks; changed to red in both 
 7. **Outcome:** numbers or qualitative results, plus screens. Then the ask (`case-ask.tsx`, 2026-10-27): "Need something like {Project} for your business?" with the email and a "Write to me" button, on every Case Study, the unwritten ones too.
 8. **Next project:** the next Case Study as a large link at the end of the page. It plays once on entering view (C16 name reveal, image wipe) and opens by click with the C40 morph. Replaced C15 on 2026-10-21: scroll-driven opening proved unreliable (pinning felt stuck, the hand-off popped).
 
-Featured Projects: True Legal · Kidzenia · Tiba Masr · Aqsat · True Visor (live work first; Tiba Masr joined on 2026-10-26 and its Case Study went live on 2026-10-28, kept general at the client's request). KTC Scanner Hub is paused (2026-10-21) until its Case Study is written; its data waits in `PAUSED_PROJECTS`.
+Featured Projects: True Legal · Kidzenia · Tiba Masr · Aqsat · True Visor (live work first; Tiba Masr joined on 2026-10-26 and its Case Study went live on 2026-10-28, kept general at the client's request: no figures). KTC Scanner Hub is paused (2026-10-21) until its Case Study is written; its data waits in `PAUSED_PROJECTS`.
 
 ### `/archive` Archive
 - A filterable list (Production · Client · Tool · Early work) of every other Project: KTC Scanner Hub (while paused from Featured Projects), Odoo implementation, SQL troubleshooting agent, QR complaint system, Wanloo Sales Order, WakeUp, Help Desk / IT Ticketing, Tick Hub, MovieApi. Lines come from each repo's README or the CV; live demos are linked where they exist.

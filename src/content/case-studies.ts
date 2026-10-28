@@ -301,7 +301,7 @@ const tibaMasr: CaseStudy = {
       "Quote requests reach the export team's inbox, with a fallback if the host's mail service fails.",
       "The deployment shrank from 216 MB to about 70 MB.",
     ],
-    note: "Business figures are kept private at the client's request.",
+    note: "The site now serves as the company's export catalogue for importers, in English and Arabic.",
   },
 };
 
