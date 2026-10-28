@@ -24,6 +24,11 @@ const TOUCH_RADIUS = 0.35;
 const TOUCH_FORCE = 0.6;
 const SPLAT_FORCE = 3000;
 const IDLE_STOP_MS = 4000; // stop drawing once the ink has gone
+// Touch input can arrive sparsely (Android while scrolling), so a finger's stroke is
+// filled in with splats at most this many CSS pixels apart, up to a cap per stroke.
+const TOUCH_STEP_PX = 10;
+const TOUCH_MAX_STEPS = 8;
+const TOUCH_FRESH_MS = 50; // a touchmove this recent outranks the scroll's estimate
 
 const VERT = `#version 300 es
 precision highp float;
@@ -296,12 +301,21 @@ export function InkTrail() {
       // without blending a full-screen canvas every frame (it matters on phones).
       if (!raf) el.style.visibility = "hidden";
     };
+    // The canvas fills the fixed layer, so points are placed against its box, which
+    // tracks a phone's address bar where window.innerHeight may not.
+    let box = el.getBoundingClientRect();
     const draw = (clientX: number, clientY: number, fromTouch = false) => {
-      const x = clientX / window.innerWidth, y = 1 - clientY / window.innerHeight;
+      const x = (clientX - box.left) / box.width, y = 1 - (clientY - box.top) / box.height;
       if (px >= 0) {
         const force = SPLAT_FORCE * (fromTouch ? TOUCH_FORCE : 1);
-        const dx = (x - px) * force, dy = (y - py) * force;
-        if (dx || dy) pending.push([x, y, dx, dy]);
+        // A finger's points can land far apart; split the gap so the ink stays one stroke.
+        const steps = fromTouch
+          ? Math.min(TOUCH_MAX_STEPS, Math.max(1, Math.ceil(Math.hypot((x - px) * box.width, (y - py) * box.height) / TOUCH_STEP_PX)))
+          : 1;
+        const dx = ((x - px) * force) / steps, dy = ((y - py) * force) / steps;
+        if (dx || dy) {
+          for (let i = 1; i <= steps; i++) pending.push([px + ((x - px) * i) / steps, py + ((y - py) * i) / steps, dx, dy]);
+        }
       }
       px = x;
       py = y;
@@ -317,12 +331,19 @@ export function InkTrail() {
     // Pointer events stop once the finger scrolls the page. iOS keeps sending touchmoves,
     // but Android's Chrome sends few or none; it does fire scroll every frame, and a
     // finger scrolling the page moves with it, so its position follows from the scroll.
-    let touching = false, tx = 0, ty = 0, sx = 0, sy = 0;
+    // The scroll only says where the finger went along the scroll, so sideways strokes
+    // are kept out of it: the page pans vertically only, and a finger moving across
+    // stays a plain touch whose touchmoves arrive every frame on Android too.
+    const root = document.documentElement;
+    const touchAction = root.style.touchAction;
+    if (window.matchMedia("(pointer: coarse)").matches) root.style.touchAction = "pan-y pinch-zoom";
+    let touching = false, tx = 0, ty = 0, sx = 0, sy = 0, lastTouch = 0;
     const onTouch = (e: TouchEvent) => {
       tx = e.touches[0].clientX;
       ty = e.touches[0].clientY;
       sx = window.scrollX;
       sy = window.scrollY;
+      lastTouch = performance.now();
       draw(tx, ty, true);
     };
     const onTouchStart = (e: TouchEvent) => {
@@ -335,11 +356,17 @@ export function InkTrail() {
       touching = false;
       onLeave();
     };
-    const onScroll = () => touching && draw(tx - (window.scrollX - sx), ty - (window.scrollY - sy), true);
+    // Where touchmoves keep coming (iOS) they're the truth; drawing the scroll's estimate
+    // in the same frame as well made the stroke zigzag between the two.
+    const onScroll = () => {
+      if (!touching || performance.now() - lastTouch < TOUCH_FRESH_MS) return;
+      draw(tx - (window.scrollX - sx), ty - (window.scrollY - sy), true);
+    };
     // Phones resize the window as their address bar slides in and out while scrolling;
     // only a real change (rotation, a new width) rebuilds the grids and drops the ink.
     let width = window.innerWidth, height = window.innerHeight;
     const onResize = () => {
+      box = el.getBoundingClientRect();
       if (window.innerWidth === width && Math.abs(window.innerHeight - height) < 160) return;
       width = window.innerWidth;
       height = window.innerHeight;
@@ -356,6 +383,7 @@ export function InkTrail() {
     window.addEventListener("resize", onResize);
     return () => {
       cancelAnimationFrame(raf);
+      root.style.touchAction = touchAction;
       window.removeEventListener("pointermove", onMove);
       document.documentElement.removeEventListener("pointerleave", onLeave);
       window.removeEventListener("touchstart", onTouchStart);
