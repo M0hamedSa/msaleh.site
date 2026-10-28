@@ -14,6 +14,9 @@ const SIM_RES = 128; // velocity and pressure grid (short side)
 const DYE_RES = 768; // ink grid (short side)
 const DYE_RES_TOUCH = 512; // phones: a lighter ink grid, the screen is small anyway
 const PRESSURE_ITERATIONS = 20;
+// On Android the page's touch scrolling runs on the main thread (Lenis), so a slow ink
+// frame is a stutter in the scroll; phones get a lighter solve and a 1x canvas.
+const PRESSURE_ITERATIONS_TOUCH = 12;
 const CURL = 14; // swirl kept in the flow
 const VELOCITY_DISSIPATION = 1.6; // per second
 const INK_DISSIPATION = 2.8; // per second
@@ -157,7 +160,7 @@ function start(canvas: HTMLCanvasElement) {
 
   let velocity: DoubleFbo, dye: DoubleFbo, pressure: DoubleFbo, divergence: Fbo, curl: Fbo;
   const resize = () => {
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const dpr = Math.min(window.devicePixelRatio || 1, touch ? 1 : 1.5);
     canvas.width = Math.round(canvas.clientWidth * dpr);
     canvas.height = Math.round(canvas.clientHeight * dpr);
     const [sw, sh] = size(SIM_RES);
@@ -234,7 +237,7 @@ function start(canvas: HTMLCanvasElement) {
       gl.uniform1f(u.value, 0.8);
     }, t);
     pressure.swap();
-    for (let i = 0; i < PRESSURE_ITERATIONS; i++) {
+    for (let i = 0; i < (touch ? PRESSURE_ITERATIONS_TOUCH : PRESSURE_ITERATIONS); i++) {
       run(programs.pressure, pressure.write, (u) => {
         gl.uniform1i(u.uPressure, bind(0, pressure.read.tex));
         gl.uniform1i(u.uDivergence, bind(1, divergence.tex));
