@@ -29,6 +29,8 @@ const IDLE_STOP_MS = 4000; // stop drawing once the ink has gone
 const TOUCH_STEP_PX = 10;
 const TOUCH_MAX_STEPS = 8;
 const TOUCH_FRESH_MS = 50; // a touchmove this recent outranks the scroll's estimate
+const TOUCH_SLOPE_PX = 8; // a finger's direction is read over at least this distance
+const TOUCH_MAX_SLOPE = 3; // sideways px per px along the scroll, at most
 
 const VERT = `#version 300 es
 precision highp float;
@@ -337,10 +339,19 @@ export function InkTrail() {
     const root = document.documentElement;
     const touchAction = root.style.touchAction;
     if (window.matchMedia("(pointer: coarse)").matches) root.style.touchAction = "pan-y pinch-zoom";
-    let touching = false, tx = 0, ty = 0, sx = 0, sy = 0, lastTouch = 0;
+    // The scroll can't see a finger's sideways travel either, so a diagonal stroke drew
+    // up first and then across when the next touchmove came. The sideways part is
+    // carried on at the slope the finger last moved at (its touchmoves before the page
+    // starts to scroll set it), and each real touchmove corrects it.
+    let touching = false, tx = 0, ty = 0, sx = 0, sy = 0, lastTouch = 0, rx = 0, ry = 0, slope = 0;
     const onTouch = (e: TouchEvent) => {
       tx = e.touches[0].clientX;
       ty = e.touches[0].clientY;
+      if (Math.hypot(tx - rx, ty - ry) >= TOUCH_SLOPE_PX) {
+        slope = Math.max(-TOUCH_MAX_SLOPE, Math.min(TOUCH_MAX_SLOPE, (tx - rx) / (ty - ry)));
+        rx = tx;
+        ry = ty;
+      }
       sx = window.scrollX;
       sy = window.scrollY;
       lastTouch = performance.now();
@@ -349,6 +360,9 @@ export function InkTrail() {
     const onTouchStart = (e: TouchEvent) => {
       touching = true;
       onLeave();
+      rx = e.touches[0].clientX;
+      ry = e.touches[0].clientY;
+      slope = 0;
       onTouch(e);
     };
     const onTouchEnd = (e: TouchEvent) => {
@@ -360,7 +374,8 @@ export function InkTrail() {
     // in the same frame as well made the stroke zigzag between the two.
     const onScroll = () => {
       if (!touching || performance.now() - lastTouch < TOUCH_FRESH_MS) return;
-      draw(tx - (window.scrollX - sx), ty - (window.scrollY - sy), true);
+      const dy = sy - window.scrollY;
+      draw(tx - (window.scrollX - sx) + slope * dy, ty + dy, true);
     };
     // Phones resize the window as their address bar slides in and out while scrolling;
     // only a real change (rotation, a new width) rebuilds the grids and drops the ink.
