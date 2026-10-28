@@ -86,7 +86,7 @@ Featured Projects: True Legal · Kidzenia · Tiba Masr · Aqsat · True Visor (l
 - **Header** (2026-10-27, replacing the E03b word-scrub paragraph): "About me. / **Who builds them.**" rises line by line out of masks, then the intro with the same reveal: "I'm a systems developer in Giza. I learn how a business really works, then build the software its people use every day." (`ABOUT_HEADING`, `INTRO` in `content/about.ts`; `line-reveal.tsx`).
 - **E09** pinned horizontal track record: 2016 CS degree → 2023 Semi-Code → 2024 Kazareen ERP & Odoo → −40% SQL agent → −60% QR system → 2026 independent.
 - A short "How I work" block (discover → map → build → train). Static text, no extra effect.
-- CV download.
+- CV download (`CV` in `content/about.ts`): public/cv/Mohamed_Saleh_CV.pdf, the one-page CV without the phone number (2026-10-28).
 
 *`/playground` (C12, a draggable desktop) was removed on 2026-10-27 at the owner's request, with its footer link.*
 
@@ -123,6 +123,4 @@ Featured Projects: True Legal · Kidzenia · Tiba Masr · Aqsat · True Visor (l
 ## 9. Open items (not blocking)
 
 - **Outcome numbers** for the five Featured Projects. If none are provided, the Case Study shows a qualitative outcome.
-- **LinkedIn URL.**
-- **Updated CV** (the current one predates the 2026 projects). Planned for after v1.
 - **Client names:** permission per Featured Project. The default is product names only.

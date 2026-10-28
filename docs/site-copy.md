@@ -8,9 +8,9 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 **`src/app/layout.tsx`**
 
-- L38: Mohamed Saleh · Systems developer
-- L40: Mohamed Saleh builds the systems businesses run on: ERP, ledgers, factory-floor tools and offline apps, from Giza.
-- L64: Skip to content
+- L42: Mohamed Saleh · Systems developer
+- L44: Mohamed Saleh builds the systems businesses run on: ERP, ledgers, factory-floor tools and offline apps, from Giza.
+- L68: Skip to content
 
 **`src/components/site-header.tsx`**
 
@@ -30,15 +30,17 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 - L140: / Index
 - L146: aria-label: Close menu
 - L153: aria-label: Main
-- L182: GitHub
+- L183: GitHub
+- L186: LinkedIn
 
 **`src/components/site-footer.tsx`**
 
 - L42: Have a system in mind?
-- L49: GitHub
-- L56: data-cursor: Write
-- L59: Write to me
-- L66: © 2026 Mohamed Saleh
+- L50: GitHub
+- L53: LinkedIn
+- L61: data-cursor: Write
+- L64: Write to me
+- L71: © 2026 Mohamed Saleh
 
 **`src/components/footer/copy-email.tsx`**
 
@@ -690,6 +692,10 @@ The deploy shrank from 216 MB to about 70 MB once unused source images were drop
 
 **Note:** To confirm: what changed for the company once the site went live.
 
+**`src/app/work/[slug]/opengraph-image.tsx`**
+
+- L6: A case study on msaleh.site: the project's name, its one-line summary and its cover screen.
+
 **`src/app/work/[slug]/page.tsx`**
 
 - L52: In progress
@@ -780,7 +786,7 @@ The deploy shrank from 216 MB to about 70 MB once unused source images were drop
 3. **Build:** Ship in small, working pieces, with the decisions written down so the next person knows why.
 4. **Train:** Hand it over properly: train the teams who use it every day, then stay close while it settles in.
 
-**CV download:** hidden until a copy without the phone number is ready
+**CV download:** Download CV
 
 **`src/app/about/page.tsx`**
 
@@ -831,6 +837,10 @@ The deploy shrank from 216 MB to about 70 MB once unused source images were drop
 ## Part 7 · Other text in components
 
 Labels, accessibility text and small UI words not covered above.
+
+**`src/app/opengraph-image.tsx`**
+
+- L3: MSALEH: Business runs on systems. I build them. Mohamed Saleh, systems developer in Giza.
 
 **`src/components/header-icons.tsx`**
 

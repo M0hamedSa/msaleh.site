@@ -76,7 +76,10 @@ export const HOW_I_WORK = [
   },
 ];
 
-// Held back until there is a copy without the phone number. When it's ready,
-// put it at public/cv/Mohamed_Saleh_CV.pdf and restore:
-// { href: "/cv/Mohamed_Saleh_CV.pdf", label: "Download CV", meta: "PDF · 2 pages" }
-export const CV: { href: string; label: string; meta: string } | null = null;
+// The public copy of the CV: the one-page CV with the phone number left out
+// (made from Mohamed_Saleh_CV_source.html). Set to null to hide the link.
+export const CV: { href: string; label: string; meta: string } | null = {
+  href: "/cv/Mohamed_Saleh_CV.pdf",
+  label: "Download CV",
+  meta: "PDF · 1 page",
+};
