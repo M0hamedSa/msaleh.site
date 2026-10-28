@@ -9,7 +9,7 @@ import { LogoMark } from "@/components/logo-mark";
 import { useLenis } from "@/components/providers/smooth-scroll";
 import { TransitionLink } from "@/components/transition/transition-link";
 import { ARCHIVE } from "@/content/archive";
-import { EMAIL } from "@/content/contact";
+import { EMAIL, GITHUB, LINKEDIN } from "@/content/contact";
 import { featuredCount } from "@/content/projects";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
@@ -178,9 +178,14 @@ export function SiteMenu({ open, onClose, returnFocus }: Props) {
         <a href={`mailto:${EMAIL}`} className="link-line">
           {EMAIL}
         </a>
-        <a href="https://github.com/M0hamedSa" target="_blank" rel="noopener" className="link-line">
-          GitHub <span className="arrow">↗</span>
-        </a>
+        <span className="flex gap-6">
+          <a href={GITHUB} target="_blank" rel="noopener" className="link-line">
+            GitHub <span className="arrow">↗</span>
+          </a>
+          <a href={LINKEDIN} target="_blank" rel="noopener" className="link-line">
+            LinkedIn <span className="arrow">↗</span>
+          </a>
+        </span>
       </div>
     </div>
   );

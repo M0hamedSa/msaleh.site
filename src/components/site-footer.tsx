@@ -2,7 +2,7 @@ import { AsciiTalk } from "@/components/footer/ascii-talk";
 import { CopyEmail } from "@/components/footer/copy-email";
 import { FooterReveal } from "@/components/footer/footer-reveal";
 import { Magnetic } from "@/components/magnetic";
-import { EMAIL, NEXT_STEPS } from "@/content/contact";
+import { EMAIL, GITHUB, LINKEDIN, NEXT_STEPS } from "@/content/contact";
 
 /**
  * The footer on every page: it waits under the page and is revealed as the page
@@ -45,9 +45,14 @@ export function SiteFooter() {
             <div className="max-md:col-span-2">
               <CopyEmail email={EMAIL} />
             </div>
-            <a href="https://github.com/M0hamedSa" target="_blank" rel="noopener" className="link-line max-md:self-center max-md:justify-self-start">
-              GitHub <span className="arrow">↗</span>
-            </a>
+            <div className="flex flex-wrap gap-x-8 gap-y-3 max-md:self-center">
+              <a href={GITHUB} target="_blank" rel="noopener" className="link-line">
+                GitHub <span className="arrow">↗</span>
+              </a>
+              <a href={LINKEDIN} target="_blank" rel="noopener" className="link-line">
+                LinkedIn <span className="arrow">↗</span>
+              </a>
+            </div>
           </div>
           <div className="md:col-start-2 md:row-span-2 md:row-start-1">
             <Magnetic>

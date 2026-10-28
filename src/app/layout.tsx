@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
@@ -9,6 +10,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { PageTransition } from "@/components/transition/page-transition";
 import { initScript } from "@/lib/init-script";
+import { SITE_URL } from "@/lib/site";
 
 import "./globals.css";
 
@@ -35,6 +37,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Mohamed Saleh · Systems developer",
   description:
     "Mohamed Saleh builds the systems businesses run on: ERP, ledgers, factory-floor tools and offline apps, from Giza.",
@@ -73,6 +76,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <InkTrail />
           <Cursor />
         </SmoothScroll>
+        {/* Vercel Web Analytics: page views, no cookies. */}
+        <Analytics />
       </body>
     </html>
   );
