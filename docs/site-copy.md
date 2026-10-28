@@ -614,13 +614,13 @@ A separate demo environment with the real catalogue and fictional customers.
 
 **Note:** The store is live; order figures will be added as they come in.
 
-### Tiba Masr (marked draft)
+### Tiba Masr
 
 **Problem**
 
 Tiba Masr grows, packs and exports Egyptian fruit and vegetables from the Nile Delta and Nubaria. Its buyers are importers abroad who compare varieties, sizes, packaging and seasons before requesting a quote.
 
-To confirm: how buyers found and contacted the company before the site, and why it needed one now.
+The website gives them one place to review the full range, in English or Arabic, and send a quote request.
 
 **Constraints**
 
@@ -690,7 +690,7 @@ Quote requests reach the export team's inbox, with a fallback if the host's mail
 
 The deployment shrank from 216 MB to about 70 MB.
 
-**Note:** To confirm: what changed for the company once the site went live.
+**Note:** Business figures are kept private at the client's request.
 
 **`src/app/work/[slug]/opengraph-image.tsx`**
 

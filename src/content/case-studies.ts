@@ -250,10 +250,10 @@ const kidzenia: CaseStudy = {
 };
 
 const tibaMasr: CaseStudy = {
-  draft: true,
+  draft: false,
   problem: [
     "Tiba Masr grows, packs and exports Egyptian fruit and vegetables from the Nile Delta and Nubaria. Its buyers are importers abroad who compare varieties, sizes, packaging and seasons before requesting a quote.",
-    "To confirm: how buyers found and contacted the company before the site, and why it needed one now.",
+    "The website gives them one place to review the full range, in English or Arabic, and send a quote request.",
   ],
   constraints: [
     {
@@ -301,7 +301,7 @@ const tibaMasr: CaseStudy = {
       "Quote requests reach the export team's inbox, with a fallback if the host's mail service fails.",
       "The deployment shrank from 216 MB to about 70 MB.",
     ],
-    note: "To confirm: what changed for the company once the site went live.",
+    note: "Business figures are kept private at the client's request.",
   },
 };
 
@@ -310,7 +310,5 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
   aqsat,
   "true-legal": trueLegal,
   kidzenia,
-  // Local only until the owner confirms its problem and outcome; the live site
-  // keeps the "being written" note for Tiba Masr until then.
-  ...(process.env.NODE_ENV !== "production" && { "tiba-masr": tibaMasr }),
+  "tiba-masr": tibaMasr,
 };
