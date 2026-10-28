@@ -74,8 +74,8 @@ export function Hero() {
       </dl>
 
       <div data-mark data-intro className="min-h-0 self-center justify-self-end">
-        {/* Smaller on phones so the headline comes first, but still big enough to read as MS. */}
-        <AsciiMark className="w-[min(calc((100vw-32px)*0.72),576px)] text-fg md:w-[min(calc(100vw-32px),576px)]" />
+        {/* The full width on phones too: MSALEH is long and short, so it adds little height. */}
+        <AsciiMark className="w-[min(calc(100vw-32px),576px)] text-fg" />
       </div>
 
       <div className="self-end">

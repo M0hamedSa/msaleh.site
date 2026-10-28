@@ -1,6 +1,6 @@
 # Portfolio copy: every piece of text on the site
 
-Generated from the code on 2026-10-27. Edit any text in place, keep the `source` tags and the `Lnn:` line numbers as they are, and send the file back (or point me at it); I apply each change to the file it came from.
+Generated from the code on 2026-10-28. Edit any text in place, keep the `source` tags and the `Lnn:` line numbers as they are, and send the file back (or point me at it); I apply each change to the file it came from.
 
 It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 projects, 4 case studies, 5 about, 6 archive, 7 small UI text left over. Text from the content files (`src/content/*.ts`) appears as labelled fields under a `source` tag; text written straight into a page or component appears as `- Lnn:` lines under its file name. Lines starting `aria-label:` are read out by screen readers, and `data-cursor:` is the word on the red cursor disc.
 
@@ -34,11 +34,11 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 **`src/components/site-footer.tsx`**
 
-- L38: Have a system in mind?
-- L43: GitHub
-- L50: data-cursor: Write
-- L53: Write to me
-- L59: © 2026 Mohamed Saleh
+- L42: Have a system in mind?
+- L49: GitHub
+- L56: data-cursor: Write
+- L59: Write to me
+- L66: © 2026 Mohamed Saleh
 
 **`src/components/footer/copy-email.tsx`**
 
@@ -50,7 +50,7 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 **`src/components/footer/ascii-talk.tsx`**
 
 - L9: LET'S TALK
-- L181: aria-label: Let's talk
+- L194: aria-label: Let's talk
 
 **`src/app/not-found.tsx`**
 
@@ -840,8 +840,13 @@ Labels, accessibility text and small UI words not covered above.
 
 **`src/components/home/ascii-mark.tsx`**
 
-- L34: MS
-- L51: MS
+- L50:  ####### ################ ####### ####### ####### ################################ ####### ####### ######## ######## CCCCCCCCCC 
+- L51:  ####### ############## ####### ######### ######## ################################## ####### ####### ######## ######## CCCCCCCCCC 
+- L52:  ####### ############ ####### ############################ ######### ######## ########################### ############################ ######## ######## CCCCCCCCCC 
+- L53:  ####### ########### ####### ########################## ######## ######## ########################### ############################ ######## ######## CCCCCCCCCC 
+- L54:  ####### ########## ####### ###################### ######## ######### ########################### ############################ ######## ######## CCCCCCCCCC 
+- L55:  ####### ####### ################ ######### ######## ########################### ############################ ######## ######## CCCCCCCCCC 
+- L58: C
 
 **`src/components/ink-trail.tsx`**
 
@@ -856,7 +861,7 @@ Labels, accessibility text and small UI words not covered above.
 
 **`src/components/logo-mark.tsx`**
 
-- L9: MS
+- L9: MSALEH
 
 **`src/components/project-thumb.tsx`**
 
