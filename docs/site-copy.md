@@ -154,7 +154,7 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 ### True Legal
 
-**Summary:** A client ledger a law firm trusts with its clients’ money.
+**Summary:** A financial system for a law firm: client payments, case expenses, fees and staff advances in one place.
 
 **Tagline:** Client money, accounted for.
 
@@ -177,9 +177,9 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 ### Kidzenia
 
-**Summary:** Taking a clothing factory from phone orders to an online store.
+**Summary:** An Arabic-first online store for a children's and teens' clothing manufacturer, with cash on delivery.
 
-**Tagline:** From phone orders to an online store.
+**Tagline:** From phone orders to online sales.
 
 **Status:** Live
 
@@ -202,9 +202,9 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 ### Tiba Masr
 
-**Summary:** Egyptian fruit and vegetables, presented to buyers around the world.
+**Summary:** A bilingual export catalogue of Egyptian fruit and vegetables for importers worldwide.
 
-**Tagline:** Fresh from the farm, ready for export.
+**Tagline:** Egyptian produce, presented for export.
 
 **Status:** Live
 
@@ -223,9 +223,9 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 ### Aqsat
 
-**Summary:** Installment contracts, from markup to the courtroom.
+**Summary:** Installment contracts, payments and balances, each traceable to the entries behind it.
 
-**Tagline:** Every balance, traced to its payments.
+**Tagline:** Every balance, traced to its source.
 
 **Status:** Launching Nov 2026
 
@@ -248,9 +248,9 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 ### True Visor
 
-**Summary:** Factory compliance audits that keep working when the signal drops.
+**Summary:** A bilingual audit platform that keeps recording findings, evidence and corrective actions when the connection drops.
 
-**Tagline:** Factory audits that work without signal.
+**Tagline:** Factory audits that work offline.
 
 **Status:** Pilot · Nov 2026
 
@@ -302,39 +302,39 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 <sub>source: `src/content/case-studies.ts → CASE_STUDIES`</sub>
 
-### True Visor (marked draft)
+### True Visor
 
 **Problem**
 
-A social-compliance consulting firm audits its clients' factories against social-compliance standards, adding new ones as its clients need them. Its method lived in an Excel checklist and a Word manual: 177 checks, interviews with workers, supervisors and management, and photos of evidence.
+A social-compliance consultancy audits factories with 177 checks, interviews and photo evidence, kept until now in an Excel checklist and a Word manual.
 
-Every problem found becomes a corrective action the factory must fix and prove with evidence before a consultant closes it. The interview notes that explain why have to stay away from the people they are about.
+Every finding becomes a corrective action the factory must resolve with evidence, and interview notes must never reach the people they describe.
 
 **Constraints**
 
 **1.**
 
-**Title:** No signal on the floor
+**Title:** No connection on the factory floor
 
-**Body:** Consultants inspect production halls on phones and tablets where signal is weak or gone. Recording results, findings, photos and interview notes has to work fully offline and sync later.
+**Body:** Inspections happen on phones and tablets with weak or no signal, so recording must work fully offline.
 
 **2.**
 
 **Title:** Two languages
 
-**Body:** Every check, report and screen in English and Arabic. AI drafts the Arabic; a compliance expert reviews it, because wrong legal wording in an audit is a real risk.
+**Body:** Everything in English and Arabic, with AI-assisted Arabic reviewed by a compliance expert.
 
 **3.**
 
 **Title:** Confidential by design
 
-**Body:** Worker interview notes are never visible to factory people or client managers, in the app, reports or exports, and they live on devices that can be lost.
+**Body:** Interview notes stay hidden from factory staff and client managers everywhere, on devices that can be lost.
 
 **4.**
 
-**Title:** Evidence can't be lost
+**Title:** Evidence cannot be lost
 
-**Body:** Photos and findings are audit evidence. A dropped connection or a closed app must never lose one or record it twice.
+**Body:** A dropped connection or a closed app must never lose a photo or save it twice.
 
 **Decisions**
 
@@ -342,19 +342,19 @@ Every problem found becomes a corrective action the factory must fix and prove w
 
 **Title:** Offline from the first release
 
-**Choice:** The original plan left offline work for a later stage. Retrofitting local storage and sync onto an online-only data model is close to rewriting the audit module, so the inspection workflow was built offline-first from v1. Administration, reports and document review stay online-only.
+**Choice:** Offline support was planned for later, but adding it afterwards would have meant rewriting the audit module, so inspections were built offline-first from version one.
 
-**Tradeoff:** Every record made on a device needs a client-generated ID and a conflict rule, and confidential notes now live on devices, which needed a remote-logout story.
+**Tradeoff:** Client-generated IDs and conflict rules for every record, and a way to sign devices out remotely.
 
 **Source:** ADR-0001
 
 **2.**
 
-**Title:** A proven sync engine, our own uploads
+**Title:** A proven sync engine, uploads through the app
 
-**Choice:** A hand-written sync engine is exactly the kind of code that can silently lose audit evidence. PowerSync, self-hosted, brings data down to each device; everything a device sends back goes through the app's own endpoint, which owns validation, permissions and conflict rules.
+**Choice:** A hand-written sync engine is the code most likely to lose evidence silently, so self-hosted PowerSync brings data down while uploads pass through the app's own endpoint and its rules.
 
-**Tradeoff:** One more service to run beside the app and the database, in exchange for not owning the riskiest part of the system.
+**Tradeoff:** One more service to run, in exchange for not owning the riskiest part of the system.
 
 **Source:** ADR-0002
 
@@ -362,9 +362,9 @@ Every problem found becomes a corrective action the factory must fix and prove w
 
 **Title:** Devices check in, or lock
 
-**Choice:** Every page checks the device in whenever it is online. After 14 days without a check-in the app shows only a “Go online” screen; nothing is lost. A deactivated user's device wipes itself, and signing out wipes everything after warning about unsent changes.
+**Choice:** After 14 days without a check-in the app asks the consultant to reconnect, without losing data. Deactivating a user or signing out clears the device.
 
-**Tradeoff:** A consultant who stays offline for two weeks must reconnect before working, in exchange for interview notes that don't outlive a person's access.
+**Tradeoff:** Two weeks offline means reconnecting before work, so interview notes never outlive a person's access.
 
 **Source:** Decision log #19
 
@@ -372,67 +372,67 @@ Every problem found becomes a corrective action the factory must fix and prove w
 
 **Points**
 
-Offline drills pass on Android and on iPhone: photos and notes survive the app being killed mid-upload, and each photo is saved exactly once.
+Offline tests pass on Android and iPhone: photos survive the app closing mid-upload and are saved exactly once.
 
-Deactivating a consultant, or another person signing in, wipes the device's offline copy.
+Deactivating a consultant, or another person signing in, clears the device's offline copy.
 
-Fully bilingual: every check, screen and report in English and Arabic.
+Every check, screen and report in English and Arabic.
 
 **Note:** The pilot starts in November 2026; its results will be added here.
 
-### Aqsat (marked draft)
+### Aqsat
 
 **Problem**
 
-An Egyptian company buys an item for a customer, adds its markup, and collects the total back in monthly installments. When a customer stops paying, it may take them to court. Two or three employees ran all of this on an old PowerBuilder system that didn't calculate the money properly and couldn't show how a balance was reached.
+The client sells goods on installment, collecting the price plus its markup in monthly payments. Its PowerBuilder system did not calculate balances reliably or show how they were reached.
 
-The new system had to carry 7,000 customers over, keep every guarantor and court case tied to the right debt, and make any balance traceable to the events that produced it.
+The replacement had to bring over 7,000 customers with their guarantors and legal follow-up intact.
 
 **Constraints**
 
 **1.**
 
-**Title:** Lateness is never charged
+**Title:** Late days counted, never charged
 
-**Body:** The business doesn't charge for late payment. The system counts how late a contract is and shows it, but never charges for it, and the database refuses a late fee whatever code tries to write one.
+**Body:** The business doesn't charge for late payment, and the database rejects any late fee.
 
 **2.**
 
 **Title:** Arabic, right to left
 
-**Body:** Every screen, statement and PDF in Arabic for a team of two or three. Code, columns and permissions stay in English, so a second language never means renaming anything.
+**Body:** Every screen, statement and PDF is in Arabic; code and data stay in English.
 
 **3.**
 
-**Title:** 7,000 customers to carry over
+**Title:** 7,000 customers to migrate
 
-**Body:** Customers, guarantors, phones and addresses come across from the old database with their old keys, while the old system stays open for lookups.
+**Body:** Customers and guarantors keep their original keys, with the old system available for lookups.
 
 **4.**
 
-**Title:** Every number explained
+**Title:** Every balance explainable
 
-**Body:** Staff must be able to show a customer exactly how their balance was reached, line by line, years after the fact.
+**Body:** Staff must be able to show any balance line by line, years later.
 
 **Decisions**
 
 **1.**
 
-**Title:** Lateness is counted, never charged
+**Title:** Late days instead of late fees
 
-**Choice:** An earlier design charged a flat amount per late day. It was replaced the same morning, before go-live, when the owner decided lateness should never be charged. The system now counts Late Days per contract and shows them on the contract, the statement and the dashboard; what to do about a late customer the owner decides himself.
+**Choice:** Before go-live the owner ruled out charging for lateness, so the planned per-day fee became a Late Days count shown on contracts, statements and the dashboard.
 
-**Tradeoff:** No income from late payment, and a fee engine already designed was dropped. A database check makes sure no future code can quietly bring one back.
+**Tradeoff:** No late-payment income, and a fee engine already designed was dropped; a database check keeps it from returning.
 
 **Source:** ADR-0035
 
 **2.**
 
-**Title:** The balance is an append-only ledger
+**Title:** An append-only ledger
 
-**Choice:** Every financial event (a contract, a payment, a void, a charged legal expense) is an immutable ledger entry, and a balance is their sum. Corrections post a reversing entry; nothing is edited or deleted.
+**Choice:** Every financial event is an immutable entry and a balance is their sum. Corrections post reversing entries; nothing is edited.
 
-**Tradeoff:** Balances are summed, not stored, and every feature that moves money must post entries rather than update rows. In exchange, any historical statement stays correct.
+**Tradeoff:** Balances are computed, not stored, and every feature that moves money must post entries. In return, every historical statement stays correct.
 
 **Source:** ADR-0001
 
@@ -440,9 +440,9 @@ The new system had to carry 7,000 customers over, keep every guarantor and court
 
 **Title:** Money in whole piastres
 
-**Choice:** Postgres stores money as numeric; the calculation core works in integer piastres and converts only at its boundary. A single parseFloat would put the ledger into floating point, where errors of a few piastres appear on some contracts with no traceable cause.
+**Choice:** The calculation core works in integer piastres and converts only at its boundary, because a single floating-point conversion causes untraceable errors of a few piastres.
 
-**Tradeoff:** A conversion at every boundary and a review rule to enforce it. It also makes “allocation neither creates nor destroys money” checkable by plain summation.
+**Tradeoff:** A conversion at every boundary, and a review rule to enforce it.
 
 **Source:** ADR-0023
 
@@ -450,21 +450,21 @@ The new system had to carry 7,000 customers over, keep every guarantor and court
 
 **Points**
 
-Schedules, payment allocation and Late Days are pure functions tested in milliseconds, down to month-end due dates and 29 February, across 28 test files in the core alone.
+Schedules, allocation and Late Days are pure functions, tested down to month-end due dates and 29 February across 28 test files.
 
-An importer carries the 7,000 customers and their guarantors over from the PowerBuilder system, keeping each one's old key.
+An importer brings over 7,000 customers and their guarantors with their original keys.
 
-Arabic statements and PDF exports, with encrypted off-site backups from day one.
+Arabic statements and PDFs, with encrypted off-site backups from day one.
 
 **Note:** Go-live is set for November 2026; results will be added here.
 
-### True Legal (marked draft)
+### True Legal
 
 **Problem**
 
-A small Egyptian law firm needed one place for its clients, their cases and the money that moves on their behalf: payments clients make, expenses the firm spends on their cases, its fees, and the cash advances it hands to its seven staff.
+A law firm needed one system for its clients, their cases and the money moving on their behalf: payments, case expenses, fees and staff advances.
 
-The first version has run the firm's daily work since launch. A review in October 2026 led to fixes in production and to a second version on the firm's own infrastructure, with clearer money rules and reports.
+The first version has run the firm's daily operations since launch. An October 2026 review led to production fixes and a second version on the firm's own infrastructure.
 
 **Constraints**
 
@@ -472,55 +472,55 @@ The first version has run the firm's daily work since launch. A review in Octobe
 
 **Title:** Three roles, three views of the money
 
-**Body:** Staff see every client but only their own expenses, never payments or fees. Admins see payments and balance, never fees or what is due. Only the owner sees everything.
+**Body:** Staff, admins and the owner each see a different part of the finances; only the owner sees everything.
 
 **2.**
 
-**Title:** Live system, no downtime
+**Title:** Changes without downtime
 
-**Body:** The firm works in the system every day, so every change has to land without interrupting it or losing a single entry.
+**Body:** The firm works in the system daily, so no change may interrupt work or lose a record.
 
 **3.**
 
-**Title:** Nobody resets a password
+**Title:** No password resets
 
-**Body:** Moving to the new version must not lock anyone out or ask seven busy people to choose new passwords.
+**Body:** The move to the new version must not lock anyone out.
 
 **4.**
 
-**Title:** Arabic reports
+**Title:** Arabic reports that match the screens
 
-**Body:** Seven Arabic PDF reports that read correctly right to left and match the screens to the piastre.
+**Body:** Seven right-to-left PDF reports, matching the application to the piastre.
 
 **Decisions**
 
 **1.**
 
-**Title:** Plain PostgreSQL, rules in one place
+**Title:** PostgreSQL, with access rules in one place
 
-**Choice:** Moving from Supabase to plain PostgreSQL gives the firm control of its data and backups. The access rules that Supabase enforced in the database now live in one module every query goes through. The move was rehearsed against a copy of production, so go-live is one switch.
+**Choice:** Self-hosted PostgreSQL replaces Supabase, giving the firm control of its data and backups. Access rules now live in one module that every query passes through.
 
-**Tradeoff:** Row-level security no longer guards the data by itself, so every server route checks the caller's role, and Supabase's login, realtime and storage each needed a replacement.
+**Tradeoff:** Without row-level security, every server route checks the caller's role, and Supabase's auth, realtime and storage each needed a replacement.
 
 **Source:** ADR-0001
 
 **2.**
 
-**Title:** Keep everyone's password
+**Title:** Existing passwords carried over
 
-**Choice:** Better Auth takes over logins. The existing password hashes are carried over and checked as they are, so everyone signs in with the password they already have. The owner manages accounts from the Users page.
+**Choice:** Better Auth verifies the migrated password hashes as they are, so everyone keeps their current password.
 
-**Tradeoff:** The old hashing scheme stays in use until each password is next changed.
+**Tradeoff:** The old hashing scheme stays until each password is next changed.
 
 **Source:** ADR-0002
 
 **3.**
 
-**Title:** Settle, don't reset
+**Title:** Settlements that keep the history
 
-**Choice:** Settling a client used to mean resetting their payments, which erased the history behind the balance. A dated Settlement now closes the account at a point in time, and screens say who owes whom in words ("Client owes the firm 17,637") instead of with a minus sign.
+**Choice:** Settling an account used to reset its payments and erase the history behind the balance. A dated Settlement record now closes it at a point in time.
 
-**Tradeoff:** One more record type for staff to learn, in exchange for statements that can always be reproduced.
+**Tradeoff:** One more record type, in exchange for statements that can always be reproduced.
 
 **Source:** Migration plan
 
@@ -528,77 +528,77 @@ The first version has run the firm's daily work since launch. A review in Octobe
 
 **Points**
 
-The second version was checked against the first as each of the three roles: the same pages, every exported amount, and each action allowed or refused as the role requires.
+The second version was verified against the first under all three roles: every page, exported amount and permission.
 
-All seven Arabic PDF reports render through one module in one to two seconds each.
+All seven Arabic PDF reports come from one module, in one to two seconds each.
 
-Production fixes from the audit went live first, verified against a full backup of the live database.
+Production fixes shipped first, verified against a full backup of the live database.
 
 **Note:** The second version goes live once the firm's new server is in place.
 
-### Kidzenia (marked draft)
+### Kidzenia
 
 **Problem**
 
-An Egyptian children's and teens clothing factory took its orders by phone and wanted to sell online, with cash on delivery, in Arabic first and English second.
+A children's and teens' clothing manufacturer sold by phone and wanted to sell online, with cash on delivery, in Arabic first.
 
-The website would be the smaller channel at launch, about 40 to 80 orders a month, selling from the same stock the factory keeps selling by phone and over the counter.
+The store would be the smaller channel at launch, around 40 to 80 orders a month, selling from the same stock as phone and in-person sales.
 
 **Constraints**
 
 **1.**
 
-**Title:** One pile, three ways to sell it
+**Title:** One stock, three sales channels
 
-**Body:** Phone, walk-in and web orders all draw on the same garments. Staff selling to someone in front of them can't be expected to update the website first.
+**Body:** Staff selling in person can't be expected to update the website first.
 
 **2.**
 
-**Title:** Cash on delivery
+**Title:** Cash on delivery leaves no room for overselling
 
-**Body:** Overselling isn't a refund, it's phoning a customer to cancel a parcel they're waiting for.
+**Body:** An oversold item means cancelling a parcel the customer is already expecting.
 
 **3.**
 
-**Title:** The WhatsApp number stays
+**Title:** The existing WhatsApp number stays
 
-**Body:** The order-taking number is in daily manual use. Registering it to WhatsApp's API would take it out of the normal app.
+**Body:** Moving the daily order line to the WhatsApp API would take it out of the regular app.
 
 **4.**
 
-**Title:** Why not an off-the-shelf store
+**Title:** Why not an off-the-shelf platform
 
-**Body:** The client reviewed the hosted platforms and turned them down: none handled shared stock and cash on delivery the way the factory works, and several don't serve Egypt.
+**Body:** None of the hosted platforms the client evaluated handled shared stock and cash on delivery its way, and several don't serve Egypt.
 
 **Decisions**
 
 **1.**
 
-**Title:** Sell from a ring-fenced share
+**Title:** A reserved share of stock for the web
 
-**Choice:** Each garment variant carries a Web Allocation: the part of the shelf the website may sell. The site sells min(allocation, on hand) minus what's already promised, so phone and walk-in sales never have to touch the website.
+**Choice:** Each variant has a Web Allocation. The site sells the lower of the allocation and the stock on hand, minus reservations, so other channels never touch the website.
 
-**Tradeoff:** The site can say sold out while garments are still in the building. A warning list of every variant whose stock has fallen below its allocation keeps that from going unnoticed.
+**Tradeoff:** An item can show as sold out online while units remain; a warning list flags variants below their allocation.
 
 **Source:** ADR-0004
 
 **2.**
 
-**Title:** Confirm by WhatsApp deep link
+**Title:** Order confirmation through WhatsApp
 
-**Choice:** The thank-you page shows one button that opens WhatsApp with the order code and a confirmation token, sent to the number the customer already knows. Staff read it there and confirm in the admin. Confirmation is recorded as evidence on the order, not a separate status.
+**Choice:** A pre-filled WhatsApp message with the order code and a token goes to the number customers already know, and staff confirm it in the admin panel.
 
-**Tradeoff:** No automatic confirmation or webhook. Moving to the WhatsApp API later changes the evidence type, not the order's statuses.
+**Tradeoff:** Confirmation is manual, but moving to the WhatsApp API later changes only the evidence type, not the order statuses.
 
 **Source:** ADR-0006 · 0005
 
 **3.**
 
-**Title:** Release stale orders by hand
+**Title:** Unconfirmed orders followed up by staff
 
-**Choice:** Unconfirmed orders hold their stock and appear on a chase list, oldest first, for staff to cancel. One daily job releases anything still unconfirmed after seven days.
+**Choice:** Unconfirmed orders keep their stock and wait on an oldest-first follow-up list; a daily job releases any still unconfirmed after seven days.
 
-**Tradeoff:** Staff work the list instead of a timer. A short timeout would have killed orders placed on a Thursday night, since Egypt's weekend is Friday and Saturday.
+**Tradeoff:** Staff work a list rather than a timer, because a short timeout would cancel Thursday-evening orders over the Friday–Saturday weekend.
 
 **Source:** ADR-0007
 
@@ -606,19 +606,19 @@ The website would be the smaller channel at launch, about 40 to 80 orders a mont
 
 **Points**
 
-Storefront, admin, returns and inspection, with an illustrated Arabic guide for the factory's staff.
+Storefront, admin, returns and inspection, plus an illustrated Arabic guide for staff.
 
-Placing an order reserves its stock, writes the order and records the movement in one transaction, so stock and orders can't disagree.
+Each order reserves stock, creates the order and records the movement in one transaction, so stock and orders can't disagree.
 
-A separate demo copy with the real catalog and invented customers, for showing the shop without touching live data.
+A separate demo environment with the real catalogue and fictional customers.
 
-**Note:** The shop is live; order figures will be added as they come in.
+**Note:** The store is live; order figures will be added as they come in.
 
 ### Tiba Masr (marked draft)
 
 **Problem**
 
-Tiba Masr grows and exports Egyptian fruit and vegetables, from its farms in the Nile Delta and Nubaria through its own packhouse, cooling and dispatch. Its buyers are importers abroad, who compare varieties, sizes, packaging and the months each crop is available before they ask for a quote.
+Tiba Masr grows, packs and exports Egyptian fruit and vegetables from the Nile Delta and Nubaria. Its buyers are importers abroad who compare varieties, sizes, packaging and seasons before requesting a quote.
 
 To confirm: how buyers found and contacted the company before the site, and why it needed one now.
 
@@ -626,37 +626,37 @@ To confirm: how buyers found and contacted the company before the site, and why 
 
 **1.**
 
-**Title:** Two languages, both directions
+**Title:** English and Arabic, both directions
 
-**Body:** Every page in English and Arabic. The Arabic site mirrors the English one page for page, right to left, with its own type scale rather than the Latin one flipped.
+**Body:** The Arabic site mirrors the English one page for page, right to left, with its own type scale.
 
 **2.**
 
 **Title:** Written for importers
 
-**Body:** Each product carries what a buyer compares: varieties, sizes, packaging, availability by month, minimum order and how it ships, by sea, air or refrigerated container.
+**Body:** Each product lists varieties, sizes, packaging, monthly availability, minimum order and shipping method.
 
 **3.**
 
 **Title:** Shared hosting
 
-**Body:** The site runs on ordinary shared hosting: static pages, plus one small PHP script to send the quote requests. No server to maintain.
+**Body:** Static pages and one small PHP script for quote requests; no server to maintain.
 
 **4.**
 
 **Title:** Heavy photography
 
-**Body:** The source photos run 8 to 10 MB a frame. Visitors must get small, resized images, and the deploy must not carry the originals.
+**Body:** 8–10 MB source photos must reach visitors resized and stay out of the deployment.
 
 **Decisions**
 
 **1.**
 
-**Title:** A static site, not an app
+**Title:** A static site, not an application
 
-**Choice:** The catalogue changes a few times a season, so the site is built ahead of time with Astro and served as plain files. Products live as content files with a checked schema, so a missing Arabic name or a wrong month fails the build instead of reaching a buyer.
+**Choice:** The catalogue changes a few times a season, so Astro prebuilds it, and a validated content schema stops a missing Arabic name from reaching a buyer.
 
-**Tradeoff:** Changing a product means editing a file and rebuilding, not logging in to an admin panel.
+**Tradeoff:** Changing a product means editing a file and rebuilding.
 
 **Source:** src/content.config.ts
 
@@ -664,19 +664,19 @@ To confirm: how buyers found and contacted the company before the site, and why 
 
 **Title:** One entry per product, both languages inside
 
-**Choice:** Each product holds its English and Arabic text side by side, and the Arabic pages mirror the English ones one to one. Certifications cover the farms and the packhouse, not single crops, so they live in one file every product reads from.
+**Choice:** English and Arabic sit side by side in each product entry, with farm certifications in one shared file.
 
-**Tradeoff:** Every new field has to be written twice before it can ship, in exchange for the two sites never drifting apart.
+**Tradeoff:** Every field is written twice, so the two sites never drift apart.
 
 **Source:** src/content.config.ts
 
 **3.**
 
-**Title:** The export map, drawn at build time
+**Title:** The export map, generated at build time
 
-**Choice:** The markets live in one list (the United Kingdom, Romania, Saudi Arabia and the UAE). A script projects the world map, centres it on Egypt and draws a shipping lane to each market, then saves the result, so the live site needs none of the mapping libraries.
+**Choice:** A script draws the map centred on Egypt, with a shipping route to each market, so the live site loads no mapping libraries.
 
-**Tradeoff:** Adding a market means re-running the script, not just editing a list.
+**Tradeoff:** Adding a market means re-running the script.
 
 **Source:** scripts/generate-export-map.mjs
 
@@ -684,11 +684,11 @@ To confirm: how buyers found and contacted the company before the site, and why 
 
 **Points**
 
-Live at tibamasr.com in English and Arabic, with 14 products, each with its specifications and availability by month.
+Live at tibamasr.com in English and Arabic, with 14 products and their monthly availability.
 
-Quote requests go straight to the export desk's inbox, with a fallback if the host's mailer is down.
+Quote requests reach the export team's inbox, with a fallback if the host's mail service fails.
 
-The deploy shrank from 216 MB to about 70 MB once unused source images were dropped.
+The deployment shrank from 216 MB to about 70 MB.
 
 **Note:** To confirm: what changed for the company once the site went live.
 

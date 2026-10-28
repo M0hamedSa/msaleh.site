@@ -62,7 +62,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
   {
     slug: "true-legal",
     name: "True Legal",
-    summary: "A client ledger a law firm trusts with its clients’ money.",
+    summary: "A financial system for a law firm: client payments, case expenses, fees and staff advances in one place.",
     tagline: "Client money, accounted for.",
     status: "In production",
     live: true,
@@ -82,8 +82,8 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
   },  {
     slug: "kidzenia",
     name: "Kidzenia",
-    summary: "Taking a clothing factory from phone orders to an online store.",
-    tagline: "From phone orders to an online store.",
+    summary: "An Arabic-first online store for a children's and teens' clothing manufacturer, with cash on delivery.",
+    tagline: "From phone orders to online sales.",
     status: "Live",
     live: true,
     brand: { from: "#0b2213", to: "#24583a", accent: "#e3c56b", ink: "#f3efe2" },
@@ -104,8 +104,8 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
   },  {
     slug: "tiba-masr",
     name: "Tiba Masr",
-    summary: "Egyptian fruit and vegetables, presented to buyers around the world.",
-    tagline: "Fresh from the farm, ready for export.",
+    summary: "A bilingual export catalogue of Egyptian fruit and vegetables for importers worldwide.",
+    tagline: "Egyptian produce, presented for export.",
     status: "Live",
     live: true,
     brand: { from: "#081a0c", to: "#2c5a1c", accent: "#c8f23c", ink: "#f1f6e6" },
@@ -124,8 +124,8 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
   {
     slug: "aqsat",
     name: "Aqsat",
-    summary: "Installment contracts, from markup to the courtroom.",
-    tagline: "Every balance, traced to its payments.",
+    summary: "Installment contracts, payments and balances, each traceable to the entries behind it.",
+    tagline: "Every balance, traced to its source.",
     status: "Launching Nov 2026",
     live: false,
     brand: { from: "#f4efe7", to: "#e9dccb", accent: "#e2611b", ink: "#1c1410", light: true },
@@ -144,8 +144,8 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
   },  {
     slug: "true-visor",
     name: "True Visor",
-    summary: "Factory compliance audits that keep working when the signal drops.",
-    tagline: "Factory audits that work without signal.",
+    summary: "A bilingual audit platform that keeps recording findings, evidence and corrective actions when the connection drops.",
+    tagline: "Factory audits that work offline.",
     status: "Pilot · Nov 2026",
     live: false,
     brand: { from: "#0c0c0c", to: "#3a2f0f", accent: "#f2c94c", ink: "#f6f1e1" },
