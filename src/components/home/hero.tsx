@@ -94,9 +94,9 @@ export function Hero() {
           </p>
           <p className="label-mono">
             <span className="mr-1.5 inline-block size-[7px] rounded-full bg-live align-[1px]" />
-            Now building for new clients ·{" "}
+            Open to full-stack roles ·{" "}
             <ContactLink className="link-line text-accent-ink">
-              Let&apos;s build <span className="arrow">↗</span>
+              Get in touch <span className="arrow">↗</span>
             </ContactLink>
           </p>
         </div>

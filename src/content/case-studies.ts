@@ -74,7 +74,7 @@ const trueVisor: CaseStudy = {
 const aqsat: CaseStudy = {
   draft: false,
   problem: [
-    "The client sells goods on installment, collecting the price plus its markup in monthly payments. Its PowerBuilder system did not calculate balances reliably or show how they were reached.",
+    "The client sells goods on installment, collecting the price plus its markup in monthly payments. Its PowerBuilder system could not show how a balance was reached.",
     "The replacement had to bring over 7,000 customers with their guarantors and legal follow-up intact.",
   ],
   constraints: [
@@ -122,7 +122,7 @@ const aqsat: CaseStudy = {
   ],
   outcome: {
     points: [
-      "Schedules, allocation and Late Days are pure functions, tested down to month-end due dates and 29 February across 28 test files.",
+      "Schedules, allocation and Late Days are pure functions, covered by tests down to month-end due dates and 29 February.",
       "An importer brings over 7,000 customers and their guarantors with their original keys.",
       "Arabic statements and PDFs, with encrypted off-site backups from day one.",
     ],
@@ -197,7 +197,7 @@ const kidzenia: CaseStudy = {
   constraints: [
     {
       title: "One stock, three sales channels",
-      body: "Staff selling in person can't be expected to update the website first.",
+      body: "Phone and in-store sales can't wait for the website to be updated.",
     },
     {
       title: "Cash on delivery leaves no room for overselling",
@@ -205,12 +205,12 @@ const kidzenia: CaseStudy = {
     },
     {
       title: "The existing WhatsApp number stays",
-      body: "Moving the daily order line to the WhatsApp API would take it out of the regular app.",
+      body: "Switching to the WhatsApp Business API would take the number out of the WhatsApp app staff already use.",
     },
     {
       title: "Why not an off-the-shelf platform",
       body:
-        "None of the hosted platforms the client evaluated handled shared stock and cash on delivery its way, and several don't serve Egypt.",
+        "None of the hosted platforms the client evaluated handled shared stock and cash on delivery the way the business works, and several don't serve Egypt.",
     },
   ],
   decisions: [

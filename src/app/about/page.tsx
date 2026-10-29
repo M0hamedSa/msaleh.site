@@ -65,7 +65,7 @@ export default function AboutPage() {
       {CV && (
         <section className="gutter flex flex-wrap items-center justify-between gap-6 border-t border-fg pt-6">
           <p className="max-w-[36ch] text-[clamp(17px,1.4vw,20px)]">
-            The full story on two pages: experience, projects, skills and education.
+            The full story on one page: experience, projects, skills and education.
           </p>
           <Magnetic>
             <a href={CV.href} download data-cursor="Get" className="btn-fill">

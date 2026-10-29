@@ -19,7 +19,7 @@ One of the Projects (True Legal, Kidzenia, Tiba Masr, Aqsat, True Visor) shown p
 _Avoid_: Highlight, top project
 
 **Archive**:
-The index of every other Project worth mentioning, one line each with no Case Study, such as WakeUp, the Odoo implementation and Tick Hub.
+The index of every other Project worth mentioning, one line each with no Case Study, such as WakeUp, the Odoo rollout and Tick Hub.
 _Avoid_: Other work, misc, side projects
 
 **Under the Hood**:

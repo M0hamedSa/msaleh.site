@@ -5,7 +5,7 @@ import { ARCHIVE } from "@/content/archive";
 
 export const metadata: Metadata = {
   title: "Archive · Mohamed Saleh",
-  description: "Every other project: production systems at a textile mill, client work, tools and early work.",
+  description: "Every other project: production systems at a textile manufacturer, tools and early work.",
 };
 
 export default function ArchivePage() {

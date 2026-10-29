@@ -95,8 +95,8 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 - L88: Business runs on systems.
 - L89: I build them.
 - L93: ERP, ledgers, factory-floor tools and offline apps for textile mills, law firms and compliance teams.
-- L97: Now building for new clients ·
-- L99: Let&apos;s build
+- L97: Open to full-stack roles ·
+- L99: Get in touch
 
 **`src/components/home/stack-marquee.tsx`**
 
@@ -290,7 +290,7 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 - L7: Work · Mohamed Saleh
 - L13: /work · Featured Projects (
-- L15: Systems running in
+- L15: Systems built for
 - L15: businesses.
 - L20: Everything else, in the Archive
 
@@ -384,7 +384,7 @@ Every check, screen and report in English and Arabic.
 
 **Problem**
 
-The client sells goods on installment, collecting the price plus its markup in monthly payments. Its PowerBuilder system did not calculate balances reliably or show how they were reached.
+The client sells goods on installment, collecting the price plus its markup in monthly payments. Its PowerBuilder system could not show how a balance was reached.
 
 The replacement had to bring over 7,000 customers with their guarantors and legal follow-up intact.
 
@@ -450,7 +450,7 @@ The replacement had to bring over 7,000 customers with their guarantors and lega
 
 **Points**
 
-Schedules, allocation and Late Days are pure functions, tested down to month-end due dates and 29 February across 28 test files.
+Schedules, allocation and Late Days are pure functions, covered by tests down to month-end due dates and 29 February.
 
 An importer brings over 7,000 customers and their guarantors with their original keys.
 
@@ -550,7 +550,7 @@ The store would be the smaller channel at launch, around 40 to 80 orders a month
 
 **Title:** One stock, three sales channels
 
-**Body:** Staff selling in person can't be expected to update the website first.
+**Body:** Phone and in-store sales can't wait for the website to be updated.
 
 **2.**
 
@@ -562,13 +562,13 @@ The store would be the smaller channel at launch, around 40 to 80 orders a month
 
 **Title:** The existing WhatsApp number stays
 
-**Body:** Moving the daily order line to the WhatsApp API would take it out of the regular app.
+**Body:** Switching to the WhatsApp Business API would take the number out of the WhatsApp app staff already use.
 
 **4.**
 
 **Title:** Why not an off-the-shelf platform
 
-**Body:** None of the hosted platforms the client evaluated handled shared stock and cash on delivery its way, and several don't serve Egypt.
+**Body:** None of the hosted platforms the client evaluated handled shared stock and cash on delivery the way the business works, and several don't serve Egypt.
 
 **Decisions**
 
@@ -781,7 +781,7 @@ The deployment shrank from 216 MB to about 70 MB.
 
 ### How I work
 
-1. **Discover:** Sit with the people who do the work and learn how it really runs, before any screen is drawn.
+1. **Discover:** Sit with the people who do the work and learn how it runs day to day, before any screen is drawn.
 2. **Map:** Turn that into a process map and a shared vocabulary, so the system and the business use the same words.
 3. **Build:** Ship in small, working pieces, with the decisions written down so the next person knows why.
 4. **Train:** Hand it over properly: train the teams who use it every day, then stay close while it settles in.
@@ -797,7 +797,7 @@ The deployment shrank from 216 MB to about 70 MB.
 - L38: From a CS degree to systems in production.
 - L49: Method
 - L51: How I work
-- L68: The full story on two pages: experience, projects, skills and education.
+- L68: The full story on one page: experience, projects, skills and education.
 - L71: data-cursor: Get
 
 ## Part 6 · Archive
@@ -807,7 +807,7 @@ The deployment shrank from 216 MB to about 70 MB.
 **Filters:** Production · Tool · Early work
 
 1. **KTC Scanner Hub** (Production, 2025, Next.js · SQL Server): Fabric inspection with a phone camera instead of scanner hardware, feeding defects straight into SQL Server.
-2. **Odoo implementation** (Production, 2025, Odoo): A core part of a textile mill's move to Odoo ERP: training the teams who use it, loading product data and fixing store and warehouse issues.
+2. **Odoo rollout** (Production, 2025, Odoo): A core part of a textile mill's move to Odoo ERP: training the teams who use it, loading product data and fixing store and warehouse issues.
 3. **SQL troubleshooting agent** (Production, 2025, n8n · Telegram · SQL Server): A Telegram bot that turned plain questions into SQL for real-time checks and remote troubleshooting. Downtime incidents dropped 40%.
 4. **QR complaint system** (Production, 2025, ): A mobile QR platform for complaints and compliance reports, with file uploads and tracking. Reporting time dropped 60%.
 5. **Wanloo Sales Order** (Production, 2026, Next.js · SQL Server): Tracks each sales order through production, from design to shipping, with phase permissions and analytics.
@@ -819,7 +819,7 @@ The deployment shrank from 216 MB to about 70 MB.
 **`src/app/archive/page.tsx`**
 
 - L7: Archive · Mohamed Saleh
-- L8: Every other project: production systems at a textile mill, client work, tools and early work.
+- L8: Every other project: production systems at a textile manufacturer, tools and early work.
 - L15: /archive ·
 - L15: projects
 - L17: Everything else, one line each.

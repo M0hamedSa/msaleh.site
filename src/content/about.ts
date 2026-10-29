@@ -60,7 +60,7 @@ export const TRACK_RECORD: Milestone[] = [
 export const HOW_I_WORK = [
   {
     step: "Discover",
-    body: "Sit with the people who do the work and learn how it really runs, before any screen is drawn.",
+    body: "Sit with the people who do the work and learn how it runs day to day, before any screen is drawn.",
   },
   {
     step: "Map",

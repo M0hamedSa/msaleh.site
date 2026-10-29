@@ -12,7 +12,7 @@ export default function WorkPage() {
       <div className="grid gap-4">
         <p className="label-mono text-mute">/work · Featured Projects ({featuredCount})</p>
         <h1 className="max-w-[16ch] font-display text-[clamp(2.75rem,7vw,7.5rem)] leading-[0.92] tracking-[-0.045em] text-balance">
-          Systems running in {featuredCountWord} businesses.
+          Systems built for {featuredCountWord} businesses.
         </h1>
       </div>
       <WorkIndex />

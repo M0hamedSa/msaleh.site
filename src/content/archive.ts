@@ -27,7 +27,7 @@ export const ARCHIVE: ArchiveProject[] = [
   },
   {
     slug: "odoo",
-    name: "Odoo implementation",
+    name: "Odoo rollout",
     line: "A core part of a textile mill's move to Odoo ERP: training the teams who use it, loading product data and fixing store and warehouse issues.",
     kind: "Production",
     year: "2025",
