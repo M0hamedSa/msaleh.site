@@ -12,7 +12,7 @@ export function CaseAsk({ name }: { name: string }) {
         id="case-ask"
         className="max-w-[20ch] font-display text-[clamp(2rem,4vw,3.75rem)] leading-[0.95] tracking-[-0.035em] text-balance"
       >
-        Need something like {name} for your business?
+        Want to hear how {name} was built?
       </h2>
       <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
         <a href={`mailto:${EMAIL}`} className="label-mono link-line normal-case">

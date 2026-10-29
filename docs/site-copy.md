@@ -35,7 +35,7 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 **`src/components/site-footer.tsx`**
 
-- L42: Have a system in mind?
+- L42: Want to work together?
 - L50: GitHub
 - L53: LinkedIn
 - L61: data-cursor: Write
@@ -143,7 +143,7 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 - L50: How I work
 - L69: data-cursor: Write
-- L70: Start a project
+- L70: Get in touch
 - L74: More about me
 - L77: All work
 - L80: Archive
@@ -709,8 +709,8 @@ The deployment shrank from 216 MB to about 70 MB.
 
 **`src/components/case/case-ask.tsx`**
 
-- L15: Need something like
-- L15: for your business?
+- L15: Want to hear how
+- L15: was built?
 - L22: data-cursor: Write
 - L23: Write to me
 

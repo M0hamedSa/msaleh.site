@@ -23,7 +23,7 @@ export function SiteFooter() {
           <AsciiTalk className="absolute inset-x-0 top-1/2 h-full max-h-[24svh] -translate-y-1/2" />
         </div>
 
-        {/* Phones stack the steps: three columns there wrapped "I send a plan" alone. */}
+        {/* Phones stack the steps: three columns there wrapped a step title alone. */}
         <ol className="grid gap-x-4 sm:grid-cols-3 md:gap-x-8">
           {NEXT_STEPS.map((s, i) => (
             <li key={s.step} className="grid content-start gap-2 border-t border-loader-fg/25 py-2 sm:pt-3 sm:pb-0">
@@ -39,7 +39,7 @@ export function SiteFooter() {
             so the footer fits a phone's screen. From md it takes the right column. */}
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-x-8 gap-y-5 border-t border-loader-fg/20 pt-5 md:gap-y-6 md:pt-6">
           <h2 className="col-span-2 max-w-[16ch] font-display text-[clamp(2.25rem,5vw,4.5rem)] leading-[0.92] tracking-[-0.04em] text-balance md:col-span-1">
-            Have a system in mind?
+            Want to work together?
           </h2>
           <div className="flex-wrap items-center gap-x-8 gap-y-4 max-md:contents md:col-start-1 md:flex">
             <div className="max-md:col-span-2">

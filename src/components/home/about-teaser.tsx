@@ -11,7 +11,7 @@ const RESULTS = TRACK_RECORD.filter((m) => m.mark.endsWith("%"));
  * The end of the home page. A big "About me. / Who builds them." rises line by
  * line (answering the hero's "I build them."), then who you are in one sentence
  * with the same reveal, the two results that can be measured, the method, and
- * the way in: "Start a project" (to the contact block), with About, all work and
+ * the way in: "Get in touch" (to the contact block), with About, all work and
  * Archive as plain links.
  */
 export function AboutTeaser() {
@@ -67,7 +67,7 @@ export function AboutTeaser() {
       <div className="mt-14 flex flex-wrap items-center gap-x-10 gap-y-6">
         <Magnetic>
           <ContactLink data-cursor="Write" className="btn-fill">
-            <span data-magnetic-inner>Start a project</span>
+            <span data-magnetic-inner>Get in touch</span>
           </ContactLink>
         </Magnetic>
         <TransitionLink href="/about" className="link-line">
