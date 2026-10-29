@@ -55,7 +55,7 @@ export async function siteImage() {
         </div>
         <div style={{ ...label, display: "flex", justifyContent: "space-between" }}>
           <div>Mohamed Saleh</div>
-          <div>Systems developer · Giza</div>
+          <div>Full-stack developer · Giza</div>
         </div>
       </div>
     ),

@@ -1,6 +1,6 @@
 # [msaleh.site](https://www.msaleh.site)
 
-Portfolio of Mohamed Saleh, systems developer in Giza. It shows five client projects, four of them with a full Case Study so far, plus an Archive of earlier work.
+Portfolio of Mohamed Saleh, full-stack developer in Giza. It shows five client projects, four of them with a full Case Study so far, plus an Archive of earlier work.
 
 Live at **https://www.msaleh.site**.
 

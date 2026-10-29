@@ -39,7 +39,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   twitter: { card: "summary_large_image" },
-  title: "Mohamed Saleh · Systems developer",
+  title: "Mohamed Saleh · Full-stack developer",
   description:
     "Mohamed Saleh builds the systems businesses run on: ERP, ledgers, factory-floor tools and offline apps, from Giza.",
 };

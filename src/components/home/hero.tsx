@@ -59,7 +59,7 @@ export function Hero() {
         </div>
         <div>
           <dt className="text-mute">Role</dt>
-          <dd>Systems developer</dd>
+          <dd>Full-stack developer</dd>
         </div>
         <div>
           <dt className="text-mute">Based</dt>

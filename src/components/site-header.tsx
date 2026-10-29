@@ -50,7 +50,7 @@ export function SiteHeader() {
           <LogoMark />
         </TransitionLink>
         <p className="label-mono hidden justify-self-center text-mute md:block">
-          Systems developer · Giza
+          Full-stack developer · Giza
         </p>
         <div className="flex items-center gap-2 justify-self-end">
           <ThemeToggle />

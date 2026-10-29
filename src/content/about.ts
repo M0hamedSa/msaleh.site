@@ -1,11 +1,11 @@
-// The About page's content. Facts come from the CV (Mohamed_Saleh_CV_2P.pdf);
+// The About page's content. Facts come from the one-page CV (Mohamed_Saleh_CV_source.html);
 // the 2026 line summarises the Featured Projects.
 
 /** The About header: two lines, the second in red (answers the hero's "I build them."). */
 export const ABOUT_HEADING = ["About me.", "Who builds them."] as const;
 
 /** Who you are in one sentence: the About page intro, and the About section at the end of the home page. */
-export const INTRO = "I'm a systems developer in Giza. I learn how a business really works, then build the software its people use every day.";
+export const INTRO = "I'm a full-stack developer in Giza. I learn how a business really works, then build the software its people use every day.";
 
 export type Milestone = {
   label: string;
@@ -41,7 +41,7 @@ export const TRACK_RECORD: Milestone[] = [
     label: "Automation",
     mark: "−40%",
     title: "SQL troubleshooting agent",
-    body: "An n8n and Telegram bot that turns plain questions into SQL. Downtime incidents dropped 40%.",
+    body: "An n8n and Telegram bot that turned plain questions into SQL. Downtime incidents dropped 40%.",
   },
   {
     label: "Compliance",
@@ -53,7 +53,7 @@ export const TRACK_RECORD: Milestone[] = [
     label: "Independent",
     mark: "2026",
     title: "Systems for clients",
-    body: "Offline factory audits, installment contracts, a law firm's client ledger and a clothing factory's online store.",
+    body: "Offline factory audits, installment contracts, a law firm's client ledger, a clothing factory's online store and a produce exporter's website.",
   },
 ];
 

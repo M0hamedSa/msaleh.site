@@ -1,7 +1,7 @@
 // The Archive: every other Project worth mentioning, one line each. Lines come
 // from each project's repo (README, glossary) or, for work without one, the CV.
 
-export type ArchiveKind = "Production" | "Client" | "Tool" | "Early work";
+export type ArchiveKind = "Production" | "Tool" | "Early work";
 
 export type ArchiveProject = {
   slug: string;
@@ -14,7 +14,7 @@ export type ArchiveProject = {
   url?: string;
 };
 
-export const ARCHIVE_KINDS: ArchiveKind[] = ["Production", "Client", "Tool", "Early work"];
+export const ARCHIVE_KINDS: ArchiveKind[] = ["Production", "Tool", "Early work"];
 
 export const ARCHIVE: ArchiveProject[] = [
   {
@@ -36,7 +36,7 @@ export const ARCHIVE: ArchiveProject[] = [
   {
     slug: "sql-agent",
     name: "SQL troubleshooting agent",
-    line: "A Telegram bot that turns plain questions into SQL for real-time checks and remote troubleshooting. Downtime incidents dropped 40%.",
+    line: "A Telegram bot that turned plain questions into SQL for real-time checks and remote troubleshooting. Downtime incidents dropped 40%.",
     kind: "Production",
     year: "2025",
     stack: ["n8n", "Telegram", "SQL Server"],
@@ -53,12 +53,11 @@ export const ARCHIVE: ArchiveProject[] = [
     slug: "wanloo",
     name: "Wanloo Sales Order",
     line: "Tracks each sales order through production, from design to shipping, with phase permissions and analytics.",
-    kind: "Client",
+    kind: "Production",
     year: "2026",
     stack: ["Next.js", "SQL Server"],
     url: "https://sales-order-wl.vercel.app",
   },
-
   {
     slug: "wakeup",
     name: "WakeUp",

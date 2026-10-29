@@ -8,7 +8,7 @@ import { ABOUT_HEADING, CV, HOW_I_WORK, INTRO, TRACK_RECORD } from "@/content/ab
 
 export const metadata: Metadata = {
   title: "About · Mohamed Saleh",
-  description: "Systems developer in Giza: ERP, Odoo, and the web systems businesses run on.",
+  description: "Full-stack developer in Giza: the web systems businesses run on, and the ERP behind them.",
 };
 
 const sectionHeading = "font-display text-[clamp(2rem,3.6vw,3.5rem)] leading-[0.95] tracking-[-0.035em]";

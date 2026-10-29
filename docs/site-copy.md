@@ -8,14 +8,14 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 **`src/app/layout.tsx`**
 
-- L42: Mohamed Saleh · Systems developer
+- L42: Mohamed Saleh · Full-stack developer
 - L44: Mohamed Saleh builds the systems businesses run on: ERP, ledgers, factory-floor tools and offline apps, from Giza.
 - L68: Skip to content
 
 **`src/components/site-header.tsx`**
 
 - L49: aria-label: Mohamed Saleh, home
-- L53: Systems developer · Giza
+- L53: Full-stack developer · Giza
 - L58: aria-label: Write to me
 - L59: data-cursor: Write
 - L70: aria-label: Menu
@@ -88,7 +88,7 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 - L57: Name
 - L58: Mohamed Saleh
 - L61: Role
-- L62: Systems developer
+- L62: Full-stack developer
 - L65: Based
 - L66: Giza · 30.01°N 31.21°E
 - L69: Local
@@ -135,7 +135,7 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 **Heading:** About me. / Who builds them.
 
-**Text:** I'm a systems developer in Giza. I learn how a business really works, then build the software its people use every day.
+**Text:** I'm a full-stack developer in Giza. I learn how a business really works, then build the software its people use every day.
 
 *Results and method below come from the About page (Part 5).*
 
@@ -739,7 +739,7 @@ The deployment shrank from 216 MB to about 70 MB.
 
 **Heading:** About me. / Who builds them.
 
-**Intro:** I'm a systems developer in Giza. I learn how a business really works, then build the software its people use every day.
+**Intro:** I'm a full-stack developer in Giza. I learn how a business really works, then build the software its people use every day.
 
 ### Track record
 
@@ -765,7 +765,7 @@ The deployment shrank from 216 MB to about 70 MB.
 
 **Title:** SQL troubleshooting agent
 
-**Text:** An n8n and Telegram bot that turns plain questions into SQL. Downtime incidents dropped 40%.
+**Text:** An n8n and Telegram bot that turned plain questions into SQL. Downtime incidents dropped 40%.
 
 **5. −60% · Compliance**
 
@@ -777,7 +777,7 @@ The deployment shrank from 216 MB to about 70 MB.
 
 **Title:** Systems for clients
 
-**Text:** Offline factory audits, installment contracts, a law firm's client ledger and a clothing factory's online store.
+**Text:** Offline factory audits, installment contracts, a law firm's client ledger, a clothing factory's online store and a produce exporter's website.
 
 ### How I work
 
@@ -791,7 +791,7 @@ The deployment shrank from 216 MB to about 70 MB.
 **`src/app/about/page.tsx`**
 
 - L10: About · Mohamed Saleh
-- L11: Systems developer in Giza: ERP, Odoo, and the web systems businesses run on.
+- L11: Full-stack developer in Giza: the web systems businesses run on, and the ERP behind them.
 - L20: /about
 - L36: Track record
 - L38: From a CS degree to systems in production.
@@ -804,13 +804,13 @@ The deployment shrank from 216 MB to about 70 MB.
 
 <sub>source: `src/content/archive.ts → ARCHIVE, ARCHIVE_KINDS`</sub>
 
-**Filters:** Production · Client · Tool · Early work
+**Filters:** Production · Tool · Early work
 
 1. **KTC Scanner Hub** (Production, 2025, Next.js · SQL Server): Fabric inspection with a phone camera instead of scanner hardware, feeding defects straight into SQL Server.
 2. **Odoo implementation** (Production, 2025, Odoo): A core part of a textile mill's move to Odoo ERP: training the teams who use it, loading product data and fixing store and warehouse issues.
-3. **SQL troubleshooting agent** (Production, 2025, n8n · Telegram · SQL Server): A Telegram bot that turns plain questions into SQL for real-time checks and remote troubleshooting. Downtime incidents dropped 40%.
+3. **SQL troubleshooting agent** (Production, 2025, n8n · Telegram · SQL Server): A Telegram bot that turned plain questions into SQL for real-time checks and remote troubleshooting. Downtime incidents dropped 40%.
 4. **QR complaint system** (Production, 2025, ): A mobile QR platform for complaints and compliance reports, with file uploads and tracking. Reporting time dropped 60%.
-5. **Wanloo Sales Order** (Client, 2026, Next.js · SQL Server): Tracks each sales order through production, from design to shipping, with phase permissions and analytics.
+5. **Wanloo Sales Order** (Production, 2026, Next.js · SQL Server): Tracks each sales order through production, from design to shipping, with phase permissions and analytics.
 6. **WakeUp** (Tool, 2026, Next.js · PostgreSQL · Telegram): Watches every project I run: uptime, certificates, backups, logs and errors, with alerts on Telegram.
 7. **Help Desk / IT Ticketing** (Tool, 2026, Next.js · Supabase): An IT help desk: tickets, their status and system health on one dashboard.
 8. **Tick Hub** (Early work, 2023, HTML · CSS · JavaScript): An event-ticketing marketplace frontend built from detailed Figma designs, with right-to-left layouts for Arabic markets.
@@ -840,7 +840,7 @@ Labels, accessibility text and small UI words not covered above.
 
 **`src/app/opengraph-image.tsx`**
 
-- L3: MSALEH: Business runs on systems. I build them. Mohamed Saleh, systems developer in Giza.
+- L3: MSALEH: Business runs on systems. I build them. Mohamed Saleh, full-stack developer in Giza.
 
 **`src/components/header-icons.tsx`**
 
