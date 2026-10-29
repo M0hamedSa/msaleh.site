@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { ContactLink } from "@/components/contact-link";
 import { AsciiMark } from "@/components/home/ascii-mark";
 import { LiveClock } from "@/components/live-clock";
+import { CV } from "@/content/about";
 import { createBlockReveal } from "@/lib/block-reveal";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { onIntroReady, onPageShown } from "@/lib/intro";
@@ -98,6 +99,15 @@ export function Hero() {
             <ContactLink className="link-line text-accent-ink">
               Get in touch <span className="arrow">↗</span>
             </ContactLink>
+            {/* Phones have no room for a third item on the line, so the CV link takes its own. */}
+            {CV && (
+              <>
+                <span className="max-sm:hidden"> · </span>
+                <a href={CV.href} download className="link-line max-sm:mt-2 max-sm:block max-sm:w-fit">
+                  Download CV <span className="arrow">↓</span>
+                </a>
+              </>
+            )}
           </p>
         </div>
       </div>

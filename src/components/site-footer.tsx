@@ -2,6 +2,7 @@ import { AsciiTalk } from "@/components/footer/ascii-talk";
 import { CopyEmail } from "@/components/footer/copy-email";
 import { FooterReveal } from "@/components/footer/footer-reveal";
 import { Magnetic } from "@/components/magnetic";
+import { CV } from "@/content/about";
 import { EMAIL, GITHUB, LINKEDIN, NEXT_STEPS } from "@/content/contact";
 
 /**
@@ -52,6 +53,11 @@ export function SiteFooter() {
               <a href={LINKEDIN} target="_blank" rel="noopener" className="link-line">
                 LinkedIn <span className="arrow">↗</span>
               </a>
+              {CV && (
+                <a href={CV.href} download className="link-line">
+                  CV <span className="arrow">↓</span>
+                </a>
+              )}
             </div>
           </div>
           <div className="md:col-start-2 md:row-span-2 md:row-start-1">
