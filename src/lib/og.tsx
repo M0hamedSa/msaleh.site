@@ -66,13 +66,16 @@ export async function siteImage() {
 /** A case study's image: its name and tagline beside its cover screen. */
 export async function projectImage(project: FeaturedProject) {
   const cover = `data:image/jpeg;base64,${(await asset(`${project.slug}.jpg`)).toString("base64")}`;
+  // A name wraps between words, so only one long word needs a smaller size to fit the column.
+  const longest = Math.max(...project.name.split(" ").map((word) => word.length));
+  const nameSize = Math.min(96, Math.floor((96 * 8.5) / longest));
   return new ImageResponse(
     (
       <div style={{ display: "flex", width: "100%", height: "100%", background: PAPER, color: INK }}>
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: 520, padding: "56px 48px 56px 64px" }}>
           <div style={label}>{`Case study · ${project.sector}`}</div>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ fontFamily: "Clash", fontSize: 96, lineHeight: 0.92, letterSpacing: -4 }}>{project.name}</div>
+            <div style={{ fontFamily: "Clash", fontSize: nameSize, lineHeight: 0.92, letterSpacing: -nameSize / 24 }}>{project.name}</div>
             <div style={{ fontFamily: "General Sans", fontSize: 30, marginTop: 18 }}>{project.tagline}</div>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
