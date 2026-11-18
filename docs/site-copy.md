@@ -1,6 +1,6 @@
 # Portfolio copy: every piece of text on the site
 
-Generated from the code on 2026-10-28. Edit any text in place, keep the `source` tags and the `Lnn:` line numbers as they are, and send the file back (or point me at it); I apply each change to the file it came from.
+Generated from the code on 2026-11-18. Edit any text in place, keep the `source` tags and the `Lnn:` line numbers as they are, and send the file back (or point me at it); I apply each change to the file it came from.
 
 It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 projects, 4 case studies, 5 about, 6 archive, 7 small UI text left over. Text from the content files (`src/content/*.ts`) appears as labelled fields under a `source` tag; text written straight into a page or component appears as `- Lnn:` lines under its file name. Lines starting `aria-label:` are read out by screen readers, and `data-cursor:` is the word on the red cursor disc.
 
@@ -35,12 +35,13 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 **`src/components/site-footer.tsx`**
 
-- L42: Want to work together?
-- L50: GitHub
-- L53: LinkedIn
-- L61: data-cursor: Write
-- L64: Write to me
-- L71: © 2026 Mohamed Saleh
+- L43: Want to work together?
+- L51: GitHub
+- L54: LinkedIn
+- L58: CV
+- L67: data-cursor: Write
+- L70: Write to me
+- L77: © 2026 Mohamed Saleh
 
 **`src/components/footer/copy-email.tsx`**
 
@@ -85,18 +86,19 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 **`src/components/home/hero.tsx`**
 
-- L57: Name
-- L58: Mohamed Saleh
-- L61: Role
-- L62: Full-stack developer
-- L65: Based
-- L66: Giza · 30.01°N 31.21°E
-- L69: Local
-- L88: Business runs on systems.
-- L89: I build them.
-- L93: ERP, ledgers, factory-floor tools and offline apps for textile mills, law firms and compliance teams.
-- L97: Open to full-stack roles ·
-- L99: Get in touch
+- L58: Name
+- L59: Mohamed Saleh
+- L62: Role
+- L63: Full-stack developer
+- L66: Based
+- L67: Giza · 30.01°N 31.21°E
+- L70: Local
+- L89: Business runs on systems.
+- L90: I build them.
+- L94: ERP, ledgers, factory-floor tools and offline apps for textile mills, law firms and compliance teams.
+- L98: Open to full-stack roles ·
+- L100: Get in touch
+- L107: Download CV
 
 **`src/components/home/stack-marquee.tsx`**
 
@@ -170,10 +172,12 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 **Screens** (alt text · caption)
 
-1. True Legal dashboard in Arabic: payments, expenses, fees, balance and a six-month cash flow chart · *The firm at a glance: payments, expenses, fees and what clients owe.*
-2. A client's account with payments, expenses, balance and fees · *One client's account for the current period.*
-3. A case's ledger with expenses and office costs, each recorded by a staff member · *Each case keeps its own ledger, and every entry names who recorded it.*
-4. The log of every transaction across clients, filterable by client, type and date · *Every movement of money, across all clients, in one log.*
+1. True Legal dashboard in Arabic: what clients owe, money held for them, this month's fees, and the late fees and overspent advances that need attention today · *The firm's morning: what is owed, what is late, and who has spent past their advance.*
+2. A client's account with its position, the fees to follow up and a row of monthly fees, one of them late · *One client: where the account stands, and each month's fee, paid, due or late.*
+3. The cases board in dark mode, one column per lawyer, each card with its client and priority · *Every open case on one board, in dark mode; a card is dragged to hand the case to someone else.*
+4. The clients list as cards, late fees first, each with what it owes and its open cases · *Clients as cards: late fees first, then what each one owes.*
+5. The same dashboard in English, laid out left to right · *The same dashboard in English, left to right.*
+6. The dashboard on a phone, with a tab bar at the bottom · *On a phone, with its own tab bar.*
 
 ### Kidzenia
 
@@ -221,13 +225,13 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 1. Tiba Masr home page: a farmer with a basket of fruit and the line Harvested Fresh, Delivered Pure · *The home page, written for buyers abroad.*
 2. Tiba Masr products page with fresh fruit and vegetables on a wooden table · *The product catalogue, in English and Arabic.*
 
-### Aqsat
+### Elghandour
 
-**Summary:** Installment contracts, payments and balances, each traceable to the entries behind it.
+**Summary:** Installment contracts, payments and balances across branches, each traceable to the entries behind it.
 
 **Tagline:** Every balance, traced to its source.
 
-**Status:** Launching Nov 2026
+**Status:** Live
 
 **Sector:** Consumer credit
 
@@ -235,16 +239,18 @@ It is set out by page: 1 every page (header, menu, footer, 404), 2 home, 3 proje
 
 **Year:** 2026
 
-**Wordmark:** أقساط
+**Wordmark:** الغندور
 
 **Stack:** Next.js · Drizzle · PostgreSQL · Garage S3
 
 **Screens** (alt text · caption)
 
-1. Aqsat dashboard in Arabic: overdue total, due today, collected today and the most overdue customers · *The branch's morning: what is overdue, what is due today, and who is furthest behind.*
-2. An installment contract with its pricing breakdown and overdue amount · *A contract shows how its price was built, once, at signing.*
-3. A twelve-month installment schedule with paid and unpaid rows and days late · *The schedule sums exactly to the amount financed; lateness is counted in days, never charged.*
-4. A customer statement built from ledger entries with a running balance · *The statement is the ledger: every balance is a sum of immutable entries.*
+1. Elghandour dashboard in Arabic: total overdue, due today, collected today, and the most overdue customers with a bar per installment · *The office's morning: what is overdue, what is due today, and who is furthest behind.*
+2. A customer's page in a light petrol palette: two contracts, one with two installments late · *A customer and their contracts, in one of the palettes each person can choose.*
+3. An installment contract with its schedule, paid and late installments, and days late · *A contract's schedule: lateness is counted in days, never charged.*
+4. A customer statement built from ledger entries with a running balance and late-day rows · *The statement is the ledger: every balance is a sum of immutable entries.*
+5. The same dashboard in a light emerald palette · *The same dashboard, light and emerald.*
+6. The dashboard on a phone in the dark graphite palette · *The same dashboard on a phone.*
 
 ### True Visor
 
@@ -380,13 +386,13 @@ Every check, screen and report in English and Arabic.
 
 **Note:** The pilot starts in November 2026; its results will be added here.
 
-### Aqsat
+### Elghandour
 
 **Problem**
 
 The client sells goods on installment, collecting the price plus its markup in monthly payments. Its PowerBuilder system could not show how a balance was reached.
 
-The replacement had to bring over 7,000 customers with their guarantors and legal follow-up intact.
+The replacement had to bring over all 56,375 of the old system's customers, with their contracts and payments, without burying the work of the day.
 
 **Constraints**
 
@@ -404,9 +410,9 @@ The replacement had to bring over 7,000 customers with their guarantors and lega
 
 **3.**
 
-**Title:** 7,000 customers to migrate
+**Title:** 56,375 customers to migrate
 
-**Body:** Customers and guarantors keep their original keys, with the old system available for lookups.
+**Body:** About 67,600 contracts and 404,000 payments, most of them years old, brought in without changing a single balance.
 
 **4.**
 
@@ -438,13 +444,13 @@ The replacement had to bring over 7,000 customers with their guarantors and lega
 
 **3.**
 
-**Title:** Money in whole piastres
+**Title:** Old customers kept apart until activated
 
-**Choice:** The calculation core works in integer piastres and converts only at its boundary, because a single floating-point conversion causes untraceable errors of a few piastres.
+**Choice:** Only a few hundred of the imported customers had paid since 2024, so they arrive as Old-system Customers: searchable and printable, but left out of the dashboard, overdue lists and reports until staff take each one up.
 
-**Tradeoff:** A conversion at every boundary, and a review rule to enforce it.
+**Tradeoff:** One more state on every customer, in exchange for screens that still show what needs doing today.
 
-**Source:** ADR-0023
+**Source:** ADR-0044
 
 **Outcome**
 
@@ -452,11 +458,11 @@ The replacement had to bring over 7,000 customers with their guarantors and lega
 
 Schedules, allocation and Late Days are pure functions, covered by tests down to month-end due dates and 29 February.
 
-An importer brings over 7,000 customers and their guarantors with their original keys.
+The old system's 56,375 customers were imported after a full rehearsal on a copy of production.
 
-Arabic statements and PDFs, with encrypted off-site backups from day one.
+Arabic statements and PDFs across branches, with encrypted off-site backups and a tested restore.
 
-**Note:** Go-live is set for November 2026; results will be added here.
+**Note:** Live since November 2026.
 
 ### True Legal
 
@@ -470,9 +476,9 @@ The first version has run the firm's daily operations since launch. An October 2
 
 **1.**
 
-**Title:** Three roles, three views of the money
+**Title:** Each person sees only their part of the money
 
-**Body:** Staff, admins and the owner each see a different part of the finances; only the owner sees everything.
+**Body:** What staff, admins and the owner can see and do is set by roles the firm edits itself.
 
 **2.**
 
@@ -488,9 +494,9 @@ The first version has run the firm's daily operations since launch. An October 2
 
 **4.**
 
-**Title:** Arabic reports that match the screens
+**Title:** Reports that match the screens
 
-**Body:** Seven right-to-left PDF reports, matching the application to the piastre.
+**Body:** Eight reports in Arabic and English, as PDF and spreadsheet, matching the application to the piastre.
 
 **Decisions**
 
@@ -500,7 +506,7 @@ The first version has run the firm's daily operations since launch. An October 2
 
 **Choice:** Self-hosted PostgreSQL replaces Supabase, giving the firm control of its data and backups. Access rules now live in one module that every query passes through.
 
-**Tradeoff:** Without row-level security, every server route checks the caller's role, and Supabase's auth, realtime and storage each needed a replacement.
+**Tradeoff:** Without row-level security, every server route checks the caller's permissions, and Supabase's auth, realtime and storage each needed a replacement.
 
 **Source:** ADR-0001
 
@@ -530,11 +536,11 @@ The first version has run the firm's daily operations since launch. An October 2
 
 The second version was verified against the first under all three roles: every page, exported amount and permission.
 
-All seven Arabic PDF reports come from one module, in one to two seconds each.
+Staff scan paper documents with a phone's camera straight into a case's files.
 
-Production fixes shipped first, verified against a full backup of the live database.
+The move to the firm's own server checked every record, login and amount, and each client's balance, against the old system.
 
-**Note:** The second version goes live once the firm's new server is in place.
+**Note:** The second version has run the firm's work on its own server since 16 November 2026.
 
 ### Kidzenia
 
@@ -860,10 +866,11 @@ Labels, accessibility text and small UI words not covered above.
 
 **`src/components/ink-trail.tsx`**
 
-- L40: #version 300 es precision highp float; in vec2 vUv, vL, vR, vT, vB; out vec4 o; 
-- L92: EXT_color_buffer_float
-- L92: EXT_color_buffer_half_float
-- L264: WEBGL_lose_context
+- L47: #version 300 es precision highp float; in vec2 vUv, vL, vR, vT, vB; out vec4 o; 
+- L99: EXT_color_buffer_float
+- L99: EXT_color_buffer_half_float
+- L271: WEBGL_lose_context
+- L340: pan-y pinch-zoom
 
 **`src/components/live-clock.tsx`**
 

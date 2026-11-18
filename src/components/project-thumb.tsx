@@ -70,7 +70,7 @@ function Art({ project: p }: { project: FeaturedProject }) {
           </div>
         </div>
       );
-    case "aqsat":
+    case "elghandour":
       return (
         <div className="absolute top-[8cqw] right-[5cqw] grid justify-items-end gap-[3cqw]">
           <span className="font-display text-[22cqw] leading-[0.8]" style={{ color: accent }} lang="ar">
@@ -149,8 +149,8 @@ type Props = {
 /** The project's key art, filling its parent. */
 export function ProjectThumb({ project: p, caption = "full", className = "" }: Props) {
   const { from, to, ink } = p.brand;
-  // The art already carries the True Visor mark and the Aqsat wordmark.
-  const plate = p.slug !== "true-visor" && p.slug !== "aqsat";
+  // The art already carries the True Visor mark and the Elghandour wordmark.
+  const plate = p.slug !== "true-visor" && p.slug !== "elghandour";
   return (
     <div
       className={`relative overflow-hidden [container-type:inline-size] ${className}`}

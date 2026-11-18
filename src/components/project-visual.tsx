@@ -24,7 +24,7 @@ const FIELDS: Record<PlaceholderVisual, (x: number, y: number) => number> = {
     const r = Math.hypot((x - 0.62) * 1.4, y - 0.5);
     return Math.max(0, 1 - r * 1.5) * (0.55 + 0.45 * Math.cos(r * 46));
   },
-  // Aqsat: installment steps.
+  // Elghandour: installment steps.
   steps: (x, y) => {
     const h = (Math.floor(x * 12) + 1) / 13;
     return y > 1 - h ? 0.85 - (y - (1 - h)) * 0.6 : 0.05 + x * 0.08;

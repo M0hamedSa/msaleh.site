@@ -71,11 +71,11 @@ const trueVisor: CaseStudy = {
   },
 };
 
-const aqsat: CaseStudy = {
+const elghandour: CaseStudy = {
   draft: false,
   problem: [
     "The client sells goods on installment, collecting the price plus its markup in monthly payments. Its PowerBuilder system could not show how a balance was reached.",
-    "The replacement had to bring over 7,000 customers with their guarantors and legal follow-up intact.",
+    "The replacement had to bring over all 56,375 of the old system's customers, with their contracts and payments, without burying the work of the day.",
   ],
   constraints: [
     {
@@ -87,8 +87,8 @@ const aqsat: CaseStudy = {
       body: "Every screen, statement and PDF is in Arabic; code and data stay in English.",
     },
     {
-      title: "7,000 customers to migrate",
-      body: "Customers and guarantors keep their original keys, with the old system available for lookups.",
+      title: "56,375 customers to migrate",
+      body: "About 67,600 contracts and 404,000 payments, most of them years old, brought in without changing a single balance.",
     },
     {
       title: "Every balance explainable",
@@ -113,20 +113,21 @@ const aqsat: CaseStudy = {
       source: "ADR-0001",
     },
     {
-      title: "Money in whole piastres",
+      title: "Old customers kept apart until activated",
       choice:
-        "The calculation core works in integer piastres and converts only at its boundary, because a single floating-point conversion causes untraceable errors of a few piastres.",
-      tradeoff: "A conversion at every boundary, and a review rule to enforce it.",
-      source: "ADR-0023",
+        "Only a few hundred of the imported customers had paid since 2024, so they arrive as Old-system Customers: searchable and printable, but left out of the dashboard, overdue lists and reports until staff take each one up.",
+      tradeoff:
+        "One more state on every customer, in exchange for screens that still show what needs doing today.",
+      source: "ADR-0044",
     },
   ],
   outcome: {
     points: [
       "Schedules, allocation and Late Days are pure functions, covered by tests down to month-end due dates and 29 February.",
-      "An importer brings over 7,000 customers and their guarantors with their original keys.",
-      "Arabic statements and PDFs, with encrypted off-site backups from day one.",
+      "The old system's 56,375 customers were imported after a full rehearsal on a copy of production.",
+      "Arabic statements and PDFs across branches, with encrypted off-site backups and a tested restore.",
     ],
-    note: "Go-live is set for November 2026; results will be added here.",
+    note: "Live since November 2026.",
   },
 };
 
@@ -138,8 +139,8 @@ const trueLegal: CaseStudy = {
   ],
   constraints: [
     {
-      title: "Three roles, three views of the money",
-      body: "Staff, admins and the owner each see a different part of the finances; only the owner sees everything.",
+      title: "Each person sees only their part of the money",
+      body: "What staff, admins and the owner can see and do is set by roles the firm edits itself.",
     },
     {
       title: "Changes without downtime",
@@ -150,8 +151,8 @@ const trueLegal: CaseStudy = {
       body: "The move to the new version must not lock anyone out.",
     },
     {
-      title: "Arabic reports that match the screens",
-      body: "Seven right-to-left PDF reports, matching the application to the piastre.",
+      title: "Reports that match the screens",
+      body: "Eight reports in Arabic and English, as PDF and spreadsheet, matching the application to the piastre.",
     },
   ],
   decisions: [
@@ -160,7 +161,7 @@ const trueLegal: CaseStudy = {
       choice:
         "Self-hosted PostgreSQL replaces Supabase, giving the firm control of its data and backups. Access rules now live in one module that every query passes through.",
       tradeoff:
-        "Without row-level security, every server route checks the caller's role, and Supabase's auth, realtime and storage each needed a replacement.",
+        "Without row-level security, every server route checks the caller's permissions, and Supabase's auth, realtime and storage each needed a replacement.",
       source: "ADR-0001",
     },
     {
@@ -181,10 +182,10 @@ const trueLegal: CaseStudy = {
   outcome: {
     points: [
       "The second version was verified against the first under all three roles: every page, exported amount and permission.",
-      "All seven Arabic PDF reports come from one module, in one to two seconds each.",
-      "Production fixes shipped first, verified against a full backup of the live database.",
+      "Staff scan paper documents with a phone's camera straight into a case's files.",
+      "The move to the firm's own server checked every record, login and amount, and each client's balance, against the old system.",
     ],
-    note: "The second version goes live once the firm's new server is in place.",
+    note: "The second version has run the firm's work on its own server since 16 November 2026.",
   },
 };
 
@@ -307,7 +308,7 @@ const tibaMasr: CaseStudy = {
 
 export const CASE_STUDIES: Record<string, CaseStudy> = {
   "true-visor": trueVisor,
-  aqsat,
+  elghandour,
   "true-legal": trueLegal,
   kidzenia,
   "tiba-masr": tibaMasr,
